@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SkillMatch — Test Results & Skill Insights</title>
+  <link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body>
+
+  <!-- SkillMatch Unified Navbar -->
+  <header class="navbar">
+    <a href="index.html" class="navbar__logo">
+      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
+      </svg>
+      <span>SkillMatch</span>
+    </a>
+    
+    <nav class="navbar__center" id="navbarMenu">
+      <a href="index.html" class="navbar__link">Dashboard</a>
+      <a href="job_listing.html" class="navbar__link">Jobs</a>
+      <a href="my_proposals.html" class="navbar__link">Proposals</a>
+      <a href="freelancer_chat.html" class="navbar__link">Messages</a>
+      <a href="portfolio_link.html" class="navbar__link">Projects</a>
+    </nav>
+    
+    <div class="navbar__right">
+      <button class="navbar__mobile-toggle" id="mobileToggle" aria-label="Toggle navigation">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+        </svg>
+      </button>
+
+      <a href="freelancer_chat.html" class="navbar__icon" aria-label="Notifications" title="Notifications">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" />
+        </svg>
+      </a>
+
+      <a href="profile.html" class="navbar__icon" aria-label="Settings" title="Profile Settings">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+        </svg>
+      </a>
+
+      <a href="profile.html" class="navbar__avatar" title="View Profile">SH</a>
+    </div>
+  </header>
+
+  <!-- Main Content -->
+  <main class="main result-container">
+    
+    <!-- Header & Score Badge -->
+    <section class="result-header">
+      <h1 class="result-header__title">React.js Developer Assessment</h1>
+      <p class="result-header__subtitle">Verification Completed on Jun 26, 2026 &bull; Verified Freelancer Badge Awarded</p>
+      
+      <div class="score-container">
+        <div class="score-badge">88%</div>
+        <div class="score-status-badge">&#10003; Assessment Passed</div>
+      </div>
+    </section>
+
+    <!-- Two Column Breakdown & Suggestions Grid -->
+    <section class="dashboard-grid">
+      
+      <!-- Skill Breakdown Card -->
+      <div class="card">
+        <h2 class="card__header">Proficiency Breakdown</h2>
+        <div class="skill-list">
+          <div class="skill-item">
+            <span class="skill-item__name">React Hooks (useState, useEffect)</span>
+            <span class="skill-item__score skill-item__score--high">95%</span>
+          </div>
+          <div class="skill-item">
+            <span class="skill-item__name">Component Lifecycle & Rendering</span>
+            <span class="skill-item__score skill-item__score--high">90%</span>
+          </div>
+          <div class="skill-item">
+            <span class="skill-item__name">JSX Syntax & Reconciliation</span>
+            <span class="skill-item__score skill-item__score--high">85%</span>
+          </div>
+          <div class="skill-item">
+            <span class="skill-item__name">Complex State Management</span>
+            <span class="skill-item__score skill-item__score--low">70%</span>
+          </div>
+          <div class="skill-item">
+            <span class="skill-item__name">Async / Await API Integration</span>
+            <span class="skill-item__score skill-item__score--low">65%</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Recommended Improvements Card -->
+      <div class="card">
+        <h2 class="card__header">Recommended Growth Insights</h2>
+        <p class="improvements-desc">Based on your answers, mastering these high-impact concepts will qualify you for top-tier enterprise projects:</p>
+        <ul class="improvements-list">
+          <li><strong>Advanced State Management:</strong> Practice Redux Toolkit or Zustand slice patterns for large cross-component trees.</li>
+          <li><strong>Robust Async Error Handling:</strong> Implement retry strategies, AbortControllers, and boundary error fallbacks.</li>
+          <li><strong>Memoization & Performance:</strong> Leverage React.memo, useMemo, and useCallback to eliminate redundant renders.</li>
+        </ul>
+      </div>
+
+    </section>
+
+    <!-- Action Section -->
+    <section class="cta-section">
+      <p class="cta-section__text">Your verified score is now visible on your profile and project proposals.</p>
+      <div class="cta-section__actions">
+        <a href="index.html" class="btn btn--secondary">Back to Dashboard</a>
+        <a href="job_listing.html" class="btn btn--solid">Browse Matching Jobs &rarr;</a>
+        <a href="skill_test.html" class="btn btn--outline">Retake Test</a>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- SkillMatch Unified Footer -->
+  <footer class="footer">
+    <div class="footer__container">
+      <div class="footer__logo">SkillMatch</div>
+      <div class="footer__links">
+        <a href="job_listing.html" class="footer__link">Browse Jobs</a>
+        <a href="my_proposals.html" class="footer__link">My Proposals</a>
+        <a href="portfolio_link.html" class="footer__link">Portfolio</a>
+        <a href="select_skill.html" class="footer__link">Skill Tests</a>
+        <a href="profile.html" class="footer__link">Profile</a>
+      </div>
+      <div class="footer__copyright">
+        &copy; 2026 <strong>SkillMatch</strong>. All rights reserved.
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    // Mobile Navbar Toggle
+    const mobileToggle = document.getElementById('mobileToggle');
+    const navbarMenu = document.getElementById('navbarMenu');
+    if (mobileToggle && navbarMenu) {
+      mobileToggle.addEventListener('click', () => {
+        navbarMenu.classList.toggle('navbar__center--mobile-open');
+      });
+    }
+  </script>
+</body>
+</html>

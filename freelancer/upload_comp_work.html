@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SkillMatch — Submit Project Deliverable</title>
+  <link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body>
+
+  <!-- SkillMatch Unified Navbar -->
+  <header class="navbar">
+    <a href="index.html" class="navbar__logo">
+      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
+      </svg>
+      <span>SkillMatch</span>
+    </a>
+    
+    <nav class="navbar__center" id="navbarMenu">
+      <a href="index.html" class="navbar__link">Dashboard</a>
+      <a href="job_listing.html" class="navbar__link">Jobs</a>
+      <a href="my_proposals.html" class="navbar__link">Proposals</a>
+      <a href="freelancer_chat.html" class="navbar__link">Messages</a>
+      <a href="portfolio_link.html" class="navbar__link">Projects</a>
+    </nav>
+    
+    <div class="navbar__right">
+      <button class="navbar__mobile-toggle" id="mobileToggle" aria-label="Toggle navigation">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+        </svg>
+      </button>
+
+      <a href="freelancer_chat.html" class="navbar__icon" aria-label="Notifications" title="Notifications">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" />
+        </svg>
+      </a>
+
+      <a href="profile.html" class="navbar__icon" aria-label="Settings" title="Profile Settings">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+        </svg>
+      </a>
+
+      <a href="profile.html" class="navbar__avatar" title="View Profile">SH</a>
+    </div>
+  </header>
+
+  <!-- Main Content -->
+  <main class="main">
+    <form id="uploadWorkForm" class="upload-container">
+      
+      <!-- Contract Header Info -->
+      <header class="upload-header">
+        <h1 class="upload-header__title">Submit Milestone Deliverable</h1>
+        <div class="upload-header__meta">
+          <div>Contract: <strong>Senior Full-Stack Developer for SaaS Platform</strong></div>
+          <div>Client: <strong>TechNova Solutions</strong> &bull; Milestone 2 ($2,500)</div>
+        </div>
+      </header>
+
+      <!-- Interactive Drag & Dropzone -->
+      <div class="dropzone" id="dropZone">
+        <svg class="dropzone__icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" />
+        </svg>
+        <input type="file" id="fileUpload" name="uploaded_files[]" class="dropzone__input" multiple>
+        <label for="fileUpload" class="dropzone__btn">Choose Files</label>
+        <span class="dropzone__text">or drag and drop project archives, PDFs, or design bundles here</span>
+      </div>
+
+      <!-- File List -->
+      <div class="file-list" id="fileList">
+        <div class="file-item">
+          <div class="file-item__info">
+            <svg class="file-item__icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+            </svg>
+            <div>
+              <span class="file-item__name">final_project_bundle.zip</span>
+              <span class="file-item__size">(24.5 MB)</span>
+            </div>
+          </div>
+          <button type="button" class="file-item__remove" title="Remove file">Remove</button>
+        </div>
+
+        <div class="file-item">
+          <div class="file-item__info">
+            <svg class="file-item__icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z" />
+            </svg>
+            <div>
+              <span class="file-item__name">api_documentation_v1.pdf</span>
+              <span class="file-item__size">(1.2 MB)</span>
+            </div>
+          </div>
+          <button type="button" class="file-item__remove" title="Remove file">Remove</button>
+        </div>
+      </div>
+
+      <!-- Message to Client -->
+      <div class="message-box">
+        <label class="message-box__label" for="clientMessage">Submission Notes for Client</label>
+        <textarea id="clientMessage" name="client_message" class="message-box__textarea" placeholder="Add details regarding your deliverable, deployment notes, test credentials, or changelog..."></textarea>
+      </div>
+
+      <!-- Action Buttons -->
+      <div style="display: flex; gap: 12px;">
+        <a href="index.html" class="btn btn--secondary" style="flex: 1;">Cancel</a>
+        <button type="submit" class="btn btn--solid" style="flex: 2;">Submit for Client Review &rarr;</button>
+      </div>
+
+    </form>
+  </main>
+
+  <!-- SkillMatch Unified Footer -->
+  <footer class="footer">
+    <div class="footer__container">
+      <div class="footer__logo">SkillMatch</div>
+      <div class="footer__links">
+        <a href="job_listing.html" class="footer__link">Browse Jobs</a>
+        <a href="my_proposals.html" class="footer__link">My Proposals</a>
+        <a href="portfolio_link.html" class="footer__link">Portfolio</a>
+        <a href="freelancer_chat.html" class="footer__link">Messages</a>
+        <a href="profile.html" class="footer__link">Profile</a>
+      </div>
+      <div class="footer__copyright">
+        &copy; 2026 <strong>SkillMatch</strong>. All rights reserved.
+      </div>
+    </div>
+  </footer>
+
+  <!-- Toast Notification Container -->
+  <div class="toast-container" id="toastContainer"></div>
+
+  <script>
+    // Mobile Navbar Toggle
+    const mobileToggle = document.getElementById('mobileToggle');
+    const navbarMenu = document.getElementById('navbarMenu');
+    if (mobileToggle && navbarMenu) {
+      mobileToggle.addEventListener('click', () => {
+        navbarMenu.classList.toggle('navbar__center--mobile-open');
+      });
+    }
+
+    const toastContainer = document.getElementById('toastContainer');
+    function showToast(message, type = 'info') {
+      const toast = document.createElement('div');
+      toast.className = `toast toast--${type}`;
+      toast.textContent = message;
+      toastContainer.appendChild(toast);
+      setTimeout(() => {
+        toast.style.opacity = '0';
+        toast.style.transform = 'translateY(10px)';
+        toast.style.transition = 'all 0.3s ease';
+        setTimeout(() => toast.remove(), 300);
+      }, 3500);
+    }
+
+    const fileList = document.getElementById('fileList');
+    const fileUpload = document.getElementById('fileUpload');
+    const dropZone = document.getElementById('dropZone');
+
+    // Remove file handler
+    function bindRemoveButtons() {
+      document.querySelectorAll('.file-item__remove').forEach(btn => {
+        btn.onclick = (e) => {
+          const item = e.target.closest('.file-item');
+          item.remove();
+          checkEmptyList();
+          showToast('File removed', 'info');
+        };
+      });
+    }
+
+    function checkEmptyList() {
+      if (fileList.children.length === 0) {
+        fileList.innerHTML = '<div class="file-list__empty">No files attached yet. Drag files above or click Choose Files.</div>';
+      }
+    }
+
+    function addFiles(files) {
+      const emptyMsg = fileList.querySelector('.file-list__empty');
+      if (emptyMsg) emptyMsg.remove();
+
+      Array.from(files).forEach(file => {
+        const sizeMb = (file.size / (1024 * 1024)).toFixed(1);
+        const item = document.createElement('div');
+        item.className = 'file-item';
+        item.innerHTML = `
+          <div class="file-item__info">
+            <svg class="file-item__icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+            </svg>
+            <div>
+              <span class="file-item__name">${file.name}</span>
+              <span class="file-item__size">(${sizeMb} MB)</span>
+            </div>
+          </div>
+          <button type="button" class="file-item__remove" title="Remove file">Remove</button>
+        `;
+        fileList.appendChild(item);
+      });
+      bindRemoveButtons();
+      showToast(`${files.length} file(s) attached.`, 'success');
+    }
+
+    fileUpload.addEventListener('change', (e) => {
+      if (e.target.files && e.target.files.length > 0) {
+        addFiles(e.target.files);
+      }
+    });
+
+    // Drag and Drop
+    ['dragenter', 'dragover'].forEach(eventName => {
+      dropZone.addEventListener(eventName, (e) => {
+        e.preventDefault();
+        dropZone.classList.add('dropzone--active');
+      });
+    });
+
+    ['dragleave', 'drop'].forEach(eventName => {
+      dropZone.addEventListener(eventName, (e) => {
+        e.preventDefault();
+        dropZone.classList.remove('dropzone--active');
+      });
+    });
+
+    dropZone.addEventListener('drop', (e) => {
+      e.preventDefault();
+      if (e.dataTransfer.files && e.dataTransfer.files.length > 0) {
+        addFiles(e.dataTransfer.files);
+      }
+    });
+
+    bindRemoveButtons();
+
+    // Form submission
+    document.getElementById('uploadWorkForm').addEventListener('submit', (e) => {
+      e.preventDefault();
+      if (fileList.querySelector('.file-item')) {
+        showToast('Work submitted successfully! Client has been notified for review.', 'success');
+        setTimeout(() => {
+          window.location.href = 'index.html';
+        }, 1800);
+      } else {
+        showToast('Please attach at least one file deliverable before submitting.', 'info');
+      }
+    });
+  </script>
+</body>
+</html>

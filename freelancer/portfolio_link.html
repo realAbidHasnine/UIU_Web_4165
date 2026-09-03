@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SkillMatch — Portfolio & Project Manager</title>
+  <link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body>
+
+  <!-- SkillMatch Unified Navbar -->
+  <header class="navbar">
+    <a href="index.html" class="navbar__logo">
+      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
+      </svg>
+      <span>SkillMatch</span>
+    </a>
+    
+    <nav class="navbar__center" id="navbarMenu">
+      <a href="index.html" class="navbar__link">Dashboard</a>
+      <a href="job_listing.html" class="navbar__link">Jobs</a>
+      <a href="my_proposals.html" class="navbar__link">Proposals</a>
+      <a href="freelancer_chat.html" class="navbar__link">Messages</a>
+      <a href="portfolio_link.html" class="navbar__link navbar__link--active">Projects</a>
+    </nav>
+    
+    <div class="navbar__right">
+      <button class="navbar__mobile-toggle" id="mobileToggle" aria-label="Toggle navigation">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+        </svg>
+      </button>
+
+      <a href="freelancer_chat.html" class="navbar__icon" aria-label="Notifications" title="Notifications">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" />
+        </svg>
+      </a>
+
+      <a href="profile.html" class="navbar__icon" aria-label="Settings" title="Profile Settings">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+        </svg>
+      </a>
+
+      <a href="profile.html" class="navbar__avatar" title="View Profile">SH</a>
+    </div>
+  </header>
+
+  <!-- Main Content -->
+  <main class="main">
+    
+    <!-- Page Header -->
+    <header class="page-header">
+      <h1 class="page-header__title">Portfolio Management</h1>
+      <p class="page-header__subtitle">Showcase your verified work and sync repositories to win higher-tier clients.</p>
+    </header>
+
+    <!-- GitHub Integration Card -->
+    <section class="integration-card">
+      <div class="integration-card__info">
+        <div class="integration-card__icon-wrapper">
+          <svg viewBox="0 0 24 24" fill="currentColor">
+            <path fill-rule="evenodd" clip-rule="evenodd" d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.53 1.032 1.53 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z"/>
+          </svg>
+        </div>
+        <div class="integration-card__text">
+          <span class="integration-card__title">GitHub Integration Active</span>
+          <span class="integration-card__subtitle" id="syncStatus">Connected as @SabbirHossain_dev &bull; Last synced 2 hours ago</span>
+        </div>
+      </div>
+      <div>
+        <button type="button" class="btn btn--outline" id="btnSync">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+          </svg>
+          <span id="syncBtnText">Sync Repositories</span>
+        </button>
+      </div>
+    </section>
+
+    <!-- Portfolio Projects Grid -->
+    <section class="portfolio-section">
+      <div class="portfolio-section__header">
+        <h2 class="portfolio-section__title">Showcase Projects</h2>
+        <button type="button" class="btn btn--solid" id="btnOpenModal">+ Add Project</button>
+      </div>
+
+      <div class="portfolio-grid" id="portfolioGrid">
+        
+        <!-- Project Card 1 -->
+        <article class="project-card">
+          <div class="project-card__image" style="background: linear-gradient(135deg, #1e3a8a 0%, #3b82f6 100%);">
+            <div class="project-card__preview-art">
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 8v8m-4-5v5m-4-2v2m-2 4h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+              </svg>
+              <span>E-Commerce Analytics</span>
+            </div>
+          </div>
+          <div class="project-card__content">
+            <h3 class="project-card__title">E-Commerce Admin Dashboard</h3>
+            <p class="project-card__desc">A comprehensive admin panel for managing online retail stores, inventory, and customer orders with real-time chart analytics.</p>
+            <div class="project-card__tags">
+              <span class="tag">React</span>
+              <span class="tag">Node.js</span>
+              <span class="tag">PostgreSQL</span>
+            </div>
+          </div>
+        </article>
+
+        <!-- Project Card 2 -->
+        <article class="project-card">
+          <div class="project-card__image" style="background: linear-gradient(135deg, #065f46 0%, #10b981 100%);">
+            <div class="project-card__preview-art">
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 18h.01M8 21h8a2 2 0 002-2V5a2 2 0 00-2-2H8a2 2 0 00-2 2v14a2 2 0 002 2z" />
+              </svg>
+              <span>Fintech Wallet UI</span>
+            </div>
+          </div>
+          <div class="project-card__content">
+            <h3 class="project-card__title">Fintech Mobile Wallet App</h3>
+            <p class="project-card__desc">Secure cross-platform mobile application for personal finance management, budgeting, and quick peer-to-peer transfers.</p>
+            <div class="project-card__tags">
+              <span class="tag">Flutter</span>
+              <span class="tag">Firebase</span>
+              <span class="tag">Dart</span>
+            </div>
+          </div>
+        </article>
+
+        <!-- Add Item Card -->
+        <div class="add-card" id="cardAddProject">
+          <div class="add-card__icon">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
+            </svg>
+          </div>
+          <h3 class="add-card__title">Add Portfolio Project</h3>
+          <p class="add-card__desc">Upload screenshots, live links, and highlight your technology stack.</p>
+        </div>
+
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Add Project Modal -->
+  <div class="modal-overlay" id="addProjectModal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3 class="modal-title">Add Portfolio Project</h3>
+        <button type="button" class="modal-close" id="btnCloseModal">&times;</button>
+      </div>
+      <form id="projectCreateForm">
+        <div class="form-group">
+          <label class="form-group__label" for="projTitle">Project Title</label>
+          <input type="text" id="projTitle" class="form-input" placeholder="e.g. AI-Powered CRM Suite" required>
+        </div>
+        <div class="form-group">
+          <label class="form-group__label" for="projDesc">Description</label>
+          <textarea id="projDesc" class="form-input form-input--textarea" placeholder="Brief summary of what you engineered, challenges solved, and business impact..." required></textarea>
+        </div>
+        <div class="form-group">
+          <label class="form-group__label" for="projSkills">Technologies Used (comma separated)</label>
+          <input type="text" id="projSkills" class="form-input" placeholder="e.g. Next.js, TypeScript, Tailwind" required>
+        </div>
+        <div style="display: flex; gap: 10px; margin-top: 20px;">
+          <button type="button" class="btn btn--secondary" id="btnCancelModal" style="flex: 1;">Cancel</button>
+          <button type="submit" class="btn btn--solid" style="flex: 1;">Save Project</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- SkillMatch Unified Footer -->
+  <footer class="footer">
+    <div class="footer__container">
+      <div class="footer__logo">SkillMatch</div>
+      <div class="footer__links">
+        <a href="job_listing.html" class="footer__link">Browse Jobs</a>
+        <a href="my_proposals.html" class="footer__link">My Proposals</a>
+        <a href="portfolio_link.html" class="footer__link">Portfolio</a>
+        <a href="freelancer_chat.html" class="footer__link">Messages</a>
+        <a href="profile.html" class="footer__link">Profile</a>
+      </div>
+      <div class="footer__copyright">
+        &copy; 2026 <strong>SkillMatch</strong>. All rights reserved.
+      </div>
+    </div>
+  </footer>
+
+  <!-- Toast Notification Container -->
+  <div class="toast-container" id="toastContainer"></div>
+
+  <script>
+    // Mobile Navbar Toggle
+    const mobileToggle = document.getElementById('mobileToggle');
+    const navbarMenu = document.getElementById('navbarMenu');
+    if (mobileToggle && navbarMenu) {
+      mobileToggle.addEventListener('click', () => {
+        navbarMenu.classList.toggle('navbar__center--mobile-open');
+      });
+    }
+
+    const toastContainer = document.getElementById('toastContainer');
+    function showToast(message, type = 'info') {
+      const toast = document.createElement('div');
+      toast.className = `toast toast--${type}`;
+      toast.textContent = message;
+      toastContainer.appendChild(toast);
+      setTimeout(() => {
+        toast.style.opacity = '0';
+        toast.style.transform = 'translateY(10px)';
+        toast.style.transition = 'all 0.3s ease';
+        setTimeout(() => toast.remove(), 300);
+      }, 3500);
+    }
+
+    // GitHub Sync simulation
+    const btnSync = document.getElementById('btnSync');
+    const syncBtnText = document.getElementById('syncBtnText');
+    const syncStatus = document.getElementById('syncStatus');
+
+    btnSync.addEventListener('click', () => {
+      syncBtnText.textContent = 'Syncing...';
+      btnSync.disabled = true;
+      setTimeout(() => {
+        syncBtnText.textContent = 'Sync Repositories';
+        btnSync.disabled = false;
+        syncStatus.textContent = 'Connected as @SabbirHossain_dev \u2022 Synced just now';
+        showToast('Successfully synced with GitHub! 8 public repositories updated.', 'success');
+      }, 1200);
+    });
+
+    // Add Project Modal
+    const modal = document.getElementById('addProjectModal');
+    const btnOpenModal = document.getElementById('btnOpenModal');
+    const cardAddProject = document.getElementById('cardAddProject');
+    const btnCloseModal = document.getElementById('btnCloseModal');
+    const btnCancelModal = document.getElementById('btnCancelModal');
+    const projectForm = document.getElementById('projectCreateForm');
+    const portfolioGrid = document.getElementById('portfolioGrid');
+
+    function openModal() {
+      modal.classList.add('modal-overlay--open');
+    }
+
+    function closeModal() {
+      modal.classList.remove('modal-overlay--open');
+      projectForm.reset();
+    }
+
+    btnOpenModal.addEventListener('click', openModal);
+    cardAddProject.addEventListener('click', openModal);
+    btnCloseModal.addEventListener('click', closeModal);
+    btnCancelModal.addEventListener('click', closeModal);
+
+    // Dynamic project add
+    projectForm.addEventListener('submit', (e) => {
+      e.preventDefault();
+      const title = document.getElementById('projTitle').value.trim();
+      const desc = document.getElementById('projDesc').value.trim();
+      const skillsRaw = document.getElementById('projSkills').value.trim();
+
+      const tagsHtml = skillsRaw.split(',')
+        .map(s => s.trim())
+        .filter(s => s.length > 0)
+        .map(s => `<span class="tag">${s}</span>`)
+        .join('');
+
+      const gradients = [
+        'linear-gradient(135deg, #7c3aed 0%, #a855f7 100%)',
+        'linear-gradient(135deg, #ea580c 0%, #f97316 100%)',
+        'linear-gradient(135deg, #0284c7 0%, #38bdf8 100%)'
+      ];
+      const randomGrad = gradients[Math.floor(Math.random() * gradients.length)];
+
+      const newArticle = document.createElement('article');
+      newArticle.className = 'project-card';
+      newArticle.innerHTML = `
+        <div class="project-card__image" style="background: ${randomGrad};">
+          <div class="project-card__preview-art">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4" />
+            </svg>
+            <span>Live Project</span>
+          </div>
+        </div>
+        <div class="project-card__content">
+          <h3 class="project-card__title">${title}</h3>
+          <p class="project-card__desc">${desc}</p>
+          <div class="project-card__tags">
+            ${tagsHtml}
+          </div>
+        </div>
+      `;
+
+      portfolioGrid.insertBefore(newArticle, cardAddProject);
+      closeModal();
+      showToast(`Project "${title}" added to your portfolio!`, 'success');
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SkillMatch — Freelancer Profile</title>
+  <link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body>
+
+  <!-- SkillMatch Unified Navbar -->
+  <header class="navbar">
+    <a href="index.html" class="navbar__logo">
+      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
+      </svg>
+      <span>SkillMatch</span>
+    </a>
+    
+    <nav class="navbar__center" id="navbarMenu">
+      <a href="index.html" class="navbar__link">Dashboard</a>
+      <a href="job_listing.html" class="navbar__link">Jobs</a>
+      <a href="my_proposals.html" class="navbar__link">Proposals</a>
+      <a href="freelancer_chat.html" class="navbar__link">Messages</a>
+      <a href="portfolio_link.html" class="navbar__link">Projects</a>
+    </nav>
+    
+    <div class="navbar__right">
+      <button class="navbar__mobile-toggle" id="mobileToggle" aria-label="Toggle navigation">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+        </svg>
+      </button>
+
+      <a href="freelancer_chat.html" class="navbar__icon" aria-label="Notifications" title="Notifications">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" />
+        </svg>
+      </a>
+
+      <a href="profile.html" class="navbar__icon" aria-label="Settings" title="Profile Settings">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+        </svg>
+      </a>
+
+      <a href="profile.html" class="navbar__avatar" title="View Profile">SH</a>
+    </div>
+  </header>
+
+  <!-- Main Profile Content -->
+  <main class="main profile-container">
+    <div class="profile-card">
+      <div class="card__header">
+        <h1 class="card__heading">Freelancer Profile & Settings</h1>
+        <p class="card__subtext">Update your professional bio, public contact details, and specialized skills.</p>
+      </div>
+
+      <div class="card__body">
+        
+        <!-- Interactive Photo Upload -->
+        <div class="photo-upload">
+          <div class="photo-upload__preview" id="photoPreviewContainer" title="Click to upload profile photo">
+            <svg id="defaultAvatarSvg" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+            </svg>
+            <img id="avatarImage" src="" alt="Profile preview" style="display: none;">
+          </div>
+          <input type="file" id="avatarFileInput" accept="image/*" class="photo-upload__input">
+          <button type="button" class="photo-upload__btn" id="btnUploadPhoto">Change Profile Photo</button>
+        </div>
+
+        <!-- Profile Form -->
+        <form id="profileEditForm">
+          <div class="form-group">
+            <label class="form-group__label" for="fullName">Full Name</label>
+            <input type="text" id="fullName" name="full_name" class="form-input" value="Sabbir Hossain" required>
+          </div>
+
+          <div class="form-group">
+            <label class="form-group__label" for="email">Professional Email</label>
+            <input type="email" id="email" name="email" class="form-input" value="sabbir.hossain@skillmatch.io" required>
+          </div>
+
+          <div class="form-group">
+            <label class="form-group__label" for="bio">Professional Bio</label>
+            <textarea id="bio" name="bio" class="form-input form-input--textarea" required>Full-Stack Web & Mobile Engineer with 5+ years of production experience across React, React Native, Node.js, and cloud architectures. Passionate about building fast, accessible, and delightful digital products.</textarea>
+          </div>
+
+          <div class="form-group">
+            <label class="form-group__label" for="skills">Skills & Expertise</label>
+            <input type="text" id="skills" name="skills" class="form-input" value="React, React Native, TypeScript, Node.js, PostgreSQL, UI/UX Design" required>
+          </div>
+
+          <div style="display: flex; gap: 12px; margin-top: 24px;">
+            <a href="index.html" class="btn btn--secondary" style="flex: 1;">Cancel</a>
+            <button type="submit" class="btn btn--solid" style="flex: 2;">Save Profile Changes</button>
+          </div>
+        </form>
+
+      </div>
+    </div>
+  </main>
+
+  <!-- SkillMatch Unified Footer -->
+  <footer class="footer">
+    <div class="footer__container">
+      <div class="footer__logo">SkillMatch</div>
+      <div class="footer__links">
+        <a href="job_listing.html" class="footer__link">Browse Jobs</a>
+        <a href="my_proposals.html" class="footer__link">Proposals</a>
+        <a href="portfolio_link.html" class="footer__link">Portfolio</a>
+        <a href="freelancer_chat.html" class="footer__link">Messages</a>
+        <a href="profile.html" class="footer__link">Profile</a>
+      </div>
+      <div class="footer__copyright">
+        &copy; 2026 <strong>SkillMatch</strong>. All rights reserved.
+      </div>
+    </div>
+  </footer>
+
+  <!-- Toast Notification Container -->
+  <div class="toast-container" id="toastContainer"></div>
+
+  <script>
+    // Mobile Navbar Toggle
+    const mobileToggle = document.getElementById('mobileToggle');
+    const navbarMenu = document.getElementById('navbarMenu');
+    if (mobileToggle && navbarMenu) {
+      mobileToggle.addEventListener('click', () => {
+        navbarMenu.classList.toggle('navbar__center--mobile-open');
+      });
+    }
+
+    const toastContainer = document.getElementById('toastContainer');
+    function showToast(message, type = 'info') {
+      const toast = document.createElement('div');
+      toast.className = `toast toast--${type}`;
+      toast.textContent = message;
+      toastContainer.appendChild(toast);
+      setTimeout(() => {
+        toast.style.opacity = '0';
+        toast.style.transform = 'translateY(10px)';
+        toast.style.transition = 'all 0.3s ease';
+        setTimeout(() => toast.remove(), 300);
+      }, 3500);
+    }
+
+    // Photo Upload Preview
+    const photoPreviewContainer = document.getElementById('photoPreviewContainer');
+    const avatarFileInput = document.getElementById('avatarFileInput');
+    const btnUploadPhoto = document.getElementById('btnUploadPhoto');
+    const defaultAvatarSvg = document.getElementById('defaultAvatarSvg');
+    const avatarImage = document.getElementById('avatarImage');
+
+    function triggerFileInput() {
+      avatarFileInput.click();
+    }
+
+    photoPreviewContainer.addEventListener('click', triggerFileInput);
+    btnUploadPhoto.addEventListener('click', triggerFileInput);
+
+    avatarFileInput.addEventListener('change', (e) => {
+      const file = e.target.files[0];
+      if (file) {
+        const reader = new FileReader();
+        reader.onload = (loadEvent) => {
+          avatarImage.src = loadEvent.target.result;
+          avatarImage.style.display = 'block';
+          defaultAvatarSvg.style.display = 'none';
+          showToast('Profile photo updated!', 'success');
+        };
+        reader.readAsDataURL(file);
+      }
+    });
+
+    // Save Profile
+    document.getElementById('profileEditForm').addEventListener('submit', (e) => {
+      e.preventDefault();
+      showToast('Profile changes successfully saved!', 'success');
+      setTimeout(() => {
+        window.location.href = 'index.html';
+      }, 1500);
+    });
+  </script>
+</body>
+</html>

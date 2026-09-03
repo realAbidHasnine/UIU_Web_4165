@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SkillMatch — Select Skill Categories</title>
+  <link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body>
+
+  <!-- SkillMatch Unified Navbar -->
+  <header class="navbar">
+    <a href="index.html" class="navbar__logo">
+      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
+      </svg>
+      <span>SkillMatch</span>
+    </a>
+    
+    <nav class="navbar__center" id="navbarMenu">
+      <a href="index.html" class="navbar__link">Dashboard</a>
+      <a href="job_listing.html" class="navbar__link">Jobs</a>
+      <a href="my_proposals.html" class="navbar__link">Proposals</a>
+      <a href="freelancer_chat.html" class="navbar__link">Messages</a>
+      <a href="portfolio_link.html" class="navbar__link">Projects</a>
+    </nav>
+    
+    <div class="navbar__right">
+      <button class="navbar__mobile-toggle" id="mobileToggle" aria-label="Toggle navigation">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+        </svg>
+      </button>
+
+      <a href="freelancer_chat.html" class="navbar__icon" aria-label="Notifications" title="Notifications">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" />
+        </svg>
+      </a>
+
+      <a href="profile.html" class="navbar__icon" aria-label="Settings" title="Profile Settings">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+        </svg>
+      </a>
+
+      <a href="profile.html" class="navbar__avatar" title="View Profile">SH</a>
+    </div>
+  </header>
+
+  <!-- Main Content -->
+  <main class="main selection-container">
+    <div class="selection-card">
+      <h1 class="selection-card__title">Select Your Skill Categories</h1>
+      <p class="selection-card__subtitle">Choose up to 5 categories that best describe your expertise to unlock verification tests.</p>
+
+      <!-- Live Search Box -->
+      <div class="search-box">
+        <svg class="search-box__icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+        </svg>
+        <input type="text" id="skillSearch" class="search-box__input" placeholder="Filter categories (e.g. React, Design, Backend)..." autocomplete="off">
+      </div>
+
+      <!-- Categories Header & Dynamic Counter -->
+      <div class="categories-header">
+        <span class="categories-header__label">Available Categories</span>
+        <span class="categories-header__count" id="selectionCounter">3 of 5 selected</span>
+      </div>
+
+      <!-- Skills Pills Form -->
+      <form id="skillCategoryForm" action="skill_test.html" method="GET">
+        <div class="skills-group" id="skillsGroup">
+          
+          <!-- Web Development -->
+          <div class="skill-pill">
+            <input type="checkbox" id="cat-web" name="categories[]" value="Web Development" class="skill-pill__input" checked>
+            <label for="cat-web" class="skill-pill__label">
+              <span>Web Development</span>
+              <svg class="skill-pill__icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7" />
+              </svg>
+            </label>
+          </div>
+
+          <!-- UI/UX Design -->
+          <div class="skill-pill">
+            <input type="checkbox" id="cat-design" name="categories[]" value="UI/UX Design" class="skill-pill__input" checked>
+            <label for="cat-design" class="skill-pill__label">
+              <span>UI/UX Design</span>
+              <svg class="skill-pill__icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7" />
+              </svg>
+            </label>
+          </div>
+
+          <!-- Mobile Dev -->
+          <div class="skill-pill">
+            <input type="checkbox" id="cat-mobile" name="categories[]" value="Mobile Dev" class="skill-pill__input" checked>
+            <label for="cat-mobile" class="skill-pill__label">
+              <span>Mobile Dev</span>
+              <svg class="skill-pill__icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7" />
+              </svg>
+            </label>
+          </div>
+
+          <!-- Graphic Design -->
+          <div class="skill-pill">
+            <input type="checkbox" id="cat-graphic" name="categories[]" value="Graphic Design" class="skill-pill__input">
+            <label for="cat-graphic" class="skill-pill__label">
+              <span>Graphic Design</span>
+              <svg class="skill-pill__icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7" />
+              </svg>
+            </label>
+          </div>
+
+          <!-- Data Science -->
+          <div class="skill-pill">
+            <input type="checkbox" id="cat-data" name="categories[]" value="Data Science" class="skill-pill__input">
+            <label for="cat-data" class="skill-pill__label">
+              <span>Data Science</span>
+              <svg class="skill-pill__icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7" />
+              </svg>
+            </label>
+          </div>
+
+          <!-- Copywriting -->
+          <div class="skill-pill">
+            <input type="checkbox" id="cat-copy" name="categories[]" value="Copywriting" class="skill-pill__input">
+            <label for="cat-copy" class="skill-pill__label">
+              <span>Copywriting</span>
+              <svg class="skill-pill__icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7" />
+              </svg>
+            </label>
+          </div>
+
+          <!-- Marketing -->
+          <div class="skill-pill">
+            <input type="checkbox" id="cat-marketing" name="categories[]" value="Marketing" class="skill-pill__input">
+            <label for="cat-marketing" class="skill-pill__label">
+              <span>Marketing</span>
+              <svg class="skill-pill__icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7" />
+              </svg>
+            </label>
+          </div>
+
+          <!-- SEO -->
+          <div class="skill-pill">
+            <input type="checkbox" id="cat-seo" name="categories[]" value="SEO" class="skill-pill__input">
+            <label for="cat-seo" class="skill-pill__label">
+              <span>SEO</span>
+              <svg class="skill-pill__icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7" />
+              </svg>
+            </label>
+          </div>
+
+          <!-- Backend Dev -->
+          <div class="skill-pill">
+            <input type="checkbox" id="cat-backend" name="categories[]" value="Backend Dev" class="skill-pill__input">
+            <label for="cat-backend" class="skill-pill__label">
+              <span>Backend Dev</span>
+              <svg class="skill-pill__icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7" />
+              </svg>
+            </label>
+          </div>
+
+          <!-- DevOps -->
+          <div class="skill-pill">
+            <input type="checkbox" id="cat-devops" name="categories[]" value="DevOps" class="skill-pill__input">
+            <label for="cat-devops" class="skill-pill__label">
+              <span>DevOps</span>
+              <svg class="skill-pill__icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7" />
+              </svg>
+            </label>
+          </div>
+
+        </div>
+
+        <hr class="selection-card__divider">
+
+        <button type="submit" class="btn-continue" id="btnContinue">Continue to Skill Test</button>
+      </form>
+    </div>
+  </main>
+
+  <!-- SkillMatch Unified Footer -->
+  <footer class="footer">
+    <div class="footer__container">
+      <div class="footer__logo">SkillMatch</div>
+      <div class="footer__links">
+        <a href="job_listing.html" class="footer__link">Browse Jobs</a>
+        <a href="my_proposals.html" class="footer__link">My Proposals</a>
+        <a href="portfolio_link.html" class="footer__link">Portfolio</a>
+        <a href="select_skill.html" class="footer__link">Skill Tests</a>
+        <a href="profile.html" class="footer__link">Profile</a>
+      </div>
+      <div class="footer__copyright">
+        &copy; 2026 <strong>SkillMatch</strong>. All rights reserved.
+      </div>
+    </div>
+  </footer>
+
+  <!-- Toast Container -->
+  <div class="toast-container" id="toastContainer"></div>
+
+  <script>
+    // Mobile Navbar Toggle
+    const mobileToggle = document.getElementById('mobileToggle');
+    const navbarMenu = document.getElementById('navbarMenu');
+    if (mobileToggle && navbarMenu) {
+      mobileToggle.addEventListener('click', () => {
+        navbarMenu.classList.toggle('navbar__center--mobile-open');
+      });
+    }
+
+    const toastContainer = document.getElementById('toastContainer');
+    function showToast(message, type = 'info') {
+      const toast = document.createElement('div');
+      toast.className = `toast toast--${type}`;
+      toast.textContent = message;
+      toastContainer.appendChild(toast);
+      setTimeout(() => {
+        toast.style.opacity = '0';
+        toast.style.transform = 'translateY(10px)';
+        toast.style.transition = 'all 0.3s ease';
+        setTimeout(() => toast.remove(), 300);
+      }, 3500);
+    }
+
+    // Dynamic Pill Count & Max 5 Limit
+    const checkboxes = document.querySelectorAll('.skill-pill__input');
+    const counter = document.getElementById('selectionCounter');
+    const maxLimit = 5;
+
+    function updateCounter() {
+      const checkedCount = document.querySelectorAll('.skill-pill__input:checked').length;
+      counter.textContent = `${checkedCount} of ${maxLimit} selected`;
+      if (checkedCount >= maxLimit) {
+        counter.style.color = 'var(--color-warning)';
+      } else {
+        counter.style.color = 'var(--color-primary)';
+      }
+    }
+
+    checkboxes.forEach(cb => {
+      cb.addEventListener('change', (e) => {
+        const checkedCount = document.querySelectorAll('.skill-pill__input:checked').length;
+        if (checkedCount > maxLimit) {
+          e.target.checked = false;
+          showToast(`Maximum limit reached: You can select up to ${maxLimit} categories.`, 'info');
+        }
+        updateCounter();
+      });
+    });
+
+    // Live Search Filter
+    const searchInput = document.getElementById('skillSearch');
+    const pillContainers = document.querySelectorAll('.skill-pill');
+
+    searchInput.addEventListener('input', (e) => {
+      const query = e.target.value.toLowerCase().trim();
+      let matchedCount = 0;
+
+      pillContainers.forEach(container => {
+        const label = container.querySelector('.skill-pill__label span').textContent.toLowerCase();
+        if (label.includes(query)) {
+          container.style.display = 'inline-block';
+          matchedCount++;
+        } else {
+          container.style.display = 'none';
+        }
+      });
+    });
+
+    // Form Submission check
+    document.getElementById('skillCategoryForm').addEventListener('submit', (e) => {
+      const checkedCount = document.querySelectorAll('.skill-pill__input:checked').length;
+      if (checkedCount === 0) {
+        e.preventDefault();
+        showToast('Please select at least 1 category before proceeding.', 'info');
+      }
+    });
+
+    updateCounter();
+  </script>
+</body>
+</html>

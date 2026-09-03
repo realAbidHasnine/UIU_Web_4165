@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SkillMatch — Chat & Messages</title>
+  <link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body>
+
+  <!-- SkillMatch Unified Navbar -->
+  <header class="navbar">
+    <a href="index.html" class="navbar__logo">
+      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
+      </svg>
+      <span>SkillMatch</span>
+    </a>
+    
+    <nav class="navbar__center" id="navbarMenu">
+      <a href="index.html" class="navbar__link">Dashboard</a>
+      <a href="job_listing.html" class="navbar__link">Jobs</a>
+      <a href="my_proposals.html" class="navbar__link">Proposals</a>
+      <a href="freelancer_chat.html" class="navbar__link navbar__link--active">Messages</a>
+      <a href="portfolio_link.html" class="navbar__link">Projects</a>
+    </nav>
+    
+    <div class="navbar__right">
+      <button class="navbar__mobile-toggle" id="mobileToggle" aria-label="Toggle navigation">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+        </svg>
+      </button>
+
+      <a href="freelancer_chat.html" class="navbar__icon" aria-label="Notifications" title="Notifications">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" />
+        </svg>
+      </a>
+
+      <a href="profile.html" class="navbar__icon" aria-label="Settings" title="Profile Settings">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+        </svg>
+      </a>
+
+      <a href="profile.html" class="navbar__avatar" title="View Profile">SH</a>
+    </div>
+  </header>
+
+  <!-- Main Content -->
+  <main class="main main--wide">
+    <div class="chat-layout">
+      
+      <!-- Inbox Sidebar -->
+      <aside class="inbox">
+        <div class="inbox__header">
+          <span>Client Messages</span>
+          <span class="unread-badge" id="totalUnread">2</span>
+        </div>
+        <div class="inbox__list" id="inboxList">
+          
+          <!-- Inbox Item 1 (Active) -->
+          <div class="inbox-item inbox-item--active" data-client-id="1" data-name="Naim Molla" data-badge="Client" data-project="Senior Full-Stack Developer for SaaS Platform">
+            <div class="avatar avatar--blue">NM</div>
+            <div class="inbox-item__content">
+              <div class="inbox-item__top">
+                <div class="inbox-item__name-wrap">
+                  <span class="inbox-item__name">Naim Molla</span>
+                  <span class="badge-client">Client</span>
+                </div>
+                <span class="inbox-item__time">10:42 AM</span>
+              </div>
+              <div class="inbox-item__bottom">
+                <span class="inbox-item__preview">Great, let's proceed with the wireframes...</span>
+                <span class="unread-badge client-unread">2</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Inbox Item 2 -->
+          <div class="inbox-item" data-client-id="2" data-name="Anjon Ganguli" data-badge="Client" data-project="UX/UI Redesign for E-commerce Mobile App">
+            <div class="avatar avatar--gray">AG</div>
+            <div class="inbox-item__content">
+              <div class="inbox-item__top">
+                <div class="inbox-item__name-wrap">
+                  <span class="inbox-item__name">Anjon Ganguli</span>
+                  <span class="badge-client">Client</span>
+                </div>
+                <span class="inbox-item__time">Yesterday</span>
+              </div>
+              <div class="inbox-item__bottom">
+                <span class="inbox-item__preview">Invoice received, processing milestone 2...</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Inbox Item 3 -->
+          <div class="inbox-item" data-client-id="3" data-name="Tonmoy Das" data-badge="Client" data-project="Website Redesign Deliverables">
+            <div class="avatar avatar--purple">TD</div>
+            <div class="inbox-item__content">
+              <div class="inbox-item__top">
+                <div class="inbox-item__name-wrap">
+                  <span class="inbox-item__name">Tonmoy Das</span>
+                  <span class="badge-client">Client</span>
+                </div>
+                <span class="inbox-item__time">Oct 12</span>
+              </div>
+              <div class="inbox-item__bottom">
+                <span class="inbox-item__preview">Thanks for the quick turnaround on the files!</span>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </aside>
+
+      <!-- Active Chat Window -->
+      <section class="chat">
+        
+        <!-- Chat Header -->
+        <header class="chat__header">
+          <div class="chat__header-info">
+            <h2 class="chat__header-name" id="chatHeaderName">Naim Molla</h2>
+            <span class="badge-client" id="chatHeaderBadge">Client</span>
+          </div>
+          <a href="upload_comp_work.html" class="chat__header-link" id="chatHeaderProjectLink">View Project Deliverable &rarr;</a>
+        </header>
+
+        <!-- Chat Messages Area -->
+        <div class="chat__messages" id="chatMessages">
+          
+          <div class="chat__date-separator">
+            <span>Today</span>
+          </div>
+
+          <!-- Received Message 1 -->
+          <div class="message message--received">
+            <div class="message__bubble">
+              Hi Sabbir! I reviewed the latest designs for the landing page. They look really clean and well organized.
+            </div>
+            <span class="message__time">10:15 AM</span>
+          </div>
+
+          <!-- Received Message 2 -->
+          <div class="message message--received">
+            <div class="message__bubble">
+              Could we explore making the primary CTA button slightly larger? I want to ensure it stands out more on mobile screens.
+            </div>
+            <span class="message__time">10:16 AM</span>
+          </div>
+
+          <!-- Sent Message 1 -->
+          <div class="message message--sent">
+            <div class="message__bubble">
+              Absolutely, Naim. I agree that the CTA could use a bit more visual weight. I'll increase the padding and font size slightly to improve the touch target on mobile devices.
+            </div>
+            <span class="message__time">10:30 AM</span>
+          </div>
+
+          <!-- Sent Message 2 -->
+          <div class="message message--sent">
+            <div class="message__bubble">
+              I'll have the updated wireframes ready for you to review by this afternoon.
+            </div>
+            <span class="message__time">10:31 AM</span>
+          </div>
+
+          <!-- Received Message 3 -->
+          <div class="message message--received">
+            <div class="message__bubble">
+              Great, let's proceed with the wireframes as discussed!
+            </div>
+            <span class="message__time">10:42 AM</span>
+          </div>
+
+        </div>
+
+        <!-- Chat Input Form -->
+        <form id="chatMessageForm" class="chat__input-area">
+          <input type="text" id="chatInput" name="message" class="chat__input" placeholder="Type a message..." autocomplete="off" required>
+          <button type="submit" class="chat__btn">Send</button>
+        </form>
+
+      </section>
+
+    </div>
+  </main>
+
+  <!-- SkillMatch Unified Footer -->
+  <footer class="footer">
+    <div class="footer__container">
+      <div class="footer__logo">SkillMatch</div>
+      <div class="footer__links">
+        <a href="job_listing.html" class="footer__link">Browse Jobs</a>
+        <a href="my_proposals.html" class="footer__link">Proposals</a>
+        <a href="portfolio_link.html" class="footer__link">Portfolio</a>
+        <a href="freelancer_chat.html" class="footer__link">Messages</a>
+        <a href="profile.html" class="footer__link">Account Settings</a>
+      </div>
+      <div class="footer__copyright">
+        &copy; 2026 <strong>SkillMatch</strong>. All rights reserved.
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    // Mobile Navbar Toggle
+    const mobileToggle = document.getElementById('mobileToggle');
+    const navbarMenu = document.getElementById('navbarMenu');
+    if (mobileToggle && navbarMenu) {
+      mobileToggle.addEventListener('click', () => {
+        navbarMenu.classList.toggle('navbar__center--mobile-open');
+      });
+    }
+
+    // Message Database per client
+    const conversations = {
+      '1': [
+        { type: 'received', text: 'Hi Sabbir! I reviewed the latest designs for the landing page. They look really clean and well organized.', time: '10:15 AM' },
+        { type: 'received', text: 'Could we explore making the primary CTA button slightly larger? I want to ensure it stands out more on mobile screens.', time: '10:16 AM' },
+        { type: 'sent', text: "Absolutely, Naim. I agree that the CTA could use a bit more visual weight. I'll increase the padding and font size slightly to improve the touch target on mobile devices.", time: '10:30 AM' },
+        { type: 'sent', text: "I'll have the updated wireframes ready for you to review by this afternoon.", time: '10:31 AM' },
+        { type: 'received', text: "Great, let's proceed with the wireframes as discussed!", time: '10:42 AM' }
+      ],
+      '2': [
+        { type: 'received', text: 'Hey Sabbir, how is the milestone 2 progress coming along?', time: 'Yesterday 2:15 PM' },
+        { type: 'sent', text: 'Hi Anjon! Frontend refactoring for the cart and checkout flow is 90% complete.', time: 'Yesterday 3:00 PM' },
+        { type: 'received', text: 'Invoice received, processing milestone 2 payment today.', time: 'Yesterday 4:20 PM' }
+      ],
+      '3': [
+        { type: 'sent', text: 'Hi Tonmoy, I have uploaded the final assets bundle and guidelines to the deliverable section.', time: 'Oct 12 11:00 AM' },
+        { type: 'received', text: 'Thanks for the quick turnaround on the files! Approved and 5-star rating left.', time: 'Oct 12 11:45 AM' }
+      ]
+    };
+
+    let activeClientId = '1';
+
+    const inboxItems = document.querySelectorAll('.inbox-item');
+    const chatHeaderName = document.getElementById('chatHeaderName');
+    const chatHeaderProjectLink = document.getElementById('chatHeaderProjectLink');
+    const chatMessages = document.getElementById('chatMessages');
+    const chatMessageForm = document.getElementById('chatMessageForm');
+    const chatInput = document.getElementById('chatInput');
+
+    function renderConversation(clientId) {
+      chatMessages.innerHTML = `
+        <div class="chat__date-separator">
+          <span>Today</span>
+        </div>
+      `;
+
+      const thread = conversations[clientId] || [];
+      thread.forEach(msg => {
+        const msgDiv = document.createElement('div');
+        msgDiv.className = `message message--${msg.type}`;
+        msgDiv.innerHTML = `
+          <div class="message__bubble">${msg.text}</div>
+          <span class="message__time">${msg.time}</span>
+        `;
+        chatMessages.appendChild(msgDiv);
+      });
+
+      chatMessages.scrollTop = chatMessages.scrollHeight;
+    }
+
+    inboxItems.forEach(item => {
+      item.addEventListener('click', () => {
+        inboxItems.forEach(i => i.classList.remove('inbox-item--active'));
+        item.classList.add('inbox-item--active');
+
+        // Clear unread badge
+        const badge = item.querySelector('.client-unread');
+        if (badge) {
+          badge.remove();
+          const totalUnread = document.getElementById('totalUnread');
+          if (totalUnread) totalUnread.textContent = '0';
+        }
+
+        activeClientId = item.dataset.clientId;
+        chatHeaderName.textContent = item.dataset.name;
+        renderConversation(activeClientId);
+      });
+    });
+
+    // Send Message
+    chatMessageForm.addEventListener('submit', (e) => {
+      e.preventDefault();
+      const text = chatInput.value.trim();
+      if (!text) return;
+
+      const now = new Date();
+      const timeStr = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+
+      // Append to memory
+      if (!conversations[activeClientId]) {
+        conversations[activeClientId] = [];
+      }
+      conversations[activeClientId].push({ type: 'sent', text, time: timeStr });
+
+      // Append to DOM
+      const msgDiv = document.createElement('div');
+      msgDiv.className = 'message message--sent';
+      msgDiv.innerHTML = `
+        <div class="message__bubble">${text}</div>
+        <span class="message__time">${timeStr}</span>
+      `;
+      chatMessages.appendChild(msgDiv);
+
+      chatInput.value = '';
+      chatMessages.scrollTop = chatMessages.scrollHeight;
+
+      // Update preview in inbox
+      const activeItem = document.querySelector(`.inbox-item[data-client-id="${activeClientId}"]`);
+      if (activeItem) {
+        const preview = activeItem.querySelector('.inbox-item__preview');
+        if (preview) preview.textContent = text;
+        const time = activeItem.querySelector('.inbox-item__time');
+        if (time) time.textContent = timeStr;
+      }
+    });
+
+    // Initial scroll
+    chatMessages.scrollTop = chatMessages.scrollHeight;
+  </script>
+</body>
+</html>

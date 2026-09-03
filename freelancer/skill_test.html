@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SkillMatch — React.js Skill Test</title>
+  <link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body>
+
+  <!-- Top Progress Bar -->
+  <div class="progress-bar-container">
+    <div class="progress-bar-fill" id="progressBar" style="width: 25%;"></div>
+  </div>
+
+  <!-- Test Mode Header -->
+  <header class="test-header">
+    <div class="test-header__logo">SkillMatch</div>
+    <div class="test-header__title">React.js Developer Verification</div>
+    <div class="test-header__timer-wrapper">
+      <div class="test-header__timer" id="testTimer">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+        </svg>
+        <span id="timerText">14:45</span>
+      </div>
+      <span class="test-header__progress-text" id="progressText">Question 1 of 4</span>
+    </div>
+  </header>
+
+  <!-- Main Content -->
+  <main class="main test-container">
+    
+    <!-- Question Area -->
+    <div id="questionContainer">
+      <h1 class="question__title" id="questionTitle">
+        What is the correct way to update the state of `count` based on its previous value in functional components?
+      </h1>
+
+      <div class="question__code-block" id="questionCodeBlock">
+<pre id="questionCode">import React, { useState } from 'react';
+
+function Counter() {
+  const [count, setCount] = useState(0);
+
+  const increment = () => {
+    // Missing implementation
+  };
+
+  return (
+    &lt;button onClick={increment}&gt;
+      Count: {count}
+    &lt;/button&gt;
+  );
+}</pre>
+      </div>
+
+      <!-- Options Form -->
+      <form id="skillTestAnswerForm" action="result_suggestion.html" method="GET">
+        <div class="options-group" id="optionsGroup">
+          
+          <div class="option__wrapper">
+            <input type="radio" id="opt1" name="answer" value="1" class="option__input">
+            <label for="opt1" class="option__label">
+              <div class="option__radio-circle"></div>
+              <span>setCount(count + 1);</span>
+            </label>
+          </div>
+
+          <div class="option__wrapper">
+            <input type="radio" id="opt2" name="answer" value="2" class="option__input" checked>
+            <label for="opt2" class="option__label">
+              <div class="option__radio-circle"></div>
+              <span>setCount(prevCount =&gt; prevCount + 1);</span>
+            </label>
+          </div>
+
+          <div class="option__wrapper">
+            <input type="radio" id="opt3" name="answer" value="3" class="option__input">
+            <label for="opt3" class="option__label">
+              <div class="option__radio-circle"></div>
+              <span>count = count + 1; setCount(count);</span>
+            </label>
+          </div>
+
+          <div class="option__wrapper">
+            <input type="radio" id="opt4" name="answer" value="4" class="option__input">
+            <label for="opt4" class="option__label">
+              <div class="option__radio-circle"></div>
+              <span>setCount({ count: count + 1 });</span>
+            </label>
+          </div>
+
+        </div>
+
+        <div class="test-actions">
+          <button type="button" class="btn btn--secondary" id="btnPrev" disabled>Previous</button>
+          <button type="button" class="btn btn--solid" id="btnNext">Next Question &rarr;</button>
+        </div>
+      </form>
+    </div>
+
+  </main>
+
+  <!-- SkillMatch Unified Footer -->
+  <footer class="footer">
+    <div class="footer__container">
+      <div class="footer__logo">SkillMatch</div>
+      <div class="footer__links">
+        <a href="job_listing.html" class="footer__link">Browse Jobs</a>
+        <a href="portfolio_link.html" class="footer__link">Portfolio</a>
+        <a href="select_skill.html" class="footer__link">Skill Tests</a>
+        <a href="freelancer_chat.html" class="footer__link">Support</a>
+      </div>
+      <div class="footer__copyright">
+        &copy; 2026 <strong>SkillMatch</strong>. All rights reserved.
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    // Questions Bank
+    const questions = [
+      {
+        title: "What is the correct way to update the state of `count` based on its previous value in functional components?",
+        code: `import React, { useState } from 'react';
+
+function Counter() {
+  const [count, setCount] = useState(0);
+
+  const increment = () => {
+    // Missing implementation
+  };
+
+  return (
+    <button onClick={increment}>
+      Count: {count}
+    </button>
+  );
+}`,
+        options: [
+          "setCount(count + 1);",
+          "setCount(prevCount => prevCount + 1);",
+          "count = count + 1; setCount(count);",
+          "setCount({ count: count + 1 });"
+        ],
+        selected: 1
+      },
+      {
+        title: "Which React hook should be used to run a side effect only once when a component mounts?",
+        code: `import React, { useEffect } from 'react';
+
+function UserProfile({ userId }) {
+  // Fetch user data on initial mount only
+  useEffect(() => {
+    fetchUserData(userId);
+  }, /* dependencies */);
+}`,
+        options: [
+          "Pass an empty dependency array: []",
+          "Omit the dependency array entirely",
+          "Pass null as the dependency array",
+          "Use useLayoutEffect without dependencies"
+        ],
+        selected: 0
+      },
+      {
+        title: "How does React's useMemo hook help optimize application performance?",
+        code: `const memoizedValue = useMemo(() => computeExpensiveValue(a, b), [a, b]);`,
+        options: [
+          "It automatically runs computations in a Web Worker thread",
+          "It memoizes the computed result between renders unless dependencies change",
+          "It forces child components to skip virtual DOM reconciliation completely",
+          "It prevents any re-rendering of the entire parent component tree"
+        ],
+        selected: 1
+      },
+      {
+        title: "What is the primary purpose of the 'key' prop when rendering lists of elements in React?",
+        code: `const todoList = todos.map(todo => (
+  <TodoItem key={todo.id} item={todo} />
+));`,
+        options: [
+          "To allow CSS selectors to style elements by their key attribute",
+          "To provide unique identification for React's reconciliation diff algorithm",
+          "To automatically bind click event listeners to list items",
+          "To enable deep object freezing of the item's props"
+        ],
+        selected: 1
+      }
+    ];
+
+    let currentQuestionIndex = 0;
+
+    const questionTitle = document.getElementById('questionTitle');
+    const questionCode = document.getElementById('questionCode');
+    const optionsGroup = document.getElementById('optionsGroup');
+    const progressBar = document.getElementById('progressBar');
+    const progressText = document.getElementById('progressText');
+    const btnPrev = document.getElementById('btnPrev');
+    const btnNext = document.getElementById('btnNext');
+
+    function renderQuestion(index) {
+      const q = questions[index];
+      questionTitle.textContent = q.title;
+      questionCode.textContent = q.code;
+
+      // Update options
+      optionsGroup.innerHTML = '';
+      q.options.forEach((optText, optIdx) => {
+        const wrapper = document.createElement('div');
+        wrapper.className = 'option__wrapper';
+        
+        const isChecked = q.selected === optIdx ? 'checked' : '';
+        wrapper.innerHTML = `
+          <input type="radio" id="opt${optIdx}" name="answer" value="${optIdx}" class="option__input" ${isChecked}>
+          <label for="opt${optIdx}" class="option__label">
+            <div class="option__radio-circle"></div>
+            <span>${optText}</span>
+          </label>
+        `;
+        optionsGroup.appendChild(wrapper);
+      });
+
+      // Listen for option change
+      document.querySelectorAll('.option__input').forEach(input => {
+        input.addEventListener('change', (e) => {
+          questions[currentQuestionIndex].selected = parseInt(e.target.value);
+        });
+      });
+
+      // Update progress bar
+      const progressPercent = ((index + 1) / questions.length) * 100;
+      progressBar.style.width = `${progressPercent}%`;
+      progressText.textContent = `Question ${index + 1} of ${questions.length}`;
+
+      // Update buttons
+      btnPrev.disabled = index === 0;
+      if (index === questions.length - 1) {
+        btnNext.textContent = 'Finish & Submit Test \u2713';
+        btnNext.className = 'btn btn--solid';
+      } else {
+        btnNext.textContent = 'Next Question \u2192';
+        btnNext.className = 'btn btn--solid';
+      }
+    }
+
+    btnPrev.addEventListener('click', () => {
+      if (currentQuestionIndex > 0) {
+        currentQuestionIndex--;
+        renderQuestion(currentQuestionIndex);
+      }
+    });
+
+    btnNext.addEventListener('click', () => {
+      if (currentQuestionIndex < questions.length - 1) {
+        currentQuestionIndex++;
+        renderQuestion(currentQuestionIndex);
+      } else {
+        // Submit test
+        window.location.href = 'result_suggestion.html';
+      }
+    });
+
+    // Countdown Timer (14:45 down to 0)
+    let totalSeconds = 14 * 60 + 45;
+    const timerElement = document.getElementById('timerText');
+    const timerBox = document.getElementById('testTimer');
+
+    const countdown = setInterval(() => {
+      if (totalSeconds <= 0) {
+        clearInterval(countdown);
+        window.location.href = 'result_suggestion.html';
+        return;
+      }
+      totalSeconds--;
+      const m = Math.floor(totalSeconds / 60);
+      const s = totalSeconds % 60;
+      timerElement.textContent = `${String(m).padStart(2, '0')}:${String(s).padStart(2, '0')}`;
+
+      if (totalSeconds < 120) {
+        timerBox.classList.add('test-header__timer--warning');
+      }
+    }, 1000);
+
+    // Initial Render
+    renderQuestion(0);
+  </script>
+</body>
+</html>

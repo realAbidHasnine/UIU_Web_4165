@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SkillMatch — Freelancer Dashboard</title>
+  <link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body>
+
+  <!-- SkillMatch Unified Navbar -->
+  <header class="navbar">
+    <a href="index.html" class="navbar__logo">
+      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
+      </svg>
+      <span>SkillMatch</span>
+    </a>
+    
+    <nav class="navbar__center" id="navbarMenu">
+      <a href="index.html" class="navbar__link navbar__link--active">Dashboard</a>
+      <a href="job_listing.html" class="navbar__link">Jobs</a>
+      <a href="my_proposals.html" class="navbar__link">Proposals</a>
+      <a href="freelancer_chat.html" class="navbar__link">Messages</a>
+      <a href="portfolio_link.html" class="navbar__link">Projects</a>
+    </nav>
+    
+    <div class="navbar__right">
+      <button class="navbar__mobile-toggle" id="mobileToggle" aria-label="Toggle navigation">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+        </svg>
+      </button>
+
+      <a href="freelancer_chat.html" class="navbar__icon" aria-label="Notifications" title="Notifications">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" />
+        </svg>
+      </a>
+
+      <a href="profile.html" class="navbar__icon" aria-label="Settings" title="Profile Settings">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+        </svg>
+      </a>
+
+      <a href="profile.html" class="navbar__avatar" title="View Sabbir's Profile">
+        SH
+      </a>
+    </div>
+  </header>
+
+  <!-- Main Content -->
+  <main class="main main--wide">
+
+    <!-- Welcome & Action Banner -->
+    <section class="welcome-banner">
+      <div class="welcome-banner__content">
+        <h1>Welcome back, Sabbir</h1>
+        <p>You have 4 active contracts and 2 new client inquiries waiting today.</p>
+      </div>
+      <div class="welcome-banner__action">
+        <a href="select_skill.html" class="btn">Retake Skill Test</a>
+      </div>
+    </section>
+
+    <!-- Key Statistics -->
+    <section class="stats-grid">
+      <div class="stat-card">
+        <div class="stat-card__icon">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+          </svg>
+        </div>
+        <div class="stat-card__data">
+          <span class="stat-card__number">12</span>
+          <span class="stat-card__label">Active Projects</span>
+        </div>
+      </div>
+
+      <div class="stat-card">
+        <div class="stat-card__icon stat-card__icon--indigo">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
+          </svg>
+        </div>
+        <div class="stat-card__data">
+          <span class="stat-card__number">24</span>
+          <span class="stat-card__label">Team Collaborators</span>
+        </div>
+      </div>
+
+      <div class="stat-card">
+        <div class="stat-card__icon stat-card__icon--green">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+          </svg>
+        </div>
+        <div class="stat-card__data">
+          <span class="stat-card__number">98%</span>
+          <span class="stat-card__label">Completion Rate</span>
+        </div>
+      </div>
+
+      <div class="stat-card">
+        <div class="stat-card__icon stat-card__icon--amber">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+          </svg>
+        </div>
+        <div class="stat-card__data">
+          <span class="stat-card__number">$45,200</span>
+          <span class="stat-card__label">Earnings This Month</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- Active Contracts Section -->
+    <section class="dashboard-section">
+      <div class="dashboard-section__header">
+        <h2 class="dashboard-section__title">Active Contracts</h2>
+        <a href="upload_comp_work.html" class="dashboard-section__link">Submit Deliverable &rarr;</a>
+      </div>
+      <div class="dashboard-contracts-grid">
+        <div class="dashboard-contract-card">
+          <div class="dashboard-contract-card__top">
+            <h3 class="dashboard-contract-card__title">Website Redesign</h3>
+            <p class="dashboard-contract-card__desc">Complete overhaul of corporate website for Acme Corp</p>
+          </div>
+          <div class="dashboard-contract-card__bottom">
+            <span class="dashboard-contract-card__price">$2,500 &bull; 2 weeks left</span>
+            <a href="upload_comp_work.html" class="dashboard-contract-card__action">Upload Work</a>
+          </div>
+        </div>
+
+        <div class="dashboard-contract-card">
+          <div class="dashboard-contract-card__top">
+            <h3 class="dashboard-contract-card__title">Mobile App Development</h3>
+            <p class="dashboard-contract-card__desc">iOS and Android app for TechNova customer engagement</p>
+          </div>
+          <div class="dashboard-contract-card__bottom">
+            <span class="dashboard-contract-card__price">$5,000 &bull; 1 month left</span>
+            <a href="upload_comp_work.html" class="dashboard-contract-card__action">Upload Work</a>
+          </div>
+        </div>
+
+        <div class="dashboard-contract-card">
+          <div class="dashboard-contract-card__top">
+            <h3 class="dashboard-contract-card__title">SEO Optimization</h3>
+            <p class="dashboard-contract-card__desc">Improve search rankings, core web vitals and organic traffic</p>
+          </div>
+          <div class="dashboard-contract-card__bottom">
+            <span class="dashboard-contract-card__price">$1,200 &bull; 3 weeks left</span>
+            <a href="upload_comp_work.html" class="dashboard-contract-card__action">Upload Work</a>
+          </div>
+        </div>
+
+        <div class="dashboard-contract-card">
+          <div class="dashboard-contract-card__top">
+            <h3 class="dashboard-contract-card__title">Brand Identity</h3>
+            <p class="dashboard-contract-card__desc">Design system, logo, typography and brand guideline package</p>
+          </div>
+          <div class="dashboard-contract-card__bottom">
+            <span class="dashboard-contract-card__price">$800 &bull; 2 weeks left</span>
+            <a href="upload_comp_work.html" class="dashboard-contract-card__action">Upload Work</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Recent Proposals Section -->
+    <section class="dashboard-section">
+      <div class="dashboard-section__header">
+        <h2 class="dashboard-section__title">Recent Proposals</h2>
+        <a href="my_proposals.html" class="dashboard-section__link">View All Proposals &rarr;</a>
+      </div>
+      
+      <div class="dashboard-proposal-card">
+        <div class="dashboard-proposal-card__info">
+          <h4>Senior Full-Stack Developer for SaaS Platform</h4>
+          <p>Submitted to TechNova Solutions &bull; $85/hr &bull; 2 days ago</p>
+        </div>
+        <div class="status-badge status-badge--pending">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+          </svg>
+          Pending
+        </div>
+      </div>
+
+      <div class="dashboard-proposal-card">
+        <div class="dashboard-proposal-card__info">
+          <h4>UX/UI Redesign for E-commerce Mobile App</h4>
+          <p>Submitted to RetailCore Inc. &bull; $4,500 fixed &bull; 1 week ago</p>
+        </div>
+        <div class="status-badge status-badge--viewed">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+          </svg>
+          Viewed
+        </div>
+      </div>
+
+      <div style="margin-top: 16px;">
+        <a href="my_proposals.html" class="btn btn--secondary" style="width: 100%;">View All Submitted Proposals</a>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- SkillMatch Unified Footer -->
+  <footer class="footer">
+    <div class="footer__container">
+      <div class="footer__logo">SkillMatch</div>
+      <div class="footer__links">
+        <a href="job_listing.html" class="footer__link">Browse Jobs</a>
+        <a href="portfolio_link.html" class="footer__link">Portfolio</a>
+        <a href="select_skill.html" class="footer__link">Skill Verification</a>
+        <a href="freelancer_chat.html" class="footer__link">Support & Chat</a>
+        <a href="profile.html" class="footer__link">Account Settings</a>
+      </div>
+      <div class="footer__copyright">
+        &copy; 2026 <strong>SkillMatch</strong>. All rights reserved.
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    // Responsive Navbar Toggle
+    const mobileToggle = document.getElementById('mobileToggle');
+    const navbarMenu = document.getElementById('navbarMenu');
+    if (mobileToggle && navbarMenu) {
+      mobileToggle.addEventListener('click', () => {
+        navbarMenu.classList.toggle('navbar__center--mobile-open');
+      });
+    }
+  </script>
+</body>
+</html>
