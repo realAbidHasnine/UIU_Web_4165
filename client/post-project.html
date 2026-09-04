@@ -1,0 +1,23 @@
+﻿<!DOCTYPE html>
+<html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Post a Project - Step 2 - SkillMatch</title><link rel="stylesheet" href="styles.css"></head>
+<body>
+<header class="topbar"><div class="topbar-inner">
+<a class="brand" href="client-dashboard.html">SkillMatch</a>
+<nav class="nav"><a href="client-dashboard.html">Dashboard</a><a class="active" href="my-projects.html">My Projects</a><a href="browse-freelancers.html">Browse Freelancers</a><a href="client-chat.html">Messages</a></nav>
+<div class="top-actions"><span class="ic" aria-hidden="true"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9"/><path d="M10.3 21a1.94 1.94 0 0 0 3.4 0"/></svg></span><details class="profile-wrap"><summary><img class="avatar" src="https://i.pravatar.cc/64?img=47" alt="Abida"></summary><div class="profile-menu"><div class="profile-topbox"><img src="https://i.pravatar.cc/104?img=47" alt="Abida Hasan"><div><div class="profile-name">Abida Hasan <span class="profile-role">CLIENT</span></div><div class="profile-email">abid.hasina@flow.com</div></div></div><div class="menu-div"></div><nav class="menu-list"><a href="freelancer-profile.html">My Profile</a><a href="create-client-account.html">Account Settings</a><a href="payment-released.html">Billing &amp; Payments</a></nav><div class="menu-div"></div><nav class="menu-list"><a class="logout" href="create-client-account.html">Log Out</a></nav></div></details><a href="client-dashboard.html" class="ic" title="Back" aria-label="Back">&larr;</a></div>
+</div></header>
+<main class="container">
+<div class="steps"><span>Project Details</span><span>/</span><strong>Step 2 of 4 - Skills &amp; Budget</strong><span>/</span><span>Screening</span><span>/</span><span>Review</span></div>
+<form class="form-card" action="my-projects.html" method="get">
+<div class="field"><label>Required Skills</label>
+<div class="inline"><input class="input" placeholder="e.g. React, UI Design"><button type="button" class="btn btn-outline">Add</button></div>
+<div style="margin-top:10px"><span class="chip">React &#10005;</span><span class="chip">TypeScript &#10005;</span><span class="chip">UI Design &#10005;</span></div>
+</div><hr class="hr">
+<div class="field"><label>Budget Type</label>
+<div class="inline" style="display:grid;grid-template-columns:1fr 1fr;gap:16px"><button type="button" class="btn btn-primary">Fixed Price</button><button type="button" class="btn btn-outline">Hourly Rate</button></div></div>
+<div class="field"><label>Budget</label>
+<div class="inline"><input class="input" placeholder="$  Min"><span>-</span><input class="input" placeholder="$  Max"></div></div>
+<div class="field"><label>Estimated Duration</label><select class="select"><option>Select duration</option><option>Less than 1 month</option><option>1-3 months</option><option>3-6 months</option></select></div>
+<hr class="hr"><div class="two-btns"><a class="btn btn-outline" href="client-dashboard.html" style="border-color:var(--border);color:#374151">Back</a><a class="btn btn-primary" href="my-projects.html">Continue</a></div>
+</form></main></body></html>

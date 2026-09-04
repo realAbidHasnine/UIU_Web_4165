@@ -1,0 +1,42 @@
+﻿<!DOCTYPE html>
+<html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Browse Freelancers - SkillMatch</title><link rel="stylesheet" href="styles.css"></head>
+<body>
+<header class="topbar"><div class="topbar-inner">
+<a class="brand" href="client-dashboard.html">SkillMatch</a>
+<nav class="nav"><a href="client-dashboard.html">Dashboard</a><a href="my-projects.html">My Projects</a><a class="active" href="browse-freelancers.html">Browse Freelancers</a><a href="client-chat.html">Messages</a></nav>
+<div class="top-actions"><span class="ic" aria-hidden="true"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9"/><path d="M10.3 21a1.94 1.94 0 0 0 3.4 0"/></svg></span><details class="profile-wrap"><summary><img class="avatar" src="https://i.pravatar.cc/64?img=47" alt="Abida"></summary><div class="profile-menu"><div class="profile-topbox"><img src="https://i.pravatar.cc/104?img=47" alt="Abida Hasan"><div><div class="profile-name">Abida Hasan <span class="profile-role">CLIENT</span></div><div class="profile-email">abid.hasina@flow.com</div></div></div><div class="menu-div"></div><nav class="menu-list"><a href="freelancer-profile.html">My Profile</a><a href="create-client-account.html">Account Settings</a><a href="payment-released.html">Billing &amp; Payments</a></nav><div class="menu-div"></div><nav class="menu-list"><a class="logout" href="create-client-account.html">Log Out</a></nav></div></details><a href="client-dashboard.html" class="ic" title="Back" aria-label="Back">&larr;</a></div>
+</div></header>
+<main class="container" style="max-width:1280px">
+<div class="browse">
+<aside class="filters"><h3>Filters</h3>
+<p style="font-size:13px;font-weight:600">Skill Category</p>
+<label class="check"><input type="checkbox"> Web Development</label>
+<label class="check"><input type="checkbox" checked> Mobile Design</label>
+<label class="check"><input type="checkbox"> Data Science</label>
+<label class="check"><input type="checkbox"> Writing</label>
+<label class="check"><input type="checkbox"> Marketing</label>
+<hr class="hr"><p style="font-size:13px;font-weight:600">Minimum Skill Score</p><select class="select"><option>Any Score</option></select>
+<hr class="hr"><p style="font-size:13px;font-weight:600">Hourly Rate</p><select class="select"><option>Any Rate</option></select>
+<hr class="hr"><p style="font-size:13px;font-weight:600">Availability</p><label class="check"><input type="checkbox" checked> Available Now</label>
+</aside>
+<div>
+<div style="display:flex;gap:12px;justify-content:space-between;margin-bottom:18px;flex-wrap:wrap"><input class="search" style="flex:1;max-width:360px" placeholder="Search freelancers..."><select class="select" style="width:auto"><option>Sort by: Highest Skill Score</option></select></div>
+<div class="freel-grid">
+<div class="card freel-card"><div style="display:flex;gap:12px;align-items:center"><span class="avatar-lg" style="color:var(--primary-ink)">JD</span><div style="flex:1"><strong>Jomshed Das</strong><div style="color:var(--muted);font-size:13px">Senior React Developer</div></div><span class="badge badge-match-dark">98% Match</span></div>
+<div style="margin:12px 0"><span class="skill">React</span><span class="skill">TypeScript</span><span class="skill">Node.js</span></div>
+<div style="display:flex;justify-content:space-between;font-size:14px"><span>&#9733; 4.9 (120 jobs)</span><span>$65/hr</span></div><hr class="hr">
+<div style="display:grid;grid-template-columns:1fr 1fr;gap:10px"><a class="btn btn-outline" href="freelancer-profile.html">View Profile</a><a class="btn btn-primary" href="client-chat.html">Invite to Project</a></div></div>
+<div class="card freel-card"><div style="display:flex;gap:12px;align-items:center"><span class="avatar-lg" style="color:var(--primary-ink)">MS</span><div style="flex:1"><strong>Moriam Sami</strong><div style="color:var(--muted);font-size:13px">UX/UI Product Designer</div></div><span class="badge badge-match-dark">95% Match</span></div>
+<div style="margin:12px 0"><span class="skill">Figma</span><span class="skill">Prototyping</span><span class="skill">User Research</span></div>
+<div style="display:flex;justify-content:space-between;font-size:14px"><span>&#9733; 5.0 (84 jobs)</span><span>$85/hr</span></div><hr class="hr">
+<div style="display:grid;grid-template-columns:1fr 1fr;gap:10px"><a class="btn btn-outline" href="freelancer-profile.html">View Profile</a><a class="btn btn-primary" href="client-chat.html">Invite to Project</a></div></div>
+<div class="card freel-card"><div style="display:flex;gap:12px;align-items:center"><span class="avatar-lg" style="color:var(--primary-ink)">AK</span><div style="flex:1"><strong>Aniket Khan</strong><div style="color:var(--muted);font-size:13px">Full Stack Engineer</div></div><span class="badge badge-match-dark">92% Match</span></div>
+<div style="margin:12px 0"><span class="skill">Python</span><span class="skill">Django</span><span class="skill">Vue.js</span></div>
+<div style="display:flex;justify-content:space-between;font-size:14px"><span>&#9733; 4.8 (210 jobs)</span><span>$75/hr</span></div><hr class="hr">
+<div style="display:grid;grid-template-columns:1fr 1fr;gap:10px"><a class="btn btn-outline" href="freelancer-profile.html">View Profile</a><a class="btn btn-primary" href="client-chat.html">Invite to Project</a></div></div>
+<div class="card freel-card"><div style="display:flex;gap:12px;align-items:center"><span class="avatar-lg" style="color:var(--primary-ink)">RJ</span><div style="flex:1"><strong>Robert Jenkins</strong><div style="color:var(--muted);font-size:13px">Technical Writer</div></div><span class="badge badge-match-dark">88% Match</span></div>
+<div style="margin:12px 0"><span class="skill">API Docs</span><span class="skill">Markdown</span><span class="skill">Copywriting</span></div>
+<div style="display:flex;justify-content:space-between;font-size:14px"><span>&#9733; 4.7 (56 jobs)</span><span>$45/hr</span></div><hr class="hr">
+<div style="display:grid;grid-template-columns:1fr 1fr;gap:10px"><a class="btn btn-outline" href="freelancer-profile.html">View Profile</a><a class="btn btn-primary" href="client-chat.html">Invite to Project</a></div></div>
+</div></div></div></main></body></html>

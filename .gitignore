@@ -1,0 +1,4 @@
+# Figma reference renders (local only, do not push)
+.figma-ref/
+# Temp scripts
+*.tmp
