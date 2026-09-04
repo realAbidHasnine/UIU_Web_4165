@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SkillMatch - Hire pre-vetted, skill-tested freelancers</title>
+  <link rel="stylesheet" href="assets/css/guest-global.css">
+</head>
+<body class="page-landing">
+
+  <!-- REQUIRE: guest-header.php START -->
+  <!-- Navbar -->
+  <header class="navbar">
+    <a href="landing.html" class="navbar__logo">
+      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" width="24" height="24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
+      </svg>
+      <span>SkillMatch</span>
+    </a>
+    <nav class="navbar__nav">
+      <a href="browse_freelancer.html" class="navbar__link">Browse Freelancers</a>
+      <a href="public_job_listing.html" class="navbar__link">Find Work</a>
+      <a href="#how-it-works" class="navbar__link">How It Works</a>
+    </nav>
+    <div class="navbar__actions">
+      <a href="login.html" class="btn btn--outline">Log In</a>
+      <a href="sign_in.html" class="btn btn--solid">Sign Up</a>
+    </div>
+  </header>
+  <!-- REQUIRE: guest-header.php END -->
+
+  <!-- Banner -->
+  <div class="banner">
+    <span>Join thousands of top companies hiring verified tech and design talent.</span>
+    <a href="sign_in.html" class="banner__link">Get Started Free &rarr;</a>
+  </div>
+
+  <!-- Hero Section -->
+  <main>
+    <section class="hero">
+      <h1 class="hero__title">Hire pre-vetted, skill-tested<br>freelancers</h1>
+      <p class="hero__subtitle">Connect with top-tier professionals whose skills are objectively verified through technical assessments. Build trust faster and execute projects with confidence.</p>
+      
+      <form id="heroSearchForm" action="browse_freelancer.html" method="POST" class="hero__search">
+        <input type="text" name="skill_query" class="hero__search-input" placeholder="Search by skill (e.g. React, Python, UI/UX, Node.js)...">
+        <button type="submit" class="btn btn--solid hero__search-btn">Search</button>
+      </form>
+
+      <div class="hero__actions">
+        <a href="browse_freelancer.html" class="btn btn--solid">Find Talent</a>
+        <a href="public_job_listing.html" class="btn btn--outline">Find Work</a>
+      </div>
+    </section>
+
+    <!-- How It Works Section -->
+    <section class="how-it-works" id="how-it-works">
+      <h2 class="how-it-works__title">How SkillMatch Works</h2>
+      <p class="how-it-works__subtitle">A rigorous, objective process connecting talent with real opportunity.</p>
+      
+      <div class="how-it-works__grid">
+        <div class="step">
+          <div class="step__number step__number--outline">1</div>
+          <h3 class="step__title">Test Skills</h3>
+          <p class="step__desc">Freelancers complete domain-specific technical quizzes and coding assessments to verify competence.</p>
+        </div>
+        <div class="step">
+          <div class="step__number step__number--outline">2</div>
+          <h3 class="step__title">Match with Clients</h3>
+          <p class="step__desc">Clients discover pre-scored talent with transparent rankings, reviews, and portfolio benchmarks.</p>
+        </div>
+        <div class="step">
+          <div class="step__number step__number--solid">3</div>
+          <h3 class="step__title">Collaborate Securely</h3>
+          <p class="step__desc">Work together efficiently with milestone management, escrow protection, and real-time chat.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Featured Talent Section -->
+    <section class="featured">
+      <div class="featured__header">
+        <div class="featured__title-wrap">
+          <h2>Featured Talent</h2>
+          <p>Top-rated professionals with verified benchmark scores.</p>
+        </div>
+        <a href="browse_freelancer.html" class="featured__link">Browse All Freelancers &rarr;</a>
+      </div>
+
+      <div class="featured__grid">
+        <!-- Card 1 -->
+        <a href="freelancer_public_profile.html" class="talent-card">
+          <div class="talent-card__top">
+            <div class="talent-card__avatar">SJ</div>
+            <div class="talent-card__skill">React &mdash; 98%</div>
+          </div>
+          <h3 class="talent-card__name">SHUVO Jit</h3>
+          <p class="talent-card__title">Frontend Architect</p>
+          <hr class="talent-card__divider">
+          <div class="talent-card__rating">
+            <span class="talent-card__star">&#9733;</span> 5.0 <span>(124 jobs)</span>
+          </div>
+        </a>
+
+        <!-- Card 2 -->
+        <a href="freelancer_public_profile.html" class="talent-card">
+          <div class="talent-card__top">
+            <div class="talent-card__avatar" style="background-color: #fdf2f8; color: #db2777; border-color: #fce7f3;">RH</div>
+            <div class="talent-card__skill">Figma &mdash; 95%</div>
+          </div>
+          <h3 class="talent-card__name">Rakibul Hossan</h3>
+          <p class="talent-card__title">Product Designer</p>
+          <hr class="talent-card__divider">
+          <div class="talent-card__rating">
+            <span class="talent-card__star">&#9733;</span> 4.9 <span>(89 jobs)</span>
+          </div>
+        </a>
+
+        <!-- Card 3 -->
+        <a href="freelancer_public_profile.html" class="talent-card">
+          <div class="talent-card__top">
+            <div class="talent-card__avatar" style="background-color: #fefce8; color: #ca8a04; border-color: #fef08a;">SS</div>
+            <div class="talent-card__skill">Python &mdash; 99%</div>
+          </div>
+          <h3 class="talent-card__name">Sadman Sakib</h3>
+          <p class="talent-card__title">Data Scientist</p>
+          <hr class="talent-card__divider">
+          <div class="talent-card__rating">
+            <span class="talent-card__star">&#9733;</span> 5.0 <span>(210 jobs)</span>
+          </div>
+        </a>
+
+        <!-- Card 4 -->
+        <a href="freelancer_public_profile.html" class="talent-card">
+          <div class="talent-card__top">
+            <div class="talent-card__avatar" style="background-color: #ecfdf5; color: #059669; border-color: #a7f3d0;">BH</div>
+            <div class="talent-card__skill">Node.js &mdash; 92%</div>
+          </div>
+          <h3 class="talent-card__name">Badhon Hossan</h3>
+          <p class="talent-card__title">Backend Engineer</p>
+          <hr class="talent-card__divider">
+          <div class="talent-card__rating">
+            <span class="talent-card__star">&#9733;</span> 4.8 <span>(56 jobs)</span>
+          </div>
+        </a>
+      </div>
+    </section>
+  </main>
+
+  <!-- REQUIRE: guest-footer.php START -->
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="footer__container">
+      <div class="footer__brand">
+        <a href="landing.html" class="footer__logo">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" width="22" height="22">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
+          </svg>
+          SkillMatch
+        </a>
+        <p class="footer__copyright">&copy; 2026 SkillMatch Inc. Verified freelance marketplace connecting clients with objectively tested talent.</p>
+      </div>
+      
+      <div class="footer__links-grid">
+        <div>
+          <div class="footer__col-title">For Clients</div>
+          <a href="browse_freelancer.html" class="footer__link">Browse Freelancers</a>
+          <a href="#how-it-works" class="footer__link">How It Works</a>
+          <a href="sign_in.html" class="footer__link">Post a Project</a>
+        </div>
+        <div>
+          <div class="footer__col-title">For Freelancers</div>
+          <a href="public_job_listing.html" class="footer__link">Find Work</a>
+          <a href="sign_in.html" class="footer__link">Take Skill Verification</a>
+          <a href="sign_in.html" class="footer__link">Freelancer Community</a>
+        </div>
+        <div>
+          <div class="footer__col-title">Platform</div>
+          <a href="#" class="footer__link">About SkillMatch</a>
+          <a href="#" class="footer__link">Help Center</a>
+          <a href="#" class="footer__link">Contact Support</a>
+        </div>
+        <div>
+          <div class="footer__col-title">Legal</div>
+          <a href="#" class="footer__link">Privacy Policy</a>
+          <a href="#" class="footer__link">Terms of Service</a>
+          <a href="#" class="footer__link">Trust & Safety</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+  <!-- REQUIRE: guest-footer.php END -->
+
+</body>
+</html>

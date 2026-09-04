@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Login - SkillMatch</title>
+  <link rel="stylesheet" href="assets/css/guest-global.css">
+</head>
+<body class="page-admin">
+
+  <!-- REQUIRE: guest-header.php START -->
+  <!-- Minimal Header for Admin -->
+  <header class="navbar">
+    <a href="landing.html" class="navbar__logo">
+      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" width="24" height="24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
+      </svg>
+      <span>SkillMatch</span>
+    </a>
+    <div class="navbar__actions">
+      <a href="landing.html" class="navbar__back">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" width="16" height="16">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+        </svg>
+        Back to Site
+      </a>
+      <a href="login.html" class="btn btn--outline" style="padding: 6px 14px; font-size: 13px;">User Login</a>
+    </div>
+  </header>
+  <!-- REQUIRE: guest-header.php END -->
+
+  <main style="display: flex; align-items: center; justify-content: center; padding: var(--spacing-2xl) var(--spacing-lg);">
+    <div class="admin-login-wrapper">
+      
+      <!-- Header -->
+      <div class="admin-header">
+        <div class="admin-header__badge">System Administration</div>
+        <h1 class="admin-header__title">Sign in to Admin Console</h1>
+      </div>
+
+      <!-- Login Card -->
+      <div class="admin-card">
+        <form id="adminLoginForm" action="admin_login.html" method="POST">
+          
+          <!-- Email Input -->
+          <div class="form-group">
+            <label for="admin-email" class="form-label">Admin Email</label>
+            <input type="email" id="admin-email" name="email" class="form-input" placeholder="admin@skillmatch.com" required autocomplete="username">
+          </div>
+
+          <!-- Password Input -->
+          <div class="form-group" style="margin-bottom: var(--spacing-lg);">
+            <label for="admin-password" class="form-label">Password</label>
+            <input type="password" id="admin-password" name="password" class="form-input" placeholder="••••••••" required autocomplete="current-password">
+          </div>
+
+          <!-- Submit -->
+          <button type="submit" name="admin_login_submit" class="btn btn--solid btn--block" style="padding: 11px; background-color: #0f172a; border-color: #0f172a;">
+            Log In to Console
+          </button>
+
+        </form>
+      </div>
+
+      <!-- Footer Notice -->
+      <p class="admin-footer-text">
+        Authorized personnel only. All access attempts are logged and monitored.
+        <br>
+        <a href="login.html" class="form-link" style="margin-top: 8px; display: inline-block;">&larr; Switch to Standard User Login</a>
+      </p>
+
+    </div>
+  </main>
+
+  <!-- REQUIRE: guest-footer.php START -->
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="footer__container">
+      <div class="footer__brand">
+        <a href="landing.html" class="footer__logo">SkillMatch</a>
+        <p class="footer__copyright">© 2026 SkillMatch Inc. Internal Administration Portal.</p>
+      </div>
+      
+      <div class="footer__links-grid">
+        <div>
+          <div class="footer__col-title">Portal</div>
+          <a href="landing.html" class="footer__link">Public Home</a>
+          <a href="login.html" class="footer__link">User Portal</a>
+        </div>
+        <div>
+          <div class="footer__col-title">Security</div>
+          <a href="#" class="footer__link">Security Policy</a>
+          <a href="#" class="footer__link">Audit Logs</a>
+        </div>
+        <div>
+          <div class="footer__col-title">Support</div>
+          <a href="#" class="footer__link">IT Helpdesk</a>
+          <a href="#" class="footer__link">Documentation</a>
+        </div>
+        <div>
+          <div class="footer__col-title">Compliance</div>
+          <a href="#" class="footer__link">Privacy Policy</a>
+          <a href="#" class="footer__link">Terms of Access</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+  <!-- REQUIRE: guest-footer.php END -->
+
+</body>
+</html>
