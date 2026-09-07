@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Welcome Back</title>
 <link rel="stylesheet" href="../css/login.css">
+<link rel="stylesheet" href="../../assets/css/global.css">
 </head>
 <body>
 
@@ -16,7 +17,7 @@
 
       <h1 class="modal-title">Welcome Back</h1>
 
-      <form class="login-form">
+      <form class="login-form" method="POST" action="login.php">
         <label for="email">Email Address</label>
         <input type="email" id="email" name="email" placeholder="name@company.com">
 
@@ -26,8 +27,8 @@
         </div>
         <input type="password" id="password" name="password" placeholder="••••••••">
 
-        <button type="submit" class="btn btn-client">Log In as Client</button>
-        <button type="submit" class="btn btn-freelancer">Log In as Freelancer</button>
+        <button type="submit" class="btn btn-client" name="user_role" value="client">Log In as Client</button>
+        <button type="submit" class="btn btn-freelancer" name="user_role" value="freelancer">Log In as Freelancer</button>
       </form>
 
       <div class="divider">
@@ -44,7 +45,7 @@
         Continue with Google
       </button>
 
-      <p class="signup-text">New here? <a href="#" class="signup-link">Sign up</a></p>
+      <p class="signup-text">New here? <a href="../../guest/sign_in.html" class="signup-link">Sign up</a></p>
     </div>
   </div>
 

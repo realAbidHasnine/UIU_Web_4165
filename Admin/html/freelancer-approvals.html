@@ -5,9 +5,11 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>SkillMatch — Pending Freelancing Approvals</title>
 <link rel="stylesheet" href="../css/freelancer-approvals.css">
+<link rel="stylesheet" href="../../assets/css/global.css">
 </head>
 <body>
 
+  <!-- REQUIRE: shared-admin-sidebar.php START -->
   <aside class="sidebar">
     <div class="sidebar-logo">SkillMatch</div>
     <nav class="nav-list">
@@ -25,10 +27,11 @@
       </div>
       <div class="user-block">
         <span class="user-name">Admin User</span>
-        <a href="login.html" class="logout-btn">Log Out</a>
+        <a href="../../guest/login.html" class="logout-btn">Log Out</a>
       </div>
     </div>
   </aside>
+  <!-- REQUIRE: shared-admin-sidebar.php END -->
 
   <main class="main">
     <div class="content">
@@ -40,7 +43,7 @@
       <div class="controls-row">
         <div class="search-box">
           <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
-          <input type="text" placeholder="Search by name or skill...">
+          <input type="text" name="freelancer_search" placeholder="Search by name or skill...">
         </div>
         <div class="controls-right">
           <div class="filter-select">

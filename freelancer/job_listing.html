@@ -5,9 +5,11 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>SkillMatch — Job Listings & Proposals</title>
   <link rel="stylesheet" href="assets/css/style.css">
+  <link rel="stylesheet" href="../assets/css/global.css">
 </head>
 <body>
 
+  <!-- REQUIRE: shared-header.php START -->
   <!-- SkillMatch Unified Navbar -->
   <header class="navbar">
     <a href="index.html" class="navbar__logo">
@@ -48,6 +50,7 @@
       <a href="profile.html" class="navbar__avatar" title="View Profile">SH</a>
     </div>
   </header>
+  <!-- REQUIRE: shared-header.php END -->
 
   <!-- 3-Column Layout -->
   <main class="main main--wide job-listing-layout">
@@ -211,7 +214,7 @@
       </div>
 
       <!-- Submit Proposal Form -->
-      <form id="jobProposalForm" class="proposal-form">
+      <form id="jobProposalForm" class="proposal-form" method="POST" action="submit-proposal.php">
         <h2 class="proposal-form__title">Submit Proposal</h2>
         
         <div class="form-group">
@@ -241,6 +244,7 @@
 
   </main>
 
+  <!-- REQUIRE: shared-footer.php START -->
   <!-- SkillMatch Unified Footer -->
   <footer class="footer">
     <div class="footer__container">
@@ -257,6 +261,7 @@
       </div>
     </div>
   </footer>
+  <!-- REQUIRE: shared-footer.php END -->
 
   <!-- Toast Container -->
   <div class="toast-container" id="toastContainer"></div>

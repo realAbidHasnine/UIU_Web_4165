@@ -5,9 +5,11 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>SkillMatch — User Management</title>
 <link rel="stylesheet" href="../css/user-management.css">
+<link rel="stylesheet" href="../../assets/css/global.css">
 </head>
 <body>
 
+  <!-- REQUIRE: shared-admin-sidebar.php START -->
   <aside class="sidebar">
     <div class="sidebar-logo">SkillMatch</div>
     <nav class="nav-list">
@@ -25,10 +27,11 @@
       </div>
       <div class="user-block">
         <span class="user-name">Admin User</span>
-        <a href="login.html" class="logout-btn">Log Out</a>
+        <a href="../../guest/login.html" class="logout-btn">Log Out</a>
       </div>
     </div>
   </aside>
+  <!-- REQUIRE: shared-admin-sidebar.php END -->
 
   <main class="main main-flush">
     <div class="um-topbar">
@@ -39,12 +42,12 @@
             <circle cx="11" cy="11" r="7"></circle>
             <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
           </svg>
-          <input type="text" placeholder="Search users...">
+          <input type="text" name="user_search" placeholder="Search users...">
         </div>
-        <select class="role-select">
-          <option>All Roles</option>
-          <option>Freelancer</option>
-          <option>Client</option>
+        <select class="role-select" name="role_filter">
+          <option value="all">All Roles</option>
+          <option value="freelancer">Freelancer</option>
+          <option value="client">Client</option>
         </select>
       </div>
       <a href="admin-dashboard.html" class="back-btn" aria-label="Go back">&#8592;</a>

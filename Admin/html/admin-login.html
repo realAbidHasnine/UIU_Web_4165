@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>SkillMatch — Admin Login</title>
 <link rel="stylesheet" href="../css/admin-login.css">
+<link rel="stylesheet" href="../../assets/css/global.css">
 </head>
 <body>
 
@@ -14,7 +15,7 @@
     <p class="login-subtitle">Log in to the admin console.</p>
 
     <div class="login-card">
-      <form onsubmit="event.preventDefault(); window.location.href='admin-dashboard.html';">
+      <form method="POST" action="admin-login.php" onsubmit="event.preventDefault(); window.location.href='admin-dashboard.html';">
         <div class="form-group">
           <label class="form-label" for="email">Email address</label>
           <input class="form-input" type="email" id="email" name="email">
@@ -25,7 +26,7 @@
           <input class="form-input" type="password" id="password" name="password">
         </div>
 
-        <button type="submit" class="login-btn">Log In</button>
+        <button type="submit" class="login-btn" name="admin_login_submit" value="1">Log In</button>
       </form>
     </div>
 

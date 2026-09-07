@@ -1,0 +1,77 @@
+/* ============================================
+   SkillMatch Platform - Global Styles
+   Shared reset, tokens, and utility classes
+   ============================================ */
+
+/* CSS Reset */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; -webkit-font-smoothing: antialiased; }
+body { font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; line-height: 1.6; color: #1e293b; background: #f8fafc; }
+a { text-decoration: none; color: inherit; }
+img { max-width: 100%; display: block; }
+ul, ol { list-style: none; }
+button { cursor: pointer; border: none; background: none; font-family: inherit; }
+input, select, textarea, button { font-family: inherit; font-size: inherit; }
+
+/* Design Tokens */
+:root {
+  --color-primary: #4f46e5;
+  --color-primary-hover: #4338ca;
+  --color-primary-light: #eef2ff;
+  --color-primary-ink: #3730a3;
+  --color-success: #10b981;
+  --color-warning: #f59e0b;
+  --color-danger: #ef4444;
+  --color-text: #1e293b;
+  --color-text-muted: #64748b;
+  --color-border: #e2e8f0;
+  --color-bg: #f8fafc;
+  --color-white: #ffffff;
+  --spacing-xs: 4px;
+  --spacing-sm: 8px;
+  --spacing-md: 16px;
+  --spacing-lg: 24px;
+  --spacing-xl: 32px;
+  --spacing-2xl: 48px;
+  --radius-sm: 6px;
+  --radius-md: 8px;
+  --radius-lg: 12px;
+  --shadow-sm: 0 1px 2px rgba(0,0,0,0.05);
+  --shadow-md: 0 4px 6px -1px rgba(0,0,0,0.1);
+  --shadow-lg: 0 10px 15px -3px rgba(0,0,0,0.1);
+  --star: #f59e0b;
+  --primary: #4f46e5;
+  --primary-ink: #3730a3;
+  --border: #e2e8f0;
+  --border-light: #f1f5f9;
+  --muted: #64748b;
+  --text: #1e293b;
+}
+
+/* Shared Button Classes */
+.btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; padding: 10px 20px; border-radius: var(--radius-md); font-weight: 600; font-size: 14px; transition: all 0.2s ease; cursor: pointer; border: 1px solid transparent; }
+.btn--solid { background: var(--color-primary); color: var(--color-white); border-color: var(--color-primary); }
+.btn--solid:hover { background: var(--color-primary-hover); }
+.btn--outline { background: transparent; color: var(--color-primary); border-color: var(--color-border); }
+.btn--outline:hover { border-color: var(--color-primary); background: var(--color-primary-light); }
+.btn--block { width: 100%; }
+.btn--secondary { background: var(--color-bg); color: var(--color-text); border-color: var(--color-border); }
+.btn--google { background: var(--color-white); color: var(--color-text); border: 1px solid var(--color-border); width: 100%; padding: 10px 20px; border-radius: var(--radius-md); font-weight: 600; font-size: 14px; display: inline-flex; align-items: center; justify-content: center; gap: 8px; }
+
+/* Shared Form Classes */
+.form-group { margin-bottom: 16px; }
+.form-label { display: block; font-size: 13px; font-weight: 600; color: var(--color-text); margin-bottom: 6px; }
+.form-input { width: 100%; padding: 10px 14px; border: 1px solid var(--color-border); border-radius: var(--radius-md); font-size: 14px; color: var(--color-text); background: var(--color-white); transition: border-color 0.2s; }
+.form-input:focus { outline: none; border-color: var(--color-primary); box-shadow: 0 0 0 3px rgba(79,70,229,0.1); }
+.form-input--textarea { min-height: 100px; resize: vertical; }
+
+/* Shared Card */
+.card { background: var(--color-white); border: 1px solid var(--color-border); border-radius: var(--radius-lg); padding: var(--spacing-lg); }
+
+/* Divider */
+.divider { text-align: center; position: relative; margin: 16px 0; }
+.divider::before { content: ''; position: absolute; left: 0; right: 0; top: 50%; border-top: 1px solid var(--color-border); }
+.divider span { background: var(--color-white); padding: 0 12px; position: relative; color: var(--color-text-muted); font-size: 13px; font-weight: 600; }
+
+/* Stars */
+.stars { color: var(--star); letter-spacing: 2px; }

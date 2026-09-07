@@ -5,9 +5,11 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>SkillMatch — Select Skill Categories</title>
   <link rel="stylesheet" href="assets/css/style.css">
+  <link rel="stylesheet" href="../assets/css/global.css">
 </head>
 <body>
 
+  <!-- REQUIRE: shared-header.php START -->
   <!-- SkillMatch Unified Navbar -->
   <header class="navbar">
     <a href="index.html" class="navbar__logo">
@@ -48,6 +50,7 @@
       <a href="profile.html" class="navbar__avatar" title="View Profile">SH</a>
     </div>
   </header>
+  <!-- REQUIRE: shared-header.php END -->
 
   <!-- Main Content -->
   <main class="main selection-container">
@@ -70,7 +73,7 @@
       </div>
 
       <!-- Skills Pills Form -->
-      <form id="skillCategoryForm" action="skill_test.html" method="GET">
+      <form id="skillCategoryForm" action="select-skill.php" method="POST">
         <div class="skills-group" id="skillsGroup">
           
           <!-- Web Development -->
@@ -192,6 +195,7 @@
     </div>
   </main>
 
+  <!-- REQUIRE: shared-footer.php START -->
   <!-- SkillMatch Unified Footer -->
   <footer class="footer">
     <div class="footer__container">
@@ -208,6 +212,7 @@
       </div>
     </div>
   </footer>
+  <!-- REQUIRE: shared-footer.php END -->
 
   <!-- Toast Container -->
   <div class="toast-container" id="toastContainer"></div>

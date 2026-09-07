@@ -5,9 +5,11 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>SkillMatch — Portfolio & Project Manager</title>
   <link rel="stylesheet" href="assets/css/style.css">
+  <link rel="stylesheet" href="../assets/css/global.css">
 </head>
 <body>
 
+  <!-- REQUIRE: shared-header.php START -->
   <!-- SkillMatch Unified Navbar -->
   <header class="navbar">
     <a href="index.html" class="navbar__logo">
@@ -48,6 +50,7 @@
       <a href="profile.html" class="navbar__avatar" title="View Profile">SH</a>
     </div>
   </header>
+  <!-- REQUIRE: shared-header.php END -->
 
   <!-- Main Content -->
   <main class="main">
@@ -155,18 +158,18 @@
         <h3 class="modal-title">Add Portfolio Project</h3>
         <button type="button" class="modal-close" id="btnCloseModal">&times;</button>
       </div>
-      <form id="projectCreateForm">
+      <form id="projectCreateForm" method="POST" action="add-project.php">
         <div class="form-group">
           <label class="form-group__label" for="projTitle">Project Title</label>
-          <input type="text" id="projTitle" class="form-input" placeholder="e.g. AI-Powered CRM Suite" required>
+          <input type="text" id="projTitle" name="project_title" class="form-input" placeholder="e.g. AI-Powered CRM Suite" required>
         </div>
         <div class="form-group">
           <label class="form-group__label" for="projDesc">Description</label>
-          <textarea id="projDesc" class="form-input form-input--textarea" placeholder="Brief summary of what you engineered, challenges solved, and business impact..." required></textarea>
+          <textarea id="projDesc" name="project_description" class="form-input form-input--textarea" placeholder="Brief summary of what you engineered, challenges solved, and business impact..." required></textarea>
         </div>
         <div class="form-group">
           <label class="form-group__label" for="projSkills">Technologies Used (comma separated)</label>
-          <input type="text" id="projSkills" class="form-input" placeholder="e.g. Next.js, TypeScript, Tailwind" required>
+          <input type="text" id="projSkills" name="project_technologies" class="form-input" placeholder="e.g. Next.js, TypeScript, Tailwind" required>
         </div>
         <div style="display: flex; gap: 10px; margin-top: 20px;">
           <button type="button" class="btn btn--secondary" id="btnCancelModal" style="flex: 1;">Cancel</button>
@@ -176,6 +179,7 @@
     </div>
   </div>
 
+  <!-- REQUIRE: shared-footer.php START -->
   <!-- SkillMatch Unified Footer -->
   <footer class="footer">
     <div class="footer__container">
@@ -192,6 +196,7 @@
       </div>
     </div>
   </footer>
+  <!-- REQUIRE: shared-footer.php END -->
 
   <!-- Toast Notification Container -->
   <div class="toast-container" id="toastContainer"></div>

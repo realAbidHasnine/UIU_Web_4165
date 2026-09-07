@@ -5,9 +5,11 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>SkillMatch — Submit Project Deliverable</title>
   <link rel="stylesheet" href="assets/css/style.css">
+  <link rel="stylesheet" href="../assets/css/global.css">
 </head>
 <body>
 
+  <!-- REQUIRE: shared-header.php START -->
   <!-- SkillMatch Unified Navbar -->
   <header class="navbar">
     <a href="index.html" class="navbar__logo">
@@ -48,10 +50,11 @@
       <a href="profile.html" class="navbar__avatar" title="View Profile">SH</a>
     </div>
   </header>
+  <!-- REQUIRE: shared-header.php END -->
 
   <!-- Main Content -->
   <main class="main">
-    <form id="uploadWorkForm" class="upload-container">
+    <form id="uploadWorkForm" class="upload-container" method="POST" action="upload-work.php" enctype="multipart/form-data">
       
       <!-- Contract Header Info -->
       <header class="upload-header">
@@ -116,6 +119,7 @@
     </form>
   </main>
 
+  <!-- REQUIRE: shared-footer.php START -->
   <!-- SkillMatch Unified Footer -->
   <footer class="footer">
     <div class="footer__container">
@@ -132,6 +136,7 @@
       </div>
     </div>
   </footer>
+  <!-- REQUIRE: shared-footer.php END -->
 
   <!-- Toast Notification Container -->
   <div class="toast-container" id="toastContainer"></div>

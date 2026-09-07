@@ -5,9 +5,11 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>SkillMatch — Chat & Messages</title>
   <link rel="stylesheet" href="assets/css/style.css">
+  <link rel="stylesheet" href="../assets/css/global.css">
 </head>
 <body>
 
+  <!-- REQUIRE: shared-header.php START -->
   <!-- SkillMatch Unified Navbar -->
   <header class="navbar">
     <a href="index.html" class="navbar__logo">
@@ -48,6 +50,7 @@
       <a href="profile.html" class="navbar__avatar" title="View Profile">SH</a>
     </div>
   </header>
+  <!-- REQUIRE: shared-header.php END -->
 
   <!-- Main Content -->
   <main class="main main--wide">
@@ -178,7 +181,7 @@
         </div>
 
         <!-- Chat Input Form -->
-        <form id="chatMessageForm" class="chat__input-area">
+        <form id="chatMessageForm" class="chat__input-area" method="POST" action="send-message.php">
           <input type="text" id="chatInput" name="message" class="chat__input" placeholder="Type a message..." autocomplete="off" required>
           <button type="submit" class="chat__btn">Send</button>
         </form>
@@ -188,6 +191,7 @@
     </div>
   </main>
 
+  <!-- REQUIRE: shared-footer.php START -->
   <!-- SkillMatch Unified Footer -->
   <footer class="footer">
     <div class="footer__container">
@@ -204,6 +208,7 @@
       </div>
     </div>
   </footer>
+  <!-- REQUIRE: shared-footer.php END -->
 
   <script>
     // Mobile Navbar Toggle

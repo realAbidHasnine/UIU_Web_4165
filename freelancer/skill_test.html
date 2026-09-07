@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>SkillMatch — React.js Skill Test</title>
   <link rel="stylesheet" href="assets/css/style.css">
+  <link rel="stylesheet" href="../assets/css/global.css">
 </head>
 <body>
 
@@ -13,6 +14,7 @@
     <div class="progress-bar-fill" id="progressBar" style="width: 25%;"></div>
   </div>
 
+  <!-- REQUIRE: shared-header.php START -->
   <!-- Test Mode Header -->
   <header class="test-header">
     <div class="test-header__logo">SkillMatch</div>
@@ -27,6 +29,7 @@
       <span class="test-header__progress-text" id="progressText">Question 1 of 4</span>
     </div>
   </header>
+  <!-- REQUIRE: shared-header.php END -->
 
   <!-- Main Content -->
   <main class="main test-container">
@@ -56,7 +59,7 @@ function Counter() {
       </div>
 
       <!-- Options Form -->
-      <form id="skillTestAnswerForm" action="result_suggestion.html" method="GET">
+      <form id="skillTestAnswerForm" action="submit-test.php" method="POST">
         <div class="options-group" id="optionsGroup">
           
           <div class="option__wrapper">
@@ -102,6 +105,7 @@ function Counter() {
 
   </main>
 
+  <!-- REQUIRE: shared-footer.php START -->
   <!-- SkillMatch Unified Footer -->
   <footer class="footer">
     <div class="footer__container">
@@ -117,6 +121,7 @@ function Counter() {
       </div>
     </div>
   </footer>
+  <!-- REQUIRE: shared-footer.php END -->
 
   <script>
     // Questions Bank
