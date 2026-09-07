@@ -7,53 +7,70 @@
    1. Design Tokens & CSS Custom Properties
    -------------------------------------------------------------------------- */
 :root {
-  /* Brand & Accent Colors */
-  --color-primary: #2563eb;
-  --color-primary-hover: #1d4ed8;
-  --color-primary-light: #eff6ff;
-  --color-success: #10b981;
-  --color-success-hover: #059669;
-  --color-success-bg: #d1fae5;
-  --color-success-text: #065f46;
-  --color-warning: #ef4444;
+  /* ── Brand Accent: the "Verification" Proof Green ─────────────────────
+     The primary accent is intentionally the *verified* color. It only ever
+     appears where a skill/score/result has been measured, so "SkillMatch"
+     and "verified" read as the same signal. */
+  --color-proof: #0c7a5b;
+  --color-proof-hover: #0a6049;
+  --color-proof-dark: #0a5a45;      /* small text on tint → WCAG AA on #e4f2ec */
+  --color-proof-tint: #e4f2ec;      /* pill/fill-bg/focus-ring */
+  --color-proof-track: #d5e8df;     /* empty score track */
+  --color-proof-line: #bfe0d2;      /* hairline border around verified chips */
 
-  /* Admin Theme Colors */
-  --color-admin: #2563eb;
-  --color-admin-hover: #1d4ed8;
-  --color-admin-green: #10b981;
-  --color-admin-green-hover: #059669;
+  /* Brand & Accent Colors (legacy aliases mapped to the new palette,
+     so every component stays in sync from a single source) */
+  --color-primary: var(--color-proof);
+  --color-primary-hover: var(--color-proof-hover);
+  --color-primary-light: var(--color-proof-tint);
+  --color-success: var(--color-proof);
+  --color-success-hover: var(--color-proof-hover);
+  --color-success-bg: var(--color-proof-tint);
+  --color-success-text: var(--color-proof-dark);
+  --color-warning: #d64545;
 
-  /* Neutral & Base Colors */
-  --color-bg-page: #f8fafc;
-  --color-bg-alt: #f1f5f9;
-  --color-bg-overlay: rgba(15, 23, 42, 0.6);
-  --color-bg-locked: #f8fafc;
+  /* Admin Theme Colors (ink-based console chrome) */
+  --color-admin: var(--color-ink);
+  --color-admin-hover: #0a1e33;
+  --color-admin-green: var(--color-proof);
+  --color-admin-green-hover: var(--color-proof-hover);
+
+  /* Neutral & Base Colors ("blueprint paper" system) */
+  --color-bg-page: #f4f7fa;          /* paper */
+  --color-bg-alt: #e8eef4;
+  --color-bg-overlay: rgba(15, 36, 57, 0.62);
+  --color-bg-locked: var(--color-bg-alt);
+  --color-surface: #ffffff;
   --color-white: #ffffff;
-  --color-text-main: #0f172a;
-  --color-text-muted: #64748b;
-  --color-border: #e2e8f0;
-  --color-border-hover: #cbd5e1;
+  --color-ink: #0f2439;              /* primary text / headings */
+  --color-text-main: var(--color-ink);
+  --color-text-muted: #5b6b7c;
+  --color-border: #e3e9f0;           /* hairline */
+  --color-border-hover: #c6d2df;
 
   /* Component Colors */
-  --color-disabled-bg: #e2e8f0;
-  --color-disabled-text: #94a3b8;
-  --color-btn-gray: #f1f5f9;
-  --color-btn-gray-hover: #e2e8f0;
-  --color-tag-bg: #f1f5f9;
-  --color-tag-text: #334155;
+  --color-disabled-bg: #e8eef4;
+  --color-disabled-text: #9aa7b4;
+  --color-btn-gray: #eef2f6;
+  --color-btn-gray-hover: #e3e9f0;
+  --color-tag-bg: #eef2f6;
+  --color-tag-text: var(--color-ink);
 
-  /* Avatar Theme Colors */
-  --color-avatar-1: #3b82f6;
-  --color-avatar-2: #10b981;
-  --color-avatar-3: #f59e0b;
+  /* Avatar Theme Colors (muted instrument tones, no warm hues) */
+  --color-avatar-1: var(--color-proof);
+  --color-avatar-2: #1765a2;         /* steel */
+  --color-avatar-3: var(--color-ink);
 
   /* Security Badge Tokens */
-  --color-badge-bg: #eef2ff;
-  --color-badge-text: #3730a3;
-  --color-badge-border: #c7d2fe;
+  --color-badge-bg: var(--color-proof-tint);
+  --color-badge-text: var(--color-proof-dark);
+  --color-badge-border: var(--color-proof-line);
 
   /* Typography */
-  --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+  --font-body: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+  --font-display: 'Space Grotesk', var(--font-body);
+  --font-mono: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  --font-sans: var(--font-body);
 
   /* Spacing Scale */
   --spacing-xs: 8px;
@@ -117,9 +134,9 @@ body.page-landing {
 
 body:has(.modal),
 body.page-login {
-  background-color: #64748b;
-  background-image: radial-gradient(#94a3b8 1px, transparent 1px);
-  background-size: 24px 24px;
+  background-color: var(--color-ink);
+  background-image: radial-gradient(rgba(255, 255, 255, 0.09) 1px, transparent 1px);
+  background-size: 22px 22px;
   align-items: center;
   justify-content: center;
   position: relative;
@@ -129,7 +146,7 @@ body.page-login {
 
 body:has(.admin-login-wrapper),
 body.page-admin {
-  background-color: #f1f5f9;
+  background-color: var(--color-bg-page);
   min-height: 100vh;
   display: flex;
   flex-direction: column;
@@ -248,7 +265,7 @@ body.page-role-picker {
 
 /* Top Announcement Banner */
 .banner {
-  background-color: #1e40af;
+  background-color: var(--color-proof-dark);
   color: var(--color-white);
   text-align: center;
   padding: 10px 24px;
@@ -262,7 +279,7 @@ body.page-role-picker {
 }
 
 .banner__link {
-  color: #93c5fd;
+  color: var(--color-proof-line);
   text-decoration: underline;
   margin-left: 6px;
   font-weight: 600;
@@ -305,7 +322,7 @@ body.page-role-picker {
 }
 
 .btn--outline:hover {
-  background-color: #eff6ff;
+  background-color: var(--color-proof-tint);
 }
 
 .btn--solid {
@@ -361,7 +378,7 @@ body.page-role-picker {
 }
 
 .btn--outline-blue:hover {
-  background-color: #eff6ff;
+  background-color: var(--color-proof-tint);
 }
 
 .btn--outline-gray {
@@ -414,7 +431,7 @@ body.page-role-picker {
 }
 
 .btn--google:hover {
-  background-color: #f8fafc;
+  background-color: var(--color-bg-page);
   border-color: var(--color-border-hover);
 }
 
@@ -422,7 +439,7 @@ body.page-role-picker {
   position: absolute;
   top: var(--spacing-lg);
   right: var(--spacing-lg);
-  background-color: #1e293b;
+  background-color: var(--color-admin);
   color: var(--color-white);
   padding: 8px 16px;
   border-radius: var(--radius-sm);
@@ -430,7 +447,7 @@ body.page-role-picker {
   font-weight: 600;
   text-decoration: none;
   transition: all 0.2s ease;
-  border: 1px solid #334155;
+  border: 1px solid var(--color-admin-hover);
   cursor: pointer;
   z-index: 10;
   display: inline-flex;
@@ -444,8 +461,8 @@ body.page-role-picker {
 }
 
 .btn-admin:hover {
-  background-color: #0f172a;
-  border-color: #475569;
+  background-color: var(--color-admin-hover);
+  border-color: #2c4a63;
 }
 
 /* --------------------------------------------------------------------------
@@ -530,12 +547,12 @@ body.page-role-picker {
 }
 
 .form-input::placeholder {
-  color: #94a3b8;
+  color: var(--color-disabled-text);
 }
 
 .form-input:focus {
   border-color: var(--color-primary);
-  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+  box-shadow: 0 0 0 3px rgba(12, 122, 91, 0.14);
 }
 
 /* Select Inputs */
@@ -557,10 +574,10 @@ body.page-role-picker {
 }
 
 .select-input:disabled {
-  background-color: #f1f5f9;
-  color: #94a3b8;
+  background-color: var(--color-disabled-bg);
+  color: var(--color-disabled-text);
   cursor: not-allowed;
-  border-color: #e2e8f0;
+  border-color: var(--color-border);
 }
 
 /* Custom Checkboxes & Radio Controls */
@@ -584,7 +601,7 @@ body.page-role-picker {
   appearance: none;
   width: 16px;
   height: 16px;
-  border: 1.5px solid #cbd5e1;
+  border: 1.5px solid var(--color-border-hover);
   outline: none;
   cursor: pointer;
   position: relative;
@@ -640,7 +657,7 @@ body.page-role-picker {
 .checkbox-item__input {
   width: 16px;
   height: 16px;
-  border: 1.5px solid #cbd5e1;
+  border: 1.5px solid var(--color-border-hover);
   border-radius: 4px;
   cursor: pointer;
   accent-color: var(--color-primary);
@@ -657,8 +674,8 @@ body.page-role-picker {
   align-items: center;
   gap: 6px;
   font-size: 11px;
-  color: #b45309;
-  background-color: #fef3c7;
+  color: var(--color-text-muted);
+  background-color: var(--color-btn-gray);
   padding: 6px 10px;
   border-radius: var(--radius-sm);
   margin-top: var(--spacing-sm);
@@ -725,7 +742,7 @@ body.page-role-picker {
   font-size: 12px;
   font-weight: 500;
   color: var(--color-text-main);
-  background-color: #f8fafc;
+  background-color: var(--color-bg-page);
   width: fit-content;
   min-width: 120px;
 }
@@ -850,7 +867,7 @@ body.page-role-picker {
 
 .hero__search:focus-within {
   border-color: var(--color-primary);
-  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.12);
+  box-shadow: 0 0 0 3px rgba(12, 122, 91, 0.14);
 }
 
 .hero__search-input {
@@ -864,7 +881,7 @@ body.page-role-picker {
 }
 
 .hero__search-input::placeholder {
-  color: #94a3b8;
+  color: var(--color-disabled-text);
 }
 
 .hero__search-btn {
@@ -927,9 +944,9 @@ body.page-role-picker {
 }
 
 .step__number--outline {
-  background-color: var(--color-white);
+  background-color: var(--color-surface);
   color: var(--color-primary);
-  border: 2px solid #bfdbfe;
+  border: 2px solid var(--color-proof-track);
 }
 
 .step__number--solid {
@@ -1010,7 +1027,7 @@ body.page-role-picker {
 .talent-card:hover {
   transform: translateY(-4px);
   box-shadow: 0 10px 20px -3px rgba(0, 0, 0, 0.08);
-  border-color: #bfdbfe;
+  border-color: var(--color-proof-track);
 }
 
 .talent-card__top {
@@ -1024,14 +1041,14 @@ body.page-role-picker {
   width: 44px;
   height: 44px;
   border-radius: 50%;
-  background-color: #eff6ff;
+  background-color: var(--color-proof-tint);
   color: var(--color-primary);
   font-weight: 700;
   font-size: 15px;
   display: flex;
   align-items: center;
   justify-content: center;
-  border: 1.5px solid #dbeafe;
+  border: 1.5px solid var(--color-proof-line);
 }
 
 .talent-card__skill {
@@ -1212,7 +1229,7 @@ body.page-role-picker {
 
 .search-box__input:focus {
   border-color: var(--color-primary);
-  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+  box-shadow: 0 0 0 3px rgba(12, 122, 91, 0.14);
 }
 
 .search-box__submit {
@@ -1281,7 +1298,7 @@ body.page-role-picker {
 .freelancer-card:hover {
   box-shadow: 0 8px 16px -2px rgba(0, 0, 0, 0.06);
   transform: translateY(-2px);
-  border-color: #cbd5e1;
+  border-color: var(--color-border-hover);
 }
 
 .freelancer-card__header {
@@ -1375,7 +1392,7 @@ body.page-role-picker {
   font-size: 32px;
   font-weight: 700;
   margin-bottom: var(--spacing-md);
-  box-shadow: 0 4px 10px rgba(37, 99, 235, 0.2);
+  box-shadow: 0 4px 10px rgba(12, 122, 91, 0.2);
 }
 
 .profile-name {
@@ -1432,7 +1449,7 @@ body.page-role-picker {
 }
 
 .portfolio-locked {
-  background-color: #f8fafc;
+  background-color: var(--color-bg-page);
   border: 1px solid var(--color-border);
   border-radius: var(--radius-md);
   position: relative;
@@ -1458,7 +1475,7 @@ body.page-role-picker {
 
 .portfolio-locked__mock-card {
   background: white;
-  border: 1px solid #cbd5e1;
+  border: 1px solid var(--color-border);
   border-radius: 8px;
   height: 100px;
 }
@@ -1476,11 +1493,11 @@ body.page-role-picker {
   width: 48px;
   height: 48px;
   border-radius: 50%;
-  background-color: #e2e8f0;
+  background-color: var(--color-disabled-bg);
   display: flex;
   align-items: center;
   justify-content: center;
-  color: #475569;
+  color: var(--color-text-muted);
   margin-bottom: var(--spacing-md);
 }
 
@@ -1553,7 +1570,7 @@ body.page-role-picker {
 }
 
 .job-card:hover {
-  border-color: #cbd5e1;
+  border-color: var(--color-border-hover);
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.04);
 }
 
@@ -1698,7 +1715,7 @@ body.page-role-picker {
 }
 
 .modal__close:hover {
-  background-color: #f1f5f9;
+  background-color: var(--color-bg-page);
   color: var(--color-text-main);
 }
 
@@ -1753,7 +1770,7 @@ body.page-role-picker {
 }
 
 .admin-header__badge {
-  background-color: #0f172a;
+  background-color: var(--color-ink);
   color: var(--color-white);
   font-size: 10px;
   font-weight: 700;
@@ -1762,7 +1779,7 @@ body.page-role-picker {
   text-transform: uppercase;
   letter-spacing: 0.8px;
   margin-bottom: var(--spacing-md);
-  border: 1px solid #334155;
+  border: 1px solid var(--color-admin-hover);
 }
 
 .admin-header__title {
@@ -1839,8 +1856,8 @@ body.page-role-picker {
 }
 
 .role-picker .card:hover {
-  border-color: #bfdbfe;
-  box-shadow: 0 12px 24px -4px rgba(37, 99, 235, 0.08);
+  border-color: var(--color-proof-track);
+  box-shadow: 0 12px 24px -4px rgba(12, 122, 91, 0.08);
   transform: translateY(-2px);
 }
 
@@ -2077,4 +2094,328 @@ body.page-role-picker {
     align-items: flex-start;
     gap: var(--spacing-md);
   }
+}
+
+/* ==========================================================================
+   16. Visual Language — "Verification Report" System
+   Shared tokens + components for every public-facing guest page.
+   ========================================================================== */
+
+/* --- Type roles ------------------------------------------------------- */
+/* Headings & identity: mechanical grotesk. Data: technical mono.          */
+.hero__title,
+.how-it-works__title,
+.featured__title-wrap h2,
+.profile-name,
+.role-picker__title,
+.list-header__title,
+.modal__title,
+.admin-header__title,
+.card__title,
+.job-card__title,
+.navbar__logo,
+.footer__logo,
+.step__title,
+.talent-card__name,
+.freelancer-card__name {
+  font-family: var(--font-display);
+}
+
+.eyebrow {
+  display: inline-block;
+  font-family: var(--font-display);
+  font-size: 11.5px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  color: var(--color-text-muted);
+  margin-bottom: var(--spacing-sm);
+}
+
+.readout {
+  font-family: var(--font-mono);
+  font-variant-numeric: tabular-nums;
+  font-weight: 500;
+}
+
+/* --- Focus visibility (WCAG) ------------------------------------------ */
+a:focus-visible,
+button:focus-visible,
+input:focus-visible,
+select:focus-visible,
+textarea:focus-visible,
+[tabindex]:focus-visible,
+[href]:focus-visible {
+  outline: 2px solid var(--color-proof);
+  outline-offset: 2px;
+  border-radius: 2px;
+}
+
+/* --- Score beam: the product itself ----------------------------------- */
+.score-beam {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-width: 0;
+}
+
+.score-beam + .score-beam {
+  margin-top: 10px;
+}
+
+.score-beam__name {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--color-text-muted);
+  width: 98px;
+  flex-shrink: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.score-beam__track {
+  flex: 1;
+  height: 4px;
+  border-radius: var(--radius-full);
+  background-color: var(--color-proof-track);
+  overflow: hidden;
+}
+
+.score-beam__fill {
+  display: block;
+  height: 100%;
+  width: var(--beam, 50%);
+  background-color: var(--color-proof);
+  border-radius: var(--radius-full);
+  transform-origin: left center;
+}
+
+.score-beam__value {
+  font-family: var(--font-mono);
+  font-size: 12.5px;
+  font-weight: 600;
+  color: var(--color-ink);
+  min-width: 3ch;
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+
+/* --- Verification footnote -------------------------------------------- */
+.verification-note {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 500;
+  color: var(--color-proof-dark);
+}
+
+.verification-note svg {
+  width: 13px;
+  height: 13px;
+  flex-shrink: 0;
+}
+
+/* --- Hero readout strip (data footer under the search) ---------------- */
+.hero__readouts {
+  display: flex;
+  justify-content: center;
+  gap: 48px;
+  max-width: 640px;
+  margin: var(--spacing-2xl) auto 0;
+  padding-top: var(--spacing-xl);
+  border-top: 1px solid var(--color-border);
+}
+
+.hero__stat {
+  text-align: left;
+}
+
+.hero__stat-value {
+  display: block;
+  font-family: var(--font-mono);
+  font-size: 22px;
+  font-weight: 600;
+  color: var(--color-ink);
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -0.02em;
+  line-height: 1.1;
+}
+
+.hero__stat-label {
+  display: block;
+  font-family: var(--font-display);
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--color-text-muted);
+  margin-top: 6px;
+}
+
+.hero__alt-action {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  margin-top: var(--spacing-md);
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--color-proof);
+}
+
+.hero__alt-action:hover {
+  text-decoration: underline;
+}
+
+/* --- How It Works: connected flow (one line through the numbers) ------ */
+.how-it-works__grid {
+  position: relative;
+}
+
+.step {
+  position: relative;
+}
+
+.step__number {
+  position: relative;
+  z-index: 1;
+  font-family: var(--font-mono);
+  font-size: 17px;
+}
+
+@media (min-width: 861px) {
+  .how-it-works__grid::before {
+    content: '';
+    position: absolute;
+    top: 26px;
+    left: 16%;
+    right: 16%;
+    height: 1px;
+    background-color: var(--color-border);
+  }
+}
+
+/* --- Featured talent avatar tones (replaces inline hex noise) --------- */
+.talent-card__avatar--1 {
+  background-color: var(--color-proof-tint);
+  color: var(--color-proof-dark);
+  border-color: var(--color-proof-line);
+}
+
+.talent-card__avatar--2 {
+  background-color: #e8eef6;
+  color: #1765a2;
+  border-color: #d1deec;
+}
+
+.talent-card__avatar--3 {
+  background-color: #eceff4;
+  color: var(--color-ink);
+  border-color: #dce2ea;
+}
+
+.talent-card__avatar--4 {
+  background-color: #edf4f2;
+  color: #2e6f5e;
+  border-color: #d7e6df;
+}
+
+/* --- Single orchestrated "grading" moment (landing only) -------------- */
+@media (prefers-reduced-motion: no-preference) {
+  body.page-landing .hero__readouts {
+    animation: readouts-in 0.7s ease-out both;
+  }
+  body.page-landing .hero__stat:nth-child(1) { animation-delay: 0.05s; }
+  body.page-landing .hero__stat:nth-child(2) { animation-delay: 0.15s; }
+  body.page-landing .hero__stat:nth-child(3) { animation-delay: 0.25s; }
+  body.page-landing .score-beam__fill {
+    animation: beam-grow 0.8s cubic-bezier(0.2, 0.7, 0.2, 1) both;
+  }
+  body.page-landing .talent-card .score-beam:nth-child(1) .score-beam__fill { animation-delay: 0.1s; }
+  body.page-landing .talent-card .score-beam:nth-child(2) .score-beam__fill { animation-delay: 0.2s; }
+  body.page-landing .talent-card .score-beam:nth-child(3) .score-beam__fill { animation-delay: 0.3s; }
+}
+
+@keyframes beam-grow {
+  from { transform: scaleX(0); }
+  to   { transform: scaleX(1); }
+}
+
+@keyframes readouts-in {
+  from { opacity: 0; transform: translateY(6px); }
+  to   { opacity: 1; transform: none; }
+}
+
+/* --- Responsive refinements for the new components -------------------- */
+@media (max-width: 640px) {
+  .hero__readouts {
+    flex-direction: column;
+    align-items: center;
+    gap: var(--spacing-lg);
+  }
+  .hero__stat {
+    text-align: center;
+  }
+}
+
+/* --- Featured talent card internals ----------------------------------- */
+.talent-card__rate {
+  color: var(--color-text-muted);
+  font-size: 12.5px;
+}
+
+.talent-card__scores {
+  margin-bottom: var(--spacing-md);
+}
+
+.talent-card__rating {
+  flex-wrap: wrap;
+}
+
+.talent-card .verification-note {
+  margin-top: var(--spacing-sm);
+}
+
+/* --- Auth + role-picker refinements ----------------------------------- */
+.modal {
+  border: 1px solid var(--color-border);
+}
+
+.modal__head {
+  text-align: center;
+  margin-bottom: var(--spacing-xl);
+}
+
+.modal__head .modal__title {
+  margin-bottom: 0;
+}
+
+.role-picker__header .eyebrow {
+  margin-bottom: var(--spacing-md);
+}
+
+/* --- Listing + profile readout refinements ---------------------------- */
+.freelancer-card__price,
+.job-card__budget,
+.list-header__count,
+.meta-item {
+  font-family: var(--font-mono);
+}
+
+.freelancer-card__price,
+.job-card__budget,
+.list-header__count {
+  font-variant-numeric: tabular-nums;
+}
+
+.profile-grid .score-beam__name {
+  width: 150px;
+}
+
+.profile-rating {
+  font-family: var(--font-mono);
+  font-variant-numeric: tabular-nums;
 }

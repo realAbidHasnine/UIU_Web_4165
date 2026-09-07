@@ -4,8 +4,11 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Login - SkillMatch</title>
-  <link rel="stylesheet" href="assets/css/guest-global.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500;600&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="../assets/css/global.css">
+  <link rel="stylesheet" href="assets/css/guest-global.css">
 </head>
 <body class="page-login">
 
@@ -26,7 +29,10 @@
       </svg>
     </a>
 
-    <h2 class="modal__title">Welcome Back</h2>
+    <div class="modal__head">
+      <span class="eyebrow">Secure user portal</span>
+      <h2 class="modal__title">Welcome Back</h2>
+    </div>
 
     <form id="loginForm" action="login.php" method="POST" onsubmit="return handleLogin(event);">
       <!-- Email -->

@@ -4,8 +4,11 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>SkillMatch - Hire pre-vetted, skill-tested freelancers</title>
-  <link rel="stylesheet" href="guest/assets/css/guest-global.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500;600&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="assets/css/global.css">
+  <link rel="stylesheet" href="guest/assets/css/guest-global.css">
 </head>
 <body class="page-landing">
 
@@ -39,38 +42,52 @@
   <!-- Hero Section -->
   <main>
     <section class="hero">
-      <h1 class="hero__title">Hire pre-vetted, skill-tested<br>freelancers</h1>
-      <p class="hero__subtitle">Connect with top-tier professionals whose skills are objectively verified through technical assessments. Build trust faster and execute projects with confidence.</p>
+      <span class="eyebrow">Verified skill assessment marketplace</span>
+      <h1 class="hero__title">Hire verified skill,<br>not claims.</h1>
+      <p class="hero__subtitle">Every freelancer carries a score from a supervised technical assessment. Over 2,300 professionals have already been certified.</p>
 
       <form id="heroSearchForm" action="guest/search-freelancers.php" method="POST" class="hero__search">
-        <input type="text" name="skill_query" class="hero__search-input" placeholder="Search by skill (e.g. React, Python, UI/UX, Node.js)...">
+        <input type="text" name="skill_query" class="hero__search-input" placeholder="Search by skill (e.g. React, Python, Figma, Node.js)...">
         <button type="submit" class="btn btn--solid hero__search-btn">Search</button>
       </form>
 
-      <div class="hero__actions">
-        <a href="guest/browse_freelancer.html" class="btn btn--solid">Find Talent</a>
-        <a href="guest/public_job_listing.html" class="btn btn--outline">Find Work</a>
+      <a href="guest/browse_freelancer.html" class="hero__alt-action">Browse all freelancers &rarr;</a>
+
+      <div class="hero__readouts">
+        <div class="hero__stat">
+          <span class="hero__stat-value">2,381</span>
+          <span class="hero__stat-label">Verified pros</span>
+        </div>
+        <div class="hero__stat">
+          <span class="hero__stat-value">98%</span>
+          <span class="hero__stat-label">Score confidence</span>
+        </div>
+        <div class="hero__stat">
+          <span class="hero__stat-value">4.9&#9733;</span>
+          <span class="hero__stat-label">Avg. rating</span>
+        </div>
       </div>
     </section>
 
     <!-- How It Works Section -->
     <section class="how-it-works" id="how-it-works">
+      <span class="eyebrow">01 &mdash; The process</span>
       <h2 class="how-it-works__title">How SkillMatch Works</h2>
       <p class="how-it-works__subtitle">A rigorous, objective process connecting talent with real opportunity.</p>
 
       <div class="how-it-works__grid">
         <div class="step">
-          <div class="step__number step__number--outline">1</div>
+          <div class="step__number step__number--outline">01</div>
           <h3 class="step__title">Test Skills</h3>
           <p class="step__desc">Freelancers complete domain-specific technical quizzes and coding assessments to verify competence.</p>
         </div>
         <div class="step">
-          <div class="step__number step__number--outline">2</div>
+          <div class="step__number step__number--outline">02</div>
           <h3 class="step__title">Match with Clients</h3>
           <p class="step__desc">Clients discover pre-scored talent with transparent rankings, reviews, and portfolio benchmarks.</p>
         </div>
         <div class="step">
-          <div class="step__number step__number--solid">3</div>
+          <div class="step__number step__number--solid">03</div>
           <h3 class="step__title">Collaborate Securely</h3>
           <p class="step__desc">Work together efficiently with milestone management, escrow protection, and real-time chat.</p>
         </div>
@@ -81,6 +98,7 @@
     <section class="featured">
       <div class="featured__header">
         <div class="featured__title-wrap">
+          <span class="eyebrow">02 &mdash; Featured talent</span>
           <h2>Featured Talent</h2>
           <p>Top-rated professionals with verified benchmark scores.</p>
         </div>
@@ -91,57 +109,145 @@
         <!-- Card 1 -->
         <a href="guest/freelancer_public_profile.html" class="talent-card">
           <div class="talent-card__top">
-            <div class="talent-card__avatar">SJ</div>
-            <div class="talent-card__skill">React &mdash; 98%</div>
+            <div class="talent-card__avatar talent-card__avatar--1">SJ</div>
+            <span class="readout talent-card__rate">$85/hr</span>
           </div>
           <h3 class="talent-card__name">SHUVO Jit</h3>
           <p class="talent-card__title">Frontend Architect</p>
           <hr class="talent-card__divider">
+          <div class="talent-card__scores">
+            <div class="score-beam">
+              <span class="score-beam__name">React</span>
+              <span class="score-beam__track"><span class="score-beam__fill" style="--beam: 98%;"></span></span>
+              <span class="score-beam__value">98%</span>
+            </div>
+            <div class="score-beam">
+              <span class="score-beam__name">TypeScript</span>
+              <span class="score-beam__track"><span class="score-beam__fill" style="--beam: 94%;"></span></span>
+              <span class="score-beam__value">94%</span>
+            </div>
+            <div class="score-beam">
+              <span class="score-beam__name">Tailwind</span>
+              <span class="score-beam__track"><span class="score-beam__fill" style="--beam: 92%;"></span></span>
+              <span class="score-beam__value">92%</span>
+            </div>
+          </div>
+          <hr class="talent-card__divider">
           <div class="talent-card__rating">
             <span class="talent-card__star">&#9733;</span> 5.0 <span>(124 jobs)</span>
           </div>
+          <span class="verification-note">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" width="13" height="13"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+            SkillScore verified &middot; #0417
+          </span>
         </a>
 
         <!-- Card 2 -->
         <a href="guest/freelancer_public_profile.html" class="talent-card">
           <div class="talent-card__top">
-            <div class="talent-card__avatar" style="background-color: #fdf2f8; color: #db2777; border-color: #fce7f3;">RH</div>
-            <div class="talent-card__skill">Figma &mdash; 95%</div>
+            <div class="talent-card__avatar talent-card__avatar--2">RH</div>
+            <span class="readout talent-card__rate">$65/hr</span>
           </div>
           <h3 class="talent-card__name">Rakibul Hossan</h3>
           <p class="talent-card__title">Product Designer</p>
           <hr class="talent-card__divider">
+          <div class="talent-card__scores">
+            <div class="score-beam">
+              <span class="score-beam__name">Figma</span>
+              <span class="score-beam__track"><span class="score-beam__fill" style="--beam: 95%;"></span></span>
+              <span class="score-beam__value">95%</span>
+            </div>
+            <div class="score-beam">
+              <span class="score-beam__name">Prototyping</span>
+              <span class="score-beam__track"><span class="score-beam__fill" style="--beam: 92%;"></span></span>
+              <span class="score-beam__value">92%</span>
+            </div>
+            <div class="score-beam">
+              <span class="score-beam__name">Design Systems</span>
+              <span class="score-beam__track"><span class="score-beam__fill" style="--beam: 88%;"></span></span>
+              <span class="score-beam__value">88%</span>
+            </div>
+          </div>
+          <hr class="talent-card__divider">
           <div class="talent-card__rating">
             <span class="talent-card__star">&#9733;</span> 4.9 <span>(89 jobs)</span>
           </div>
+          <span class="verification-note">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" width="13" height="13"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+            SkillScore verified &middot; #0329
+          </span>
         </a>
 
         <!-- Card 3 -->
         <a href="guest/freelancer_public_profile.html" class="talent-card">
           <div class="talent-card__top">
-            <div class="talent-card__avatar" style="background-color: #fefce8; color: #ca8a04; border-color: #fef08a;">SS</div>
-            <div class="talent-card__skill">Python &mdash; 99%</div>
+            <div class="talent-card__avatar talent-card__avatar--3">SS</div>
+            <span class="readout talent-card__rate">$75/hr</span>
           </div>
           <h3 class="talent-card__name">Sadman Sakib</h3>
           <p class="talent-card__title">Data Scientist</p>
           <hr class="talent-card__divider">
+          <div class="talent-card__scores">
+            <div class="score-beam">
+              <span class="score-beam__name">Python</span>
+              <span class="score-beam__track"><span class="score-beam__fill" style="--beam: 99%;"></span></span>
+              <span class="score-beam__value">99%</span>
+            </div>
+            <div class="score-beam">
+              <span class="score-beam__name">SQL</span>
+              <span class="score-beam__track"><span class="score-beam__fill" style="--beam: 96%;"></span></span>
+              <span class="score-beam__value">96%</span>
+            </div>
+            <div class="score-beam">
+              <span class="score-beam__name">ML Models</span>
+              <span class="score-beam__track"><span class="score-beam__fill" style="--beam: 90%;"></span></span>
+              <span class="score-beam__value">90%</span>
+            </div>
+          </div>
+          <hr class="talent-card__divider">
           <div class="talent-card__rating">
             <span class="talent-card__star">&#9733;</span> 5.0 <span>(210 jobs)</span>
           </div>
+          <span class="verification-note">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" width="13" height="13"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+            SkillScore verified &middot; #0512
+          </span>
         </a>
 
         <!-- Card 4 -->
         <a href="guest/freelancer_public_profile.html" class="talent-card">
           <div class="talent-card__top">
-            <div class="talent-card__avatar" style="background-color: #ecfdf5; color: #059669; border-color: #a7f3d0;">BH</div>
-            <div class="talent-card__skill">Node.js &mdash; 92%</div>
+            <div class="talent-card__avatar talent-card__avatar--4">BH</div>
+            <span class="readout talent-card__rate">$70/hr</span>
           </div>
           <h3 class="talent-card__name">Badhon Hossan</h3>
           <p class="talent-card__title">Backend Engineer</p>
           <hr class="talent-card__divider">
+          <div class="talent-card__scores">
+            <div class="score-beam">
+              <span class="score-beam__name">Node.js</span>
+              <span class="score-beam__track"><span class="score-beam__fill" style="--beam: 92%;"></span></span>
+              <span class="score-beam__value">92%</span>
+            </div>
+            <div class="score-beam">
+              <span class="score-beam__name">PostgreSQL</span>
+              <span class="score-beam__track"><span class="score-beam__fill" style="--beam: 89%;"></span></span>
+              <span class="score-beam__value">89%</span>
+            </div>
+            <div class="score-beam">
+              <span class="score-beam__name">AWS</span>
+              <span class="score-beam__track"><span class="score-beam__fill" style="--beam: 86%;"></span></span>
+              <span class="score-beam__value">86%</span>
+            </div>
+          </div>
+          <hr class="talent-card__divider">
           <div class="talent-card__rating">
             <span class="talent-card__star">&#9733;</span> 4.8 <span>(56 jobs)</span>
           </div>
+          <span class="verification-note">
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" width="13" height="13"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+            SkillScore verified &middot; #0288
+          </span>
         </a>
       </div>
     </section>
