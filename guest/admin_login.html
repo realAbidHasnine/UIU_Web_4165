@@ -12,14 +12,14 @@
   <!-- REQUIRE: guest-header.php START -->
   <!-- Minimal Header for Admin -->
   <header class="navbar">
-    <a href="landing.html" class="navbar__logo">
+    <a href="../index.html" class="navbar__logo">
       <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" width="24" height="24">
         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z" />
       </svg>
       <span>SkillMatch</span>
     </a>
     <div class="navbar__actions">
-      <a href="landing.html" class="navbar__back">
+      <a href="../index.html" class="navbar__back">
         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" width="16" height="16">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
         </svg>
@@ -41,6 +41,7 @@
 
       <!-- Login Card -->
       <div class="admin-card">
+        <!-- TODO: replace with PHP session-based auth: $_SESSION['role']='admin'; then redirect() -->
         <form id="adminLoginForm" action="../Admin/admin-login.html" method="POST" onsubmit="event.preventDefault(); window.location.href='../Admin/html/admin-dashboard.html';">
           
           <!-- Email Input -->
@@ -78,14 +79,14 @@
   <footer class="footer">
     <div class="footer__container">
       <div class="footer__brand">
-        <a href="landing.html" class="footer__logo">SkillMatch</a>
+        <a href="../index.html" class="footer__logo">SkillMatch</a>
         <p class="footer__copyright">© 2026 SkillMatch Inc. Internal Administration Portal.</p>
       </div>
       
       <div class="footer__links-grid">
         <div>
           <div class="footer__col-title">Portal</div>
-          <a href="landing.html" class="footer__link">Public Home</a>
+          <a href="../index.html" class="footer__link">Public Home</a>
           <a href="login.html" class="footer__link">User Portal</a>
         </div>
         <div>

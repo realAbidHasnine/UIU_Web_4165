@@ -20,7 +20,7 @@
   <!-- Login Modal -->
   <div class="modal">
     <!-- Close Icon -->
-    <a href="landing.html" class="modal__close" aria-label="Close dialog">
+    <a href="../index.html" class="modal__close" aria-label="Close dialog">
       <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" width="18" height="18">
         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
       </svg>
@@ -28,7 +28,7 @@
 
     <h2 class="modal__title">Welcome Back</h2>
 
-    <form id="loginForm" action="login.html" method="POST" onsubmit="return handleLogin(event);">
+    <form id="loginForm" action="login.php" method="POST" onsubmit="return handleLogin(event);">
       <!-- Email -->
       <div class="form-group">
         <div class="form-label-row">
@@ -73,25 +73,37 @@
   </div>
 
   <script>
-    // Pre-select role from ?role= query param (set by the role picker on sign_in.html)
+    // Functional default role for this page.
+    // TODO: replace with PHP session-based auth: $_SESSION['role']='client'/'freelancer'
+    // once a backend exists; the redirects below are demo stubs.
+    var defaultRole = 'client';
+
+    // Honor ?role= query param (set by the role picker on sign_in.html) as the
+    // functional default AND visual highlight, not just a CSS toggle.
     var preselected = new URLSearchParams(window.location.search).get('role');
-    if (preselected) {
-      var activeBtn = document.querySelector('button[name="user_role"][value="' + preselected + '"]');
-      if (activeBtn) {
-        activeBtn.focus();
-        activeBtn.classList.add('btn--outline');
-      }
+    if (preselected === 'client') {
+      defaultRole = 'client';
+    } else if (preselected === 'freelancer') {
+      defaultRole = 'freelancer';
+    }
+    var activeBtn = document.querySelector('button[name="user_role"][value="' + defaultRole + '"]');
+    if (activeBtn) {
+      activeBtn.focus();
+      activeBtn.classList.add('btn--outline');
     }
 
     function handleLogin(event) {
-      var role = event.submitter && event.submitter.name === 'user_role' ? event.submitter.value : 'client';
+      // Prefer the explicitly clicked role button; fall back to the defaultRole
+      // (from ?role=) so pressing Enter in a field still lands correctly.
+      var submitterRole = event.submitter && event.submitter.name === 'user_role' ? event.submitter.value : null;
+      var role = submitterRole || defaultRole;
       var dest;
       if (role === 'freelancer') {
         dest = '../freelancer/index.html';
-      } else if (role === 'client') {
-        dest = '../client/index.html';
+        // TODO: PHP session $_SESSION['role']='freelancer'; then redirect()
       } else {
         dest = '../client/index.html';
+        // TODO: PHP session $_SESSION['role']='client'; then redirect()
       }
       event.preventDefault();
       window.location.href = dest;
