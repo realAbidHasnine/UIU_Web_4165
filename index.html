@@ -9,8 +9,10 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500;600&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="assets/css/global.css">
   <link rel="stylesheet" href="guest/assets/css/guest-global.css">
+  <link rel="stylesheet" href="guest/assets/css/overdrive.css">
 </head>
 <body class="page-landing">
+  <div class="scroll-progress" aria-hidden="true"></div>
 
   <!-- REQUIRE: guest-header.php START -->
   <!-- Navbar -->
@@ -42,7 +44,6 @@
   <!-- Hero Section -->
   <main>
     <section class="hero">
-      <span class="eyebrow">Verified skill assessment marketplace</span>
       <h1 class="hero__title">Hire verified skill,<br>not claims.</h1>
       <p class="hero__subtitle">Every freelancer carries a score from a supervised technical assessment. Over 2,300 professionals have already been certified.</p>
 
@@ -71,7 +72,6 @@
 
     <!-- How It Works Section -->
     <section class="how-it-works" id="how-it-works">
-      <span class="eyebrow">01 &mdash; The process</span>
       <h2 class="how-it-works__title">How SkillMatch Works</h2>
       <p class="how-it-works__subtitle">A rigorous, objective process connecting talent with real opportunity.</p>
 
@@ -98,7 +98,6 @@
     <section class="featured">
       <div class="featured__header">
         <div class="featured__title-wrap">
-          <span class="eyebrow">02 &mdash; Featured talent</span>
           <h2>Featured Talent</h2>
           <p>Top-rated professionals with verified benchmark scores.</p>
         </div>
@@ -297,5 +296,35 @@
   </footer>
   <!-- REQUIRE: guest-footer.php END -->
 
+  <script>
+  (function () {
+    var root = document.documentElement;
+    root.classList.add('js-overdrive');
+    var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    var supports = function (v) { try { return window.CSS && CSS.supports && CSS.supports(v); } catch (e) { return false; } };
+    var nativeScroll = supports('animation-timeline: scroll()');
+    var nativeView = supports('animation-timeline: view()');
+    if (nativeView) { root.classList.remove('js-overdrive'); }
+    var progress = document.querySelector('.scroll-progress');
+    var onScroll = function () {
+      if (!progress || reduce || nativeScroll) return;
+      var h = document.documentElement;
+      var max = h.scrollHeight - h.clientHeight;
+      var p = max > 0 ? (h.scrollTop || document.body.scrollTop) / max : 0;
+      progress.style.transform = 'scaleX(' + p + ')';
+    };
+    document.addEventListener('scroll', onScroll, { passive: true });
+    window.addEventListener('resize', onScroll);
+    onScroll();
+    if (reduce || nativeView || !('IntersectionObserver' in window)) return;
+    var targets = document.querySelectorAll('.step, .talent-card, .freelancer-card, .score-beam__fill');
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (en) {
+        if (en.isIntersecting) { en.target.classList.add('is-inview'); io.unobserve(en.target); }
+      });
+    }, { threshold: 0.2, rootMargin: '0px 0px -8% 0px' });
+    targets.forEach(function (t) { io.observe(t); });
+  })();
+  </script>
 </body>
 </html>

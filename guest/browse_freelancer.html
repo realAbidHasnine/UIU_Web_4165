@@ -9,8 +9,10 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500;600&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="../assets/css/global.css">
   <link rel="stylesheet" href="assets/css/guest-global.css">
+  <link rel="stylesheet" href="assets/css/overdrive.css">
 </head>
 <body>
+  <div class="scroll-progress" aria-hidden="true"></div>
 
   <!-- REQUIRE: guest-header.php START -->
   <!-- Navbar -->
@@ -302,5 +304,44 @@
   </footer>
   <!-- REQUIRE: guest-footer.php END -->
 
+  <script>
+  (function () {
+    var root = document.documentElement;
+    root.classList.add('js-overdrive');
+    var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    var supports = function (v) { try { return window.CSS && CSS.supports && CSS.supports(v); } catch (e) { return false; } };
+    var nativeScroll = supports('animation-timeline: scroll()');
+    var nativeView = supports('animation-timeline: view()');
+    if (nativeView) { root.classList.remove('js-overdrive'); }
+    var progress = document.querySelector('.scroll-progress');
+    var onScroll = function () {
+      if (!progress || reduce || nativeScroll) return;
+      var h = document.documentElement;
+      var max = h.scrollHeight - h.clientHeight;
+      var p = max > 0 ? (h.scrollTop || document.body.scrollTop) / max : 0;
+      progress.style.transform = 'scaleX(' + p + ')';
+    };
+    document.addEventListener('scroll', onScroll, { passive: true });
+    window.addEventListener('resize', onScroll);
+    onScroll();
+    var bar = document.querySelector('.search-sort-bar');
+    if (bar && 'IntersectionObserver' in window) {
+      var sentinel = document.createElement('div');
+      sentinel.setAttribute('aria-hidden', 'true');
+      bar.parentNode.insertBefore(sentinel, bar);
+      new IntersectionObserver(function (entries) {
+        bar.classList.toggle('is-stuck', !entries[0].isIntersecting);
+      }, { rootMargin: '-72px 0px 0px 0px' }).observe(sentinel);
+    }
+    if (reduce || nativeView || !('IntersectionObserver' in window)) return;
+    var targets = document.querySelectorAll('.step, .talent-card, .freelancer-card, .score-beam__fill');
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (en) {
+        if (en.isIntersecting) { en.target.classList.add('is-inview'); io.unobserve(en.target); }
+      });
+    }, { threshold: 0.2, rootMargin: '0px 0px -8% 0px' });
+    targets.forEach(function (t) { io.observe(t); });
+  })();
+  </script>
 </body>
 </html>

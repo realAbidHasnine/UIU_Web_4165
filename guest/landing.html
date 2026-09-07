@@ -9,8 +9,10 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500;600&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="../assets/css/global.css">
   <link rel="stylesheet" href="assets/css/guest-global.css">
+  <link rel="stylesheet" href="assets/css/overdrive.css">
 </head>
 <body class="page-landing">
+  <div class="scroll-progress" aria-hidden="true"></div>
 
   <!-- REQUIRE: guest-header.php START -->
   <!-- Navbar -->
@@ -94,7 +96,7 @@
         <!-- Card 1 -->
         <a href="freelancer_public_profile.html" class="talent-card">
           <div class="talent-card__top">
-            <div class="talent-card__avatar">SJ</div>
+            <div class="talent-card__avatar talent-card__avatar--1">SJ</div>
             <div class="talent-card__skill">React &mdash; 98%</div>
           </div>
           <h3 class="talent-card__name">SHUVO Jit</h3>
@@ -108,7 +110,7 @@
         <!-- Card 2 -->
         <a href="freelancer_public_profile.html" class="talent-card">
           <div class="talent-card__top">
-            <div class="talent-card__avatar" style="background-color: #fdf2f8; color: #db2777; border-color: #fce7f3;">RH</div>
+            <div class="talent-card__avatar talent-card__avatar--2">RH</div>
             <div class="talent-card__skill">Figma &mdash; 95%</div>
           </div>
           <h3 class="talent-card__name">Rakibul Hossan</h3>
@@ -122,7 +124,7 @@
         <!-- Card 3 -->
         <a href="freelancer_public_profile.html" class="talent-card">
           <div class="talent-card__top">
-            <div class="talent-card__avatar" style="background-color: #fefce8; color: #ca8a04; border-color: #fef08a;">SS</div>
+            <div class="talent-card__avatar talent-card__avatar--3">SS</div>
             <div class="talent-card__skill">Python &mdash; 99%</div>
           </div>
           <h3 class="talent-card__name">Sadman Sakib</h3>
@@ -136,7 +138,7 @@
         <!-- Card 4 -->
         <a href="freelancer_public_profile.html" class="talent-card">
           <div class="talent-card__top">
-            <div class="talent-card__avatar" style="background-color: #ecfdf5; color: #059669; border-color: #a7f3d0;">BH</div>
+            <div class="talent-card__avatar talent-card__avatar--4">BH</div>
             <div class="talent-card__skill">Node.js &mdash; 92%</div>
           </div>
           <h3 class="talent-card__name">Badhon Hossan</h3>
@@ -194,5 +196,35 @@
   </footer>
   <!-- REQUIRE: guest-footer.php END -->
 
+  <script>
+  (function () {
+    var root = document.documentElement;
+    root.classList.add('js-overdrive');
+    var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    var supports = function (v) { try { return window.CSS && CSS.supports && CSS.supports(v); } catch (e) { return false; } };
+    var nativeScroll = supports('animation-timeline: scroll()');
+    var nativeView = supports('animation-timeline: view()');
+    if (nativeView) { root.classList.remove('js-overdrive'); }
+    var progress = document.querySelector('.scroll-progress');
+    var onScroll = function () {
+      if (!progress || reduce || nativeScroll) return;
+      var h = document.documentElement;
+      var max = h.scrollHeight - h.clientHeight;
+      var p = max > 0 ? (h.scrollTop || document.body.scrollTop) / max : 0;
+      progress.style.transform = 'scaleX(' + p + ')';
+    };
+    document.addEventListener('scroll', onScroll, { passive: true });
+    window.addEventListener('resize', onScroll);
+    onScroll();
+    if (reduce || nativeView || !('IntersectionObserver' in window)) return;
+    var targets = document.querySelectorAll('.step, .talent-card, .freelancer-card, .score-beam__fill');
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (en) {
+        if (en.isIntersecting) { en.target.classList.add('is-inview'); io.unobserve(en.target); }
+      });
+    }, { threshold: 0.2, rootMargin: '0px 0px -8% 0px' });
+    targets.forEach(function (t) { io.observe(t); });
+  })();
+  </script>
 </body>
 </html>

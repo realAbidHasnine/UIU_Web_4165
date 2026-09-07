@@ -1,0 +1,272 @@
+/* ==========================================================================
+   SkillMatch — Overdrive: Cinematic Scroll Reveal
+   One authored moment: the "verification grading" narrative.
+   Progressive enhancement: base experience is fully visible and static.
+   Motion only under (prefers-reduced-motion: no-preference).
+   ========================================================================== */
+
+:root {
+  --overdrive-ease: cubic-bezier(0.22, 0.7, 0.2, 1);
+  --overdrive-rise: 0.7s var(--overdrive-ease);
+}
+
+/* --- Scroll progress: thin proof line under navbar ---------------------- */
+.scroll-progress {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  z-index: 200;
+  background: var(--color-proof, #1e5eff);
+  transform-origin: left center;
+  transform: scaleX(0);
+}
+
+/* --- Browser surfaces: carry the design --------------------------------- */
+::selection {
+  background: var(--color-proof-tint, #e8efff);
+  color: var(--color-proof-dark, #1d4ed8);
+}
+input, textarea, select {
+  caret-color: var(--color-proof, #1e5eff);
+}
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+::-webkit-scrollbar-track {
+  background: var(--color-bg-page, #f4f7fa);
+}
+::-webkit-scrollbar-thumb {
+  background: var(--color-proof-track, #d3ddf5);
+  border-radius: 9999px;
+  border: 2px solid var(--color-bg-page, #f4f7fa);
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--color-proof, #1e5eff);
+}
+
+/* Tabular numerals for every measured readout */
+.hero__stat-value,
+.talent-card__rate,
+.freelancer-card__price,
+.score-beam__value {
+  font-variant-numeric: tabular-nums;
+}
+
+/* Locked filter stays recognizably locked, but meets text contrast */
+.select-input:disabled {
+  color: var(--color-text-muted, #5b6b7c);
+  -webkit-text-fill-color: var(--color-text-muted, #5b6b7c);
+  opacity: 1;
+}
+.locked-text,
+.locked-text span {
+  color: var(--color-text-muted, #5b6b7c);
+}
+
+/* Below-fold sections skip rendering until near viewport (perf) */
+.featured,
+.freelancer-grid,
+.how-it-works {
+  content-visibility: auto;
+  contain-intrinsic-size: auto 600px;
+}
+
+/* --- Base (no-motion / no-support): everything visible ------------------- */
+.score-beam__fill {
+  transform: scaleX(1);
+}
+
+/* --- Enhanced motion ----------------------------------------------------- */
+@media (prefers-reduced-motion: no-preference) {
+
+  /* Scroll-driven progress where supported; JS sets inline width otherwise */
+  @supports (animation-timeline: scroll()) {
+    .scroll-progress {
+      animation: overdrive-progress linear both;
+      animation-timeline: scroll(root);
+      animation-range: 0 100%;
+    }
+  }
+
+  /* Hero drift: title + subtitle recede with parallax calm */
+  @supports (animation-timeline: scroll()) {
+    body.page-landing .hero__title {
+      animation: overdrive-hero-drift linear both;
+      animation-timeline: scroll(root);
+      animation-range: 0 420px;
+    }
+    body.page-landing .hero__subtitle {
+      animation: overdrive-hero-fade linear both;
+      animation-timeline: scroll(root);
+      animation-range: 0 340px;
+    }
+  }
+
+  /* Staggered view reveals: one entrance language everywhere */
+  @supports (animation-timeline: view()) {
+    .step,
+    .talent-card,
+    .freelancer-card {
+      animation: overdrive-rise var(--overdrive-rise) both;
+      animation-timeline: view();
+      animation-range: entry 0% entry 55%;
+    }
+    /* Stagger within each grid: second/third items arrive later */
+    .how-it-works__grid .step:nth-child(2),
+    .featured__grid .talent-card:nth-child(2),
+    .featured__grid .talent-card:nth-child(5),
+    .freelancer-grid .freelancer-card:nth-child(2) {
+      animation-range: entry 5% entry 60%;
+    }
+    .how-it-works__grid .step:nth-child(3),
+    .featured__grid .talent-card:nth-child(3),
+    .featured__grid .talent-card:nth-child(6),
+    .freelancer-grid .freelancer-card:nth-child(3) {
+      animation-range: entry 10% entry 65%;
+    }
+    .featured__grid .talent-card:nth-child(4) {
+      animation-range: entry 15% entry 70%;
+    }
+
+    /* Score beams grade themselves as the card enters */
+    .score-beam__fill {
+      animation: overdrive-beam 0.9s var(--overdrive-ease) both;
+      animation-timeline: view();
+      animation-range: entry 25% entry 75%;
+    }
+    .talent-card .score-beam:nth-child(2) .score-beam__fill,
+    .freelancer-card .score-beam:nth-child(2) .score-beam__fill {
+      animation-range: entry 30% entry 80%;
+    }
+    .talent-card .score-beam:nth-child(3) .score-beam__fill,
+    .freelancer-card .score-beam:nth-child(3) .score-beam__fill {
+      animation-range: entry 35% entry 85%;
+    }
+  }
+
+  /* JS fallback: IntersectionObserver adds .is-inview */
+  .js-overdrive .step,
+  .js-overdrive .talent-card,
+  .js-overdrive .freelancer-card {
+    opacity: 0;
+    transform: translateY(18px);
+    filter: blur(6px);
+    transition: opacity 0.7s var(--overdrive-ease), transform 0.7s var(--overdrive-ease), filter 0.7s var(--overdrive-ease);
+  }
+  .js-overdrive .step.is-inview,
+  .js-overdrive .talent-card.is-inview,
+  .js-overdrive .freelancer-card.is-inview {
+    opacity: 1;
+    transform: none;
+    filter: none;
+  }
+  .js-overdrive .score-beam__fill {
+    transform: scaleX(0);
+    transition: transform 0.9s var(--overdrive-ease);
+  }
+  .js-overdrive .score-beam__fill.is-inview {
+    transform: scaleX(1);
+  }
+
+  /* When native view timelines exist, let them own the motion, not the IO */
+  @supports (animation-timeline: view()) {
+    .js-overdrive .step,
+    .js-overdrive .talent-card,
+    .js-overdrive .freelancer-card,
+    .js-overdrive .score-beam__fill {
+      opacity: unset;
+      transform: unset;
+      filter: unset;
+      transition: none;
+    }
+  }
+}
+
+/* --- Browse: sticky proof bar + anchored filters -------------------------- */
+.search-sort-bar {
+  position: sticky;
+  top: 72px;
+  z-index: 50;
+  background: color-mix(in srgb, var(--color-white, #fff) 88%, transparent);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  padding-top: 10px;
+  padding-bottom: 10px;
+  margin-left: -8px;
+  margin-right: -8px;
+  padding-left: 8px;
+  padding-right: 8px;
+  border-bottom: 1px solid transparent;
+  transition: border-color 0.25s ease, box-shadow 0.25s ease;
+}
+.search-sort-bar.is-stuck {
+  border-bottom-color: var(--color-border, #e3e9f0);
+  box-shadow: 0 8px 20px -12px rgba(15, 36, 57, 0.25);
+}
+
+@media (min-width: 961px) {
+  .filters-card {
+    position: sticky;
+    top: calc(72px + 24px);
+  }
+}
+
+/* How-it-works connector draws itself on scroll (desktop only) */
+@media (min-width: 861px) {
+  @media (prefers-reduced-motion: no-preference) {
+    @supports (animation-timeline: view()) {
+      .how-it-works__grid::before {
+        transform-origin: left center;
+        animation: overdrive-line linear both;
+        animation-timeline: view();
+        animation-range: entry 0% entry 60%;
+      }
+    }
+  }
+}
+
+/* --- Keyframes: one physical language ------------------------------------- */
+@keyframes overdrive-progress {
+  from { transform: scaleX(0); }
+  to   { transform: scaleX(1); }
+}
+@keyframes overdrive-hero-drift {
+  from { transform: translateY(0); opacity: 1; filter: blur(0); }
+  to   { transform: translateY(-26px); opacity: 0.3; filter: blur(2px); }
+}
+@keyframes overdrive-hero-fade {
+  from { opacity: 1; transform: translateY(0); }
+  to   { opacity: 0; transform: translateY(-14px); }
+}
+@keyframes overdrive-rise {
+  from { opacity: 0; transform: translateY(18px); filter: blur(6px); }
+  to   { opacity: 1; transform: none; filter: blur(0); }
+}
+@keyframes overdrive-beam {
+  from { transform: scaleX(0); }
+  to   { transform: scaleX(1); }
+}
+@keyframes overdrive-line {
+  from { transform: scaleX(0); opacity: 0.4; }
+  to   { transform: scaleX(1); opacity: 1; }
+}
+
+/* --- Reduced motion: static, calm, complete -------------------------------- */
+@media (prefers-reduced-motion: reduce) {
+  .scroll-progress {
+    display: none;
+  }
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+  html {
+    scroll-behavior: auto !important;
+  }
+}

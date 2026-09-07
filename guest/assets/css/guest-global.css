@@ -7,16 +7,14 @@
    1. Design Tokens & CSS Custom Properties
    -------------------------------------------------------------------------- */
 :root {
-  /* ── Brand Accent: the "Verification" Proof Green ─────────────────────
-     The primary accent is intentionally the *verified* color. It only ever
-     appears where a skill/score/result has been measured, so "SkillMatch"
-     and "verified" read as the same signal. */
-  --color-proof: #0c7a5b;
-  --color-proof-hover: #0a6049;
-  --color-proof-dark: #0a5a45;      /* small text on tint → WCAG AA on #e4f2ec */
-  --color-proof-tint: #e4f2ec;      /* pill/fill-bg/focus-ring */
-  --color-proof-track: #d5e8df;     /* empty score track */
-  --color-proof-line: #bfe0d2;      /* hairline border around verified chips */
+  /* ── Brand Accent: verification blue, shared with client/freelancer theme ──
+     The primary accent everywhere a skill/score/result has been measured. */
+  --color-proof: #1e5eff;
+  --color-proof-hover: #1848d1;
+  --color-proof-dark: #1d4ed8;      /* small text on tint → WCAG AA on #e8efff */
+  --color-proof-tint: #e8efff;      /* pill/fill-bg/focus-ring */
+  --color-proof-track: #d3ddf5;     /* empty score track */
+  --color-proof-line: #bccdf0;      /* hairline border around verified chips */
 
   /* Brand & Accent Colors (legacy aliases mapped to the new palette,
      so every component stays in sync from a single source) */
@@ -673,7 +671,7 @@ body.page-role-picker {
   display: flex;
   align-items: center;
   gap: 6px;
-  font-size: 11px;
+  font-size: 12px;
   color: var(--color-text-muted);
   background-color: var(--color-btn-gray);
   padding: 6px 10px;
@@ -693,7 +691,7 @@ body.page-role-picker {
   text-align: center;
   margin: var(--spacing-lg) 0;
   color: var(--color-text-muted);
-  font-size: 11px;
+  font-size: 12px;
   font-weight: 600;
 }
 
@@ -752,7 +750,7 @@ body.page-role-picker {
   color: var(--color-white);
   padding: 2px 7px;
   border-radius: var(--radius-full);
-  font-size: 10px;
+  font-size: 12px;
   font-weight: 700;
   margin-left: 8px;
 }
@@ -783,7 +781,7 @@ body.page-role-picker {
 .skill-item__score {
   background-color: var(--color-success-bg);
   color: var(--color-success-text);
-  font-size: 11px;
+  font-size: 12px;
   font-weight: 700;
   padding: 3px 10px;
   border-radius: var(--radius-full);
@@ -792,7 +790,7 @@ body.page-role-picker {
 .tag {
   background-color: var(--color-tag-bg);
   color: var(--color-tag-text);
-  font-size: 11px;
+  font-size: 12px;
   font-weight: 600;
   padding: 4px 10px;
   border-radius: var(--radius-full);
@@ -1054,7 +1052,7 @@ body.page-role-picker {
 .talent-card__skill {
   background-color: var(--color-success);
   color: var(--color-white);
-  font-size: 11px;
+  font-size: 12px;
   font-weight: 600;
   padding: 4px 10px;
   border-radius: var(--radius-full);
@@ -2124,7 +2122,7 @@ body.page-role-picker {
 .eyebrow {
   display: inline-block;
   font-family: var(--font-display);
-  font-size: 11.5px;
+  font-size: 12px;
   font-weight: 600;
   text-transform: uppercase;
   letter-spacing: 0.14em;
@@ -2208,7 +2206,7 @@ textarea:focus-visible,
   align-items: center;
   gap: 6px;
   font-family: var(--font-mono);
-  font-size: 11px;
+  font-size: 12px;
   font-weight: 500;
   color: var(--color-proof-dark);
 }
@@ -2248,7 +2246,7 @@ textarea:focus-visible,
 .hero__stat-label {
   display: block;
   font-family: var(--font-display);
-  font-size: 11px;
+  font-size: 12px;
   font-weight: 600;
   text-transform: uppercase;
   letter-spacing: 0.1em;
@@ -2318,9 +2316,9 @@ textarea:focus-visible,
 }
 
 .talent-card__avatar--4 {
-  background-color: #edf4f2;
-  color: #2e6f5e;
-  border-color: #d7e6df;
+  background-color: #eef3fd;
+  color: #2b4fc4;
+  border-color: #d2dcf2;
 }
 
 /* --- Single orchestrated "grading" moment (landing only) -------------- */
@@ -2418,4 +2416,27 @@ textarea:focus-visible,
 .profile-rating {
   font-family: var(--font-mono);
   font-variant-numeric: tabular-nums;
+}
+
+/* --- Polish pass: type measure, heading rhythm, link affordance ------- */
+h1, h2, h3 {
+  text-wrap: balance;
+}
+.hero__title, .how-it-works__title {
+  letter-spacing: -0.02em;
+  max-width: 20ch;
+}
+.hero__subtitle, .how-it-works__subtitle {
+  max-width: 68ch;
+  text-wrap: pretty;
+}
+.how-it-works__title, .featured__title-wrap h2 {
+  margin-top: var(--spacing-2xl);
+  margin-bottom: var(--spacing-sm);
+}
+a {
+  text-underline-offset: 3px;
+}
+a:hover {
+  text-underline-offset: 3px;
 }
