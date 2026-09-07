@@ -156,4 +156,28 @@ button.ic{background:none;border:0;cursor:pointer}
 
 .demo-note{position:fixed;top:12px;left:16px;color:var(--muted);font-size:13px}
 .center-page{display:flex;align-items:start;justify-content:center;min-height:100vh;padding:60px 16px}
+/* Notification Dropdown Panel (Figma 187:655) — exact */
+.notif-panel{width:360px;max-width:calc(100vw - 32px);background:#fff;border:1px solid var(--border-soft);border-radius:12px;box-shadow:0 12px 32px rgba(16,24,40,.18);overflow:hidden}
+.notif-head{display:flex;justify-content:space-between;align-items:center;padding:14px 16px}
+.notif-head h2{font-size:18px;margin:0;letter-spacing:-.2px}
+.notif-link{font-size:13.5px;font-weight:600;color:var(--primary-ink)}
+.notif-row{display:flex;gap:10px;padding:14px 16px;border-top:1px solid var(--border-light);align-items:flex-start}
+.notif-row.unread{background:#f5f3ff}
+.notif-dot{width:8px;height:8px;border-radius:50%;background:var(--primary);margin-top:14px;flex:0 0 8px}
+.notif-dot.placeholder{visibility:hidden}
+.notif-icon{width:40px;height:40px;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;flex:0 0 40px}
+.notif-icon.green{background:#0e7a4d}
+.notif-icon.blue{background:var(--primary)}
+.notif-icon.brown{background:#92400e}
+.notif-text{flex:1;min-width:0}
+.notif-title{font-weight:700;font-size:14.5px;color:var(--text)}
+.notif-desc{color:var(--muted);font-size:13.5px;margin-top:2px}
+.notif-time{font-size:12.5px;color:var(--muted);white-space:nowrap}
+.notif-foot{text-align:center;padding:14px 16px;border-top:1px solid var(--border-light)}
+/* Bell popup: same <details> pattern as .profile-wrap */
+.notif-wrap{position:relative;display:inline-flex}
+.notif-wrap summary{list-style:none;cursor:pointer;display:inline-flex;align-items:center;justify-content:center;color:#4b5563}
+.notif-wrap summary::-webkit-details-marker{display:none}
+.notif-wrap summary::marker{content:""}
+.notif-wrap .notif-panel{position:absolute;right:0;top:calc(100% + 10px);z-index:50}
 .filters{min-width:0}
