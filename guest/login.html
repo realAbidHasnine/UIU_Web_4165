@@ -28,7 +28,7 @@
 
     <h2 class="modal__title">Welcome Back</h2>
 
-    <form id="loginForm" action="login.html" method="POST">
+    <form id="loginForm" action="login.html" method="POST" onsubmit="return handleLogin(event);">
       <!-- Email -->
       <div class="form-group">
         <div class="form-label-row">
@@ -71,6 +71,33 @@
       </p>
     </form>
   </div>
+
+  <script>
+    // Pre-select role from ?role= query param (set by the role picker on sign_in.html)
+    var preselected = new URLSearchParams(window.location.search).get('role');
+    if (preselected) {
+      var activeBtn = document.querySelector('button[name="user_role"][value="' + preselected + '"]');
+      if (activeBtn) {
+        activeBtn.focus();
+        activeBtn.classList.add('btn--outline');
+      }
+    }
+
+    function handleLogin(event) {
+      var role = event.submitter && event.submitter.name === 'user_role' ? event.submitter.value : 'client';
+      var dest;
+      if (role === 'freelancer') {
+        dest = '../freelancer/index.html';
+      } else if (role === 'client') {
+        dest = '../client/index.html';
+      } else {
+        dest = '../client/index.html';
+      }
+      event.preventDefault();
+      window.location.href = dest;
+      return false;
+    }
+  </script>
 
 </body>
 </html>
