@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Notification – Warning (Suspend Account)</title>
+<link rel="stylesheet" href="../css/background-border.css">
+</head>
+<body>
+
+  <div class="overlay" id="overlay">
+    <div class="dialog" role="alertdialog" aria-labelledby="notif-title" aria-describedby="notif-body">
+
+      <div class="dialog-header">
+        <span class="icon-badge" aria-hidden="true">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+            <path d="M12 3.5 L21.5 20 H2.5 L12 3.5 Z" stroke="#DC2626" stroke-width="1.8" stroke-linejoin="round"/>
+            <line x1="12" y1="9.5" x2="12" y2="14" stroke="#DC2626" stroke-width="1.8" stroke-linecap="round"/>
+            <circle cx="12" cy="17" r="1" fill="#DC2626"/>
+          </svg>
+        </span>
+        <h2 id="notif-title" class="dialog-title">Warning: Account Suspension</h2>
+      </div>
+
+      <p id="notif-body" class="dialog-body">
+        Are you sure you want to suspend this user? They will lose access to all platform features.
+      </p>
+
+      <div class="dialog-divider"></div>
+
+      <div class="dialog-actions">
+        <a href="#" id="cancelBtn" class="btn btn-cancel">Cancel</a>
+        <a href="#" id="confirmBtn" class="btn btn-confirm">Confirm Suspend</a>
+      </div>
+
+    </div>
+  </div>
+
+  <script>
+    var params = new URLSearchParams(window.location.search);
+    var from = params.get('from') || 'user-management.html';
+
+    document.getElementById('cancelBtn').href = from;
+    document.getElementById('confirmBtn').href = 'notification-success.html?from=' + encodeURIComponent(from);
+
+    document.getElementById('overlay').addEventListener('click', function (e) {
+      if (e.target === this) {
+        window.location.href = from;
+      }
+    });
+  </script>
+
+</body>
+</html>

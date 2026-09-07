@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SkillMatch — Pending Client Approvals</title>
+<link rel="stylesheet" href="../css/client-approvals.css">
+</head>
+<body>
+
+  <aside class="sidebar">
+    <div class="sidebar-logo">SkillMatch</div>
+    <nav class="nav-list">
+      <a href="admin-dashboard.html" class="nav-item">Dashboard</a>
+      <a href="freelancer-approvals.html" class="nav-item">Freelancer Approvals</a>
+      <a href="client-approvals.html" class="nav-item active">Client Approvals</a>
+      <a href="skill-category-manager.html" class="nav-item">Skill Categories</a>
+      <a href="question-bank-manager.html" class="nav-item">Question Bank</a>
+      <a href="user-management.html" class="nav-item">User Management</a>
+      <a href="reports-generator.html" class="nav-item">Reports</a>
+    </nav>
+    <div class="sidebar-footer">
+      <div class="avatar-icon">
+        <svg viewBox="0 0 24 24"><path d="M12 12c2.7 0 4.9-2.2 4.9-4.9S14.7 2.2 12 2.2 7.1 4.4 7.1 7.1 9.3 12 12 12zm0 2.5c-3.3 0-9.8 1.6-9.8 4.9v2.4h19.6v-2.4c0-3.3-6.5-4.9-9.8-4.9z"/></svg>
+      </div>
+      <div class="user-block">
+        <span class="user-name">Admin User</span>
+        <a href="login.html" class="logout-btn">Log Out</a>
+      </div>
+    </div>
+  </aside>
+
+  <main class="main">
+    <div class="top-bar">
+      <span class="top-bar-title">Client Approvals</span>
+      <a href="admin-dashboard.html" class="back-btn" aria-label="Go back">&#8592;</a>
+    </div>
+
+    <div class="content">
+      <h1 class="page-heading">Pending Client Approvals</h1>
+      <p class="page-subtext">Review and verify new corporate client registrations before granting platform access.</p>
+
+      <div class="controls-row">
+        <div class="search-box">
+          <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+          <input type="text" placeholder="Search clients...">
+        </div>
+        <div class="controls-right">
+          <div class="filter-select">
+            Status: Pending
+            <svg viewBox="0 0 10 6"><path d="M1 1l4 4 4-4" stroke="#1a1d29" stroke-width="1.5" fill="none"/></svg>
+          </div>
+          <div class="icon-btn">
+            <svg viewBox="0 0 24 24"><path d="M3 4h18l-7 9v6l-4-2v-4z"/></svg>
+          </div>
+        </div>
+      </div>
+
+      <section class="table-card">
+        <table>
+          <thead>
+            <tr>
+              <th>Company / Name</th>
+              <th>Email</th>
+              <th>Submitted Date</th>
+              <th class="actions-col">Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>
+                <div class="company-cell">
+                  <div class="company-logo" style="background:#2f6fed;">NI</div>
+                  <div>
+                    <div class="company-name">Nexus Industries</div>
+                    <div class="contact-name">Sarah Jenkins</div>
+                  </div>
+                </div>
+              </td>
+              <td class="email-cell">s.jenkins@nexus-ind.com</td>
+              <td class="submitted-date">July 24, 2026</td>
+              <td>
+                <div class="actions-cell">
+                  <button class="btn btn-view">View Details</button>
+                  <button class="btn btn-approve">Approve</button>
+                  <button class="btn btn-reject">Reject</button>
+                </div>
+              </td>
+            </tr>
+
+            <tr>
+              <td>
+                <div class="company-cell">
+                  <div class="company-logo" style="background:#9aa3b2;">AG</div>
+                  <div>
+                    <div class="company-name">Apex Global</div>
+                    <div class="contact-name">Marcus Thorne</div>
+                  </div>
+                </div>
+              </td>
+              <td class="email-cell">m.thorne@apexglobal.io</td>
+              <td class="submitted-date">Feb 23, 2026</td>
+              <td>
+                <div class="actions-cell">
+                  <button class="btn btn-view">View Details</button>
+                  <button class="btn btn-approve">Approve</button>
+                  <button class="btn btn-reject">Reject</button>
+                </div>
+              </td>
+            </tr>
+
+            <tr>
+              <td>
+                <div class="company-cell">
+                  <div class="company-logo" style="background:#2fd18f;">Q</div>
+                  <div>
+                    <div class="company-name">Quantum Systems</div>
+                    <div class="contact-name">Elena Rostova</div>
+                  </div>
+                </div>
+              </td>
+              <td class="email-cell">elena@quantum-sys.net</td>
+              <td class="submitted-date">Jun 22, 2026</td>
+              <td>
+                <div class="actions-cell">
+                  <button class="btn btn-view">View Details</button>
+                  <button class="btn btn-approve">Approve</button>
+                  <button class="btn btn-reject">Reject</button>
+                </div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+
+        <div class="table-footer">
+          <span class="entries-info">Showing 1 to 3 of 12 entries</span>
+          <div class="pagination">
+            <button class="page-btn" disabled>&lsaquo;</button>
+            <button class="page-btn active">1</button>
+            <button class="page-btn">2</button>
+            <button class="page-btn">3</button>
+            <button class="page-btn ellipsis">&hellip;</button>
+            <button class="page-btn">&rsaquo;</button>
+          </div>
+        </div>
+      </section>
+    </div>
+  </main>
+
+</body>
+</html>

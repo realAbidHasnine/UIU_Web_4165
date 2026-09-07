@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SkillMatch — Admin Login</title>
+<link rel="stylesheet" href="../css/admin-login.css">
+</head>
+<body>
+
+  <div class="login-wrapper">
+    <div class="brand-name">SkillMatch</div>
+    <span class="admin-badge">Admin</span>
+    <p class="login-subtitle">Log in to the admin console.</p>
+
+    <div class="login-card">
+      <form onsubmit="event.preventDefault(); window.location.href='admin-dashboard.html';">
+        <div class="form-group">
+          <label class="form-label" for="email">Email address</label>
+          <input class="form-input" type="email" id="email" name="email">
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="password">Password</label>
+          <input class="form-input" type="password" id="password" name="password">
+        </div>
+
+        <button type="submit" class="login-btn">Log In</button>
+      </form>
+    </div>
+
+    <p class="login-footnote">Admin access only. Contact IT if you've lost your credentials.</p>
+  </div>
+
+</body>
+</html>

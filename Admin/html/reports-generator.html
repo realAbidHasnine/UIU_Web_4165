@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SkillMatch — Reports Generator</title>
+<link rel="stylesheet" href="../css/reports-generator.css">
+</head>
+<body>
+
+  <aside class="sidebar">
+    <div class="sidebar-logo">SkillMatch</div>
+    <nav class="nav-list">
+      <a href="admin-dashboard.html" class="nav-item">Dashboard</a>
+      <a href="freelancer-approvals.html" class="nav-item">Freelancer Approvals</a>
+      <a href="client-approvals.html" class="nav-item">Client Approvals</a>
+      <a href="skill-category-manager.html" class="nav-item">Skill Categories</a>
+      <a href="question-bank-manager.html" class="nav-item">Question Bank</a>
+      <a href="user-management.html" class="nav-item">User Management</a>
+      <a href="reports-generator.html" class="nav-item active">Reports</a>
+    </nav>
+    <div class="sidebar-footer">
+      <div class="avatar-icon">
+        <svg viewBox="0 0 24 24"><path d="M12 12c2.7 0 4.9-2.2 4.9-4.9S14.7 2.2 12 2.2 7.1 4.4 7.1 7.1 9.3 12 12 12zm0 2.5c-3.3 0-9.8 1.6-9.8 4.9v2.4h19.6v-2.4c0-3.3-6.5-4.9-9.8-4.9z"/></svg>
+      </div>
+      <div class="user-block">
+        <span class="user-name">Admin User</span>
+        <a href="login.html" class="logout-btn">Log Out</a>
+      </div>
+    </div>
+  </aside>
+
+  <main class="main">
+    <div class="topbar">
+      <a href="admin-dashboard.html" class="back-btn" aria-label="Go back">&#8592;</a>
+    </div>
+
+    <div class="page-header">
+      <div>
+        <h1>Reports</h1>
+      </div>
+    </div>
+
+    <div class="report-card">
+      <div class="field-group">
+        <label class="field-label" for="report-type">Report Type</label>
+        <div class="select-wrap">
+          <select id="report-type" class="report-select">
+            <option value="" selected disabled>Select a report type...</option>
+            <option value="financial">Financial Summary</option>
+            <option value="user-growth">User Growth</option>
+            <option value="fraud-log">Fraud Log</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="field-group">
+        <span class="field-label">Date Range</span>
+        <div class="date-range">
+          <div class="date-field">
+            <label class="date-label" for="date-from">From</label>
+            <input type="text" id="date-from" placeholder="dd/mm/yyyy">
+          </div>
+          <div class="date-field">
+            <label class="date-label" for="date-to">To</label>
+            <input type="text" id="date-to" placeholder="dd/mm/yyyy">
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <h2 class="section-title">Previously Generated Reports</h2>
+
+    <div class="table-card reports-table-card">
+      <table>
+        <thead>
+          <tr>
+            <th>Filename</th>
+            <th>Generated Date</th>
+            <th class="col-actions">Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Financial_Summary_Q3.pdf</td>
+            <td>Feb 12, 2026</td>
+            <td class="col-actions"><a href="notification-success-download.html?from=reports-generator.html" class="link-edit">Download</a></td>
+          </tr>
+          <tr>
+            <td>User_Growth_Sept2026.pdf</td>
+            <td>Jun 01, 2026</td>
+            <td class="col-actions"><a href="notification-success-download.html?from=reports-generator.html" class="link-edit">Download</a></td>
+          </tr>
+          <tr>
+            <td>Fraud_Log_Weekly_W40.pdf</td>
+            <td>July 28, 2026</td>
+            <td class="col-actions"><a href="notification-success-download.html?from=reports-generator.html" class="link-edit">Download</a></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <a href="notification-success-download.html?from=reports-generator.html" class="generate-btn">Generate PDF</a>
+  </main>
+
+</body>
+</html>

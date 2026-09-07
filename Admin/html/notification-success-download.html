@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Notification – Download Successful</title>
+<link rel="stylesheet" href="../css/notification-success.css">
+</head>
+<body>
+
+  <div class="notification-overlay" id="overlay">
+    <div class="notification-card" role="status" aria-live="polite">
+
+      <span class="notification-icon" aria-hidden="true">
+        <svg width="34" height="34" viewBox="0 0 24 24" fill="none">
+          <path d="M6 12.5 L10 16.5 L18 7.5" stroke="#15803D" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </span>
+
+      <p class="notification-message">Download Successful!</p>
+      <p class="notification-hint">Click anywhere outside to continue</p>
+
+    </div>
+  </div>
+
+  <script>
+    var params = new URLSearchParams(window.location.search);
+    var from = params.get('from') || 'reports-generator.html';
+    document.getElementById('overlay').addEventListener('click', function (e) {
+      if (e.target === this) {
+        window.location.href = from;
+      }
+    });
+  </script>
+
+</body>
+</html>

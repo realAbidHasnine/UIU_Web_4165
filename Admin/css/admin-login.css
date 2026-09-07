@@ -1,0 +1,116 @@
+:root {
+  --page-bg: #eef0fb;
+  --card-bg: #ffffff;
+  --border-color: #e6e8f0;
+  --text-dark: #1a1d29;
+  --text-muted: #8a8f9c;
+  --brand-blue: #2f6fed;
+  --badge-green: #2fce6a;
+  --login-btn: #2fce6a;
+  --login-btn-hover: #26b85c;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  background: var(--page-bg);
+  color: var(--text-dark);
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 40px 20px;
+}
+
+.login-wrapper {
+  width: 100%;
+  max-width: 320px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.brand-name {
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--brand-blue);
+  margin-bottom: 8px;
+}
+
+.admin-badge {
+  background: var(--badge-green);
+  color: #ffffff;
+  font-size: 11px;
+  font-weight: 600;
+  padding: 3px 14px;
+  border-radius: 12px;
+  margin-bottom: 18px;
+}
+
+.login-subtitle {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text-dark);
+  margin-bottom: 22px;
+  text-align: center;
+}
+
+.login-card {
+  background: var(--card-bg);
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  padding: 24px;
+  width: 100%;
+}
+
+.form-group { margin-bottom: 16px; }
+.form-group:last-of-type { margin-bottom: 0; }
+
+.form-label {
+  display: block;
+  font-size: 12.5px;
+  font-weight: 500;
+  color: var(--text-dark);
+  margin-bottom: 6px;
+}
+
+.form-input {
+  width: 100%;
+  padding: 9px 12px;
+  font-size: 13.5px;
+  border: 1px solid var(--border-color);
+  border-radius: 6px;
+  color: var(--text-dark);
+  outline: none;
+  background: #ffffff;
+}
+
+.form-input:focus { border-color: var(--brand-blue); }
+
+.login-btn {
+  width: 100%;
+  background: var(--login-btn);
+  color: #ffffff;
+  border: none;
+  font-size: 14px;
+  font-weight: 600;
+  padding: 11px 0;
+  border-radius: 6px;
+  cursor: pointer;
+  margin-top: 20px;
+}
+
+.login-btn:hover { background: var(--login-btn-hover); }
+
+.login-footnote {
+  font-size: 12px;
+  color: var(--text-muted);
+  text-align: center;
+  margin-top: 16px;
+  line-height: 1.5;
+}
+
+@media (max-width: 400px) {
+  .login-wrapper { max-width: 100%; }
+}

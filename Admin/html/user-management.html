@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SkillMatch — User Management</title>
+<link rel="stylesheet" href="../css/user-management.css">
+</head>
+<body>
+
+  <aside class="sidebar">
+    <div class="sidebar-logo">SkillMatch</div>
+    <nav class="nav-list">
+      <a href="admin-dashboard.html" class="nav-item">Dashboard</a>
+      <a href="freelancer-approvals.html" class="nav-item">Freelancer Approvals</a>
+      <a href="client-approvals.html" class="nav-item">Client Approvals</a>
+      <a href="skill-category-manager.html" class="nav-item">Skill Categories</a>
+      <a href="question-bank-manager.html" class="nav-item">Question Bank</a>
+      <a href="user-management.html" class="nav-item active">User Management</a>
+      <a href="reports-generator.html" class="nav-item">Reports</a>
+    </nav>
+    <div class="sidebar-footer">
+      <div class="avatar-icon">
+        <svg viewBox="0 0 24 24"><path d="M12 12c2.7 0 4.9-2.2 4.9-4.9S14.7 2.2 12 2.2 7.1 4.4 7.1 7.1 9.3 12 12 12zm0 2.5c-3.3 0-9.8 1.6-9.8 4.9v2.4h19.6v-2.4c0-3.3-6.5-4.9-9.8-4.9z"/></svg>
+      </div>
+      <div class="user-block">
+        <span class="user-name">Admin User</span>
+        <a href="login.html" class="logout-btn">Log Out</a>
+      </div>
+    </div>
+  </aside>
+
+  <main class="main main-flush">
+    <div class="um-topbar">
+      <h1 class="um-title">User Management</h1>
+      <div class="um-topbar-controls">
+        <div class="search-box">
+          <svg class="search-icon" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="11" cy="11" r="7"></circle>
+            <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+          </svg>
+          <input type="text" placeholder="Search users...">
+        </div>
+        <select class="role-select">
+          <option>All Roles</option>
+          <option>Freelancer</option>
+          <option>Client</option>
+        </select>
+      </div>
+      <a href="admin-dashboard.html" class="back-btn" aria-label="Go back">&#8592;</a>
+    </div>
+
+    <div class="um-body">
+      <div class="table-card">
+        <table class="um-table">
+          <thead>
+            <tr>
+              <th>User</th>
+              <th>Role</th>
+              <th>Status</th>
+              <th>Join Date</th>
+              <th class="col-actions">Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>
+                <div class="user-cell">
+                  <img class="avatar" src="https://i.pravatar.cc/64?img=47" alt="">
+                  <div>
+                    <div class="user-cell-name">Nabila Islam</div>
+                    <div class="user-cell-email">nabilaj@example.com</div>
+                  </div>
+                </div>
+              </td>
+              <td><span class="pill pill-type">Freelancer</span></td>
+              <td><span class="pill pill-active">Active</span></td>
+              <td>Jun 12, 2026</td>
+              <td class="col-actions">
+                <div class="action-group">
+                  <a href="#" class="link-view">View Activity Log</a>
+                  <a href="background-border.html?from=user-management.html" class="btn-outline btn-flag">Flag as Fraud</a>
+                  <button class="btn-outline btn-suspend">Suspend</button>
+                </div>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <div class="user-cell">
+                  <img class="avatar" src="https://i.pravatar.cc/64?img=13" alt="">
+                  <div>
+                    <div class="user-cell-name">Bonti</div>
+                    <div class="user-cell-email">bonti@example.com</div>
+                  </div>
+                </div>
+              </td>
+              <td><span class="pill pill-type">Client</span></td>
+              <td><span class="pill pill-flagged">Flagged</span></td>
+              <td>Feb 05, 2026</td>
+              <td class="col-actions">
+                <div class="action-group">
+                  <a href="#" class="link-view">View Activity Log</a>
+                  <a href="background-border.html?from=user-management.html" class="btn-outline btn-flag">Flag as Fraud</a>
+                  <button class="btn-outline btn-suspend">Suspend</button>
+                </div>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <div class="user-cell">
+                  <img class="avatar" src="https://i.pravatar.cc/64?img=33" alt="">
+                  <div>
+                    <div class="user-cell-name">Nazrul Hawlader</div>
+                    <div class="user-cell-email">nazrul@example.com</div>
+                  </div>
+                </div>
+              </td>
+              <td><span class="pill pill-type">Freelancer</span></td>
+              <td><span class="pill pill-suspended">Suspended</span></td>
+              <td>Jan 01, 2026</td>
+              <td class="col-actions">
+                <div class="action-group">
+                  <a href="#" class="link-view">View Activity Log</a>
+                  <span class="btn-outline btn-flag disabled">Flag as Fraud</span>
+                  <button class="btn-outline btn-suspend" disabled>Suspend</button>
+                </div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </main>
+
+</body>
+</html>

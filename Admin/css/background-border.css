@@ -1,0 +1,91 @@
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+}
+
+.overlay {
+  min-height: 100vh;
+  background: rgba(26, 29, 41, 0.55);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  cursor: pointer;
+}
+
+.dialog {
+  background: #ffffff;
+  border: 1px solid #fca5a5;
+  border-radius: 10px;
+  padding: 24px;
+  width: 100%;
+  max-width: 380px;
+  cursor: default;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+}
+
+.dialog-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 12px;
+}
+
+.icon-badge {
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  background: #fee2e2;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.dialog-title {
+  font-size: 15px;
+  font-weight: 700;
+  color: #1a1d29;
+}
+
+.dialog-body {
+  font-size: 13.5px;
+  color: #4b5060;
+  line-height: 1.6;
+  margin-bottom: 18px;
+}
+
+.dialog-divider {
+  height: 1px;
+  background: #e6e8f0;
+  margin-bottom: 18px;
+}
+
+.dialog-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+}
+
+.btn {
+  font-size: 13px;
+  font-weight: 600;
+  padding: 9px 16px;
+  border-radius: 6px;
+  cursor: pointer;
+  text-decoration: none;
+  display: inline-block;
+}
+
+.btn-cancel {
+  background: #ffffff;
+  border: 1px solid #e6e8f0;
+  color: #1a1d29;
+}
+
+.btn-confirm {
+  background: #dc2626;
+  border: 1px solid #dc2626;
+  color: #ffffff;
+}

@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SkillMatch — Pending Freelancing Approvals</title>
+<link rel="stylesheet" href="../css/freelancer-approvals.css">
+</head>
+<body>
+
+  <aside class="sidebar">
+    <div class="sidebar-logo">SkillMatch</div>
+    <nav class="nav-list">
+      <a href="admin-dashboard.html" class="nav-item">Dashboard</a>
+      <a href="freelancer-approvals.html" class="nav-item active">Freelancer Approvals</a>
+      <a href="client-approvals.html" class="nav-item">Client Approvals</a>
+      <a href="skill-category-manager.html" class="nav-item">Skill Categories</a>
+      <a href="question-bank-manager.html" class="nav-item">Question Bank</a>
+      <a href="user-management.html" class="nav-item">User Management</a>
+      <a href="reports-generator.html" class="nav-item">Reports</a>
+    </nav>
+    <div class="sidebar-footer">
+      <div class="avatar-icon">
+        <svg viewBox="0 0 24 24"><path d="M12 12c2.7 0 4.9-2.2 4.9-4.9S14.7 2.2 12 2.2 7.1 4.4 7.1 7.1 9.3 12 12 12zm0 2.5c-3.3 0-9.8 1.6-9.8 4.9v2.4h19.6v-2.4c0-3.3-6.5-4.9-9.8-4.9z"/></svg>
+      </div>
+      <div class="user-block">
+        <span class="user-name">Admin User</span>
+        <a href="login.html" class="logout-btn">Log Out</a>
+      </div>
+    </div>
+  </aside>
+
+  <main class="main">
+    <div class="content">
+      <div class="top-bar">
+        <h1 class="page-title">Pending Freelancing Approvals</h1>
+        <a href="admin-dashboard.html" class="back-btn" aria-label="Go back">&#8592;</a>
+      </div>
+
+      <div class="controls-row">
+        <div class="search-box">
+          <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+          <input type="text" placeholder="Search by name or skill...">
+        </div>
+        <div class="controls-right">
+          <div class="filter-select">
+            Pending Review
+            <svg viewBox="0 0 10 6"><path d="M1 1l4 4 4-4" stroke="#1a1d29" stroke-width="1.5" fill="none"/></svg>
+          </div>
+          <div class="icon-btn">
+            <svg viewBox="0 0 24 24"><path d="M3 4h18l-7 9v6l-4-2v-4z"/></svg>
+          </div>
+        </div>
+      </div>
+
+      <section class="table-card">
+        <table>
+          <thead>
+            <tr>
+              <th>Freelancer</th>
+              <th>Submitted Date</th>
+              <th>Skill Categories</th>
+              <th>Portfolio</th>
+              <th>GitHub</th>
+              <th class="actions-col">Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>
+                <div class="freelancer-cell">
+                  <img class="freelancer-avatar" src="https://i.pravatar.cc/72?img=12" alt="Sabbir Hossan">
+                  <div>
+                    <div class="freelancer-name">Sabbir Hossan</div>
+                    <div class="freelancer-email">sabbir.h@example.com</div>
+                  </div>
+                </div>
+              </td>
+              <td class="submitted-date">Jun 24, 2026</td>
+              <td>
+                <div class="skill-tags">
+                  <span class="tag">React</span>
+                  <span class="tag">Node.js</span>
+                  <span class="tag more">+2</span>
+                </div>
+              </td>
+              <td>
+                <a href="#" class="portfolio-link">View Portfolio
+                  <svg viewBox="0 0 24 24" fill="none" stroke="#2f6fed" stroke-width="2"><path d="M14 3h7v7"/><path d="M10 14L21 3"/><path d="M21 14v5a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V7a2 2 0 0 1 2-2h5"/></svg>
+                </a>
+              </td>
+              <td><a href="#" class="github-link">github.com/SabbirHossain</a></td>
+              <td>
+                <div class="actions-cell">
+                  <button class="btn btn-view">View Details</button>
+                  <button class="btn btn-approve">Approve</button>
+                  <button class="btn btn-reject">Reject</button>
+                </div>
+              </td>
+            </tr>
+
+            <tr>
+              <td>
+                <div class="freelancer-cell">
+                  <img class="freelancer-avatar" src="https://i.pravatar.cc/72?img=33" alt="Anik">
+                  <div>
+                    <div class="freelancer-name">Anik</div>
+                    <div class="freelancer-email">anik.design@example.com</div>
+                  </div>
+                </div>
+              </td>
+              <td class="submitted-date">July 23, 2026</td>
+              <td>
+                <div class="skill-tags">
+                  <span class="tag">UI/UX</span>
+                  <span class="tag">Figma</span>
+                </div>
+              </td>
+              <td>
+                <a href="#" class="portfolio-link">View Portfolio
+                  <svg viewBox="0 0 24 24" fill="none" stroke="#2f6fed" stroke-width="2"><path d="M14 3h7v7"/><path d="M10 14L21 3"/><path d="M21 14v5a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V7a2 2 0 0 1 2-2h5"/></svg>
+                </a>
+              </td>
+              <td><span class="github-muted">Not provided</span></td>
+              <td>
+                <div class="actions-cell">
+                  <button class="btn btn-view">View Details</button>
+                  <button class="btn btn-approve">Approve</button>
+                  <button class="btn btn-reject">Reject</button>
+                </div>
+              </td>
+            </tr>
+
+            <tr>
+              <td>
+                <div class="freelancer-cell">
+                  <img class="freelancer-avatar" src="https://i.pravatar.cc/72?img=45" alt="Nadia Islam">
+                  <div>
+                    <div class="freelancer-name">Nadia Islam</div>
+                    <div class="freelancer-email">nadia.data@example.com</div>
+                  </div>
+                </div>
+              </td>
+              <td class="submitted-date">Feb 21, 2026</td>
+              <td>
+                <div class="skill-tags">
+                  <span class="tag">Python</span>
+                  <span class="tag">Machine Learning</span>
+                  <span class="tag more">+4</span>
+                </div>
+              </td>
+              <td><span class="portfolio-pending">Pending Verification</span></td>
+              <td><a href="#" class="github-link">github.com/Nadia</a></td>
+              <td>
+                <div class="actions-cell">
+                  <button class="btn btn-view">View Details</button>
+                  <button class="btn btn-approve">Approve</button>
+                  <button class="btn btn-reject">Reject</button>
+                </div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+
+        <div class="table-footer">
+          <span class="entries-info">Showing 1 to 3 of 12 entries</span>
+          <div class="pagination">
+            <button class="page-btn" disabled>Previous</button>
+            <button class="page-btn active">1</button>
+            <button class="page-btn">2</button>
+            <button class="page-btn">3</button>
+            <button class="page-btn">Next</button>
+          </div>
+        </div>
+      </section>
+    </div>
+  </main>
+
+</body>
+</html>

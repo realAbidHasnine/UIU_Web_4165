@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SkillMatch — Platform Overview</title>
+<link rel="stylesheet" href="../css/admin-dashboard.css">
+</head>
+<body>
+
+  <aside class="sidebar">
+    <div class="sidebar-logo">SkillMatch</div>
+    <nav class="nav-list">
+      <a href="admin-dashboard.html" class="nav-item active">Dashboard</a>
+      <a href="freelancer-approvals.html" class="nav-item">Freelancer Approvals</a>
+      <a href="client-approvals.html" class="nav-item">Client Approvals</a>
+      <a href="skill-category-manager.html" class="nav-item">Skill Categories</a>
+      <a href="question-bank-manager.html" class="nav-item">Question Bank</a>
+      <a href="user-management.html" class="nav-item">User Management</a>
+      <a href="reports-generator.html" class="nav-item">Reports</a>
+    </nav>
+    <div class="sidebar-footer">
+      <div class="avatar-icon">
+        <svg viewBox="0 0 24 24"><path d="M12 12c2.7 0 4.9-2.2 4.9-4.9S14.7 2.2 12 2.2 7.1 4.4 7.1 7.1 9.3 12 12 12zm0 2.5c-3.3 0-9.8 1.6-9.8 4.9v2.4h19.6v-2.4c0-3.3-6.5-4.9-9.8-4.9z"/></svg>
+      </div>
+      <div class="user-block">
+        <span class="user-name">Admin User</span>
+        <a href="login.html" class="logout-btn">Log Out</a>
+      </div>
+    </div>
+  </aside>
+
+  <main class="main">
+    <div class="content">
+      <div class="top-bar">
+        <h1 class="page-title">Platform Overview</h1>
+        <button class="generate-btn" onclick="location.href='reports-generator.html'">Generate Report</button>
+      </div>
+
+      <section class="stats-row">
+        <div class="stat-card">
+          <div class="stat-label">Total Users</div>
+          <div class="stat-value">24,592</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-label">Active Freelancers</div>
+          <div class="stat-value">8,341</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-label">Active Clients</div>
+          <div class="stat-value">3,105</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-label">Projects Posted<br>This Month</div>
+          <div class="stat-value">1,204</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-label">Platform Revenue</div>
+          <div class="stat-value">$142,500</div>
+        </div>
+      </section>
+
+      <section class="table-card">
+        <div class="table-header">Top Skill Categories by Demand</div>
+
+        <div class="skill-row">
+          <span class="skill-name">Web Development</span>
+          <span class="skill-pill">4,210 Projects</span>
+        </div>
+        <div class="skill-row">
+          <span class="skill-name">UI/UX Design</span>
+          <span class="skill-pill">3,850 Projects</span>
+        </div>
+        <div class="skill-row">
+          <span class="skill-name">Content Writing</span>
+          <span class="skill-pill">2,905 Projects</span>
+        </div>
+        <div class="skill-row">
+          <span class="skill-name">Digital Marketing</span>
+          <span class="skill-pill">2,100 Projects</span>
+        </div>
+        <div class="skill-row">
+          <span class="skill-name">Data Science</span>
+          <span class="skill-pill">1,540 Projects</span>
+        </div>
+      </section>
+    </div>
+  </main>
+
+</body>
+</html>
