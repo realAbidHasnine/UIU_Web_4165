@@ -8,8 +8,9 @@
 </head>
 <body>
 
-  <div class="notification-overlay" id="overlay">
-    <div class="notification-card" role="status" aria-live="polite">
+  <div class="notification-overlay" id="overlay" style="position:relative;">
+    <a href="admin-dashboard.html" style="position:fixed;inset:0;z-index:1;cursor:pointer;" aria-label="Dismiss and continue"></a>
+    <div class="notification-card" role="status" aria-live="polite" style="position:relative;z-index:2;">
 
       <span class="notification-icon" aria-hidden="true">
         <svg width="34" height="34" viewBox="0 0 24 24" fill="none">
@@ -22,16 +23,6 @@
 
     </div>
   </div>
-
-  <script>
-    var params = new URLSearchParams(window.location.search);
-    var from = params.get('from') || 'admin-dashboard.html';
-    document.getElementById('overlay').addEventListener('click', function (e) {
-      if (e.target === this) {
-        window.location.href = from;
-      }
-    });
-  </script>
 
 </body>
 </html>
