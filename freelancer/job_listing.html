@@ -6,6 +6,58 @@
   <title>SkillMatch — Job Listings & Proposals</title>
   <link rel="stylesheet" href="assets/css/style.css">
   <link rel="stylesheet" href="../assets/css/global.css">
+  <style>
+    /* // JS-removal replacement */
+    .navbar:has(#mobileNavToggle:checked) .navbar__center,
+    #mobileNavToggle:checked ~ .navbar__center {
+      display: flex;
+    }
+    /* Real Category Filter via modern CSS :has() */
+    .job-listing-layout:has(#cat-web:not(:checked)) .job-card[data-category="web"] {
+      display: none !important;
+    }
+    .job-listing-layout:has(#cat-uiux:not(:checked)) .job-card[data-category="uiux"] {
+      display: none !important;
+    }
+    .job-listing-layout:has(#cat-mobile:not(:checked)) .job-card[data-category="mobile"] {
+      display: none !important;
+    }
+
+    /* Job Selection Active States */
+    body:has(#job-select-1:checked) .job-card[data-id="1"],
+    body:has(#job-select-2:checked) .job-card[data-id="2"],
+    body:has(#job-select-3:checked) .job-card[data-id="3"] {
+      border-color: var(--color-primary);
+      box-shadow: 0 0 0 1px var(--color-primary), var(--shadow-sm);
+    }
+    body:has(#job-select-1:checked) .job-card[data-id="1"] .btn-select-job,
+    body:has(#job-select-2:checked) .job-card[data-id="2"] .btn-select-job,
+    body:has(#job-select-3:checked) .job-card[data-id="3"] .btn-select-job {
+      background-color: var(--color-primary);
+      color: var(--color-white);
+      border-color: var(--color-primary);
+    }
+
+    /* Sidebar Detail Panels */
+    .job-details-panel {
+      display: none;
+    }
+    body:has(#job-select-1:checked) #detailPanel1,
+    body:has(#job-select-2:checked) #detailPanel2,
+    body:has(#job-select-3:checked) #detailPanel3 {
+      display: block;
+    }
+
+    /* Proposal Submission Toast Target */
+    #proposal-submitted {
+      display: none;
+    }
+    #proposal-submitted:target {
+      display: block;
+      opacity: 1;
+      transform: translateY(0);
+    }
+  </style>
 </head>
 <body>
 
@@ -27,12 +79,14 @@
       <a href="portfolio_link.html" class="navbar__link">Projects</a>
     </nav>
     
+    <input type="checkbox" id="mobileNavToggle" class="mobile-nav-toggle" style="display:none;" aria-hidden="true">
+    
     <div class="navbar__right">
-      <button class="navbar__mobile-toggle" id="mobileToggle" aria-label="Toggle navigation">
+      <label for="mobileNavToggle" class="navbar__mobile-toggle" id="mobileToggle" aria-label="Toggle navigation" role="button" tabindex="0">
         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
         </svg>
-      </button>
+      </label>
 
       <a href="freelancer_chat.html" class="navbar__icon" aria-label="Notifications" title="Notifications">
         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -57,54 +111,61 @@
   </header>
   <!-- REQUIRE: shared-header.php END -->
 
+  <!-- Hidden Radio Inputs for Pure CSS Job Selection -->
+  <input type="radio" name="selected_job" id="job-select-1" class="job-radio-select" checked style="display:none;" aria-hidden="true">
+  <input type="radio" name="selected_job" id="job-select-2" class="job-radio-select" style="display:none;" aria-hidden="true">
+  <input type="radio" name="selected_job" id="job-select-3" class="job-radio-select" style="display:none;" aria-hidden="true">
+
   <!-- 3-Column Layout -->
   <main class="main main--wide job-listing-layout">
     
     <!-- Column 1: Filters -->
     <aside class="filters-sidebar">
-      <div class="filters__header">
-        <span>Filters</span>
-        <button type="button" class="filters__reset-btn" id="resetFilters">Reset</button>
-      </div>
-      
-      <!-- Category -->
-      <div class="filter-group">
-        <div class="filter-group__title">Category</div>
-        <label class="checkbox-item">
-          <input type="checkbox" name="category" value="web" class="checkbox-item__input filter-category" checked>
-          <span class="checkbox-item__label">Web Development</span>
-        </label>
-        <label class="checkbox-item">
-          <input type="checkbox" name="category" value="uiux" class="checkbox-item__input filter-category" checked>
-          <span class="checkbox-item__label">UI/UX Design</span>
-        </label>
-        <label class="checkbox-item">
-          <input type="checkbox" name="category" value="mobile" class="checkbox-item__input filter-category" checked>
-          <span class="checkbox-item__label">Mobile Apps</span>
-        </label>
-      </div>
+      <form id="filtersForm">
+        <div class="filters__header">
+          <span>Filters</span>
+          <button type="reset" class="filters__reset-btn" id="resetFilters">Reset</button>
+        </div>
+        
+        <!-- Category -->
+        <div class="filter-group">
+          <div class="filter-group__title">Category</div>
+          <label class="checkbox-item">
+            <input type="checkbox" id="cat-web" name="category" value="web" class="checkbox-item__input filter-category" checked>
+            <span class="checkbox-item__label">Web Development</span>
+          </label>
+          <label class="checkbox-item">
+            <input type="checkbox" id="cat-uiux" name="category" value="uiux" class="checkbox-item__input filter-category" checked>
+            <span class="checkbox-item__label">UI/UX Design</span>
+          </label>
+          <label class="checkbox-item">
+            <input type="checkbox" id="cat-mobile" name="category" value="mobile" class="checkbox-item__input filter-category" checked>
+            <span class="checkbox-item__label">Mobile Apps</span>
+          </label>
+        </div>
 
-      <!-- Budget Range -->
-      <div class="filter-group">
-        <div class="filter-group__title">Budget Range</div>
-        <select name="budget_range" id="filterBudget" class="select-input">
-          <option value="any">Any Budget</option>
-          <option value="low">Under $2,500</option>
-          <option value="mid">$2,500 – $4,500</option>
-          <option value="high">$4,500+</option>
-        </select>
-      </div>
+        <!-- Budget Range (Decorative) -->
+        <div class="filter-group">
+          <div class="filter-group__title">Budget Range <small style="font-size:11px; opacity:0.7;">(Decorative)</small></div>
+          <select name="budget_range" id="filterBudget" class="select-input">
+            <option value="any">Any Budget</option>
+            <option value="low">Under $2,500</option>
+            <option value="mid">$2,500 – $4,500</option>
+            <option value="high">$4,500+</option>
+          </select>
+        </div>
 
-      <!-- Project Length -->
-      <div class="filter-group">
-        <div class="filter-group__title">Project Length</div>
-        <select name="project_length" id="filterLength" class="select-input">
-          <option value="any">Any Duration</option>
-          <option value="lt1">Less than 1 month</option>
-          <option value="1to3">1 to 3 months</option>
-          <option value="3plus">3+ months</option>
-        </select>
-      </div>
+        <!-- Project Length (Decorative) -->
+        <div class="filter-group">
+          <div class="filter-group__title">Project Length <small style="font-size:11px; opacity:0.7;">(Decorative)</small></div>
+          <select name="project_length" id="filterLength" class="select-input">
+            <option value="any">Any Duration</option>
+            <option value="lt1">Less than 1 month</option>
+            <option value="1to3">1 to 3 months</option>
+            <option value="3plus">3+ months</option>
+          </select>
+        </div>
+      </form>
     </aside>
 
     <!-- Column 2: Job List Feed -->
@@ -130,7 +191,7 @@
             <span class="tag-skill">Node.js</span>
             <span class="tag-skill">PostgreSQL</span>
           </div>
-          <button type="button" class="btn btn--solid btn-select-job">Apply Now</button>
+          <label for="job-select-1" class="btn btn--solid btn-select-job" role="button" tabindex="0">Apply Now</label>
         </div>
       </article>
 
@@ -154,7 +215,7 @@
             <span class="tag-skill">Tailwind CSS</span>
             <span class="tag-skill">Figma</span>
           </div>
-          <button type="button" class="btn btn--outline btn-select-job">Apply Now</button>
+          <label for="job-select-2" class="btn btn--outline btn-select-job" role="button" tabindex="0">Apply Now</label>
         </div>
       </article>
 
@@ -178,7 +239,7 @@
             <span class="tag-skill">SEO</span>
             <span class="tag-skill">CMS</span>
           </div>
-          <button type="button" class="btn btn--outline btn-select-job">Apply Now</button>
+          <label for="job-select-3" class="btn btn--outline btn-select-job" role="button" tabindex="0">Apply Now</label>
         </div>
       </article>
 
@@ -187,26 +248,22 @@
     <!-- Column 3: Job Details & Proposal Sidebar -->
     <aside class="job-details-sidebar" id="detailsSidebar">
       
-      <!-- Details Section -->
-      <div class="job-details__content">
+      <!-- Details Section: Job 1 -->
+      <div class="job-details-panel" id="detailPanel1">
         <h1 class="job-details__title" id="detailTitle">Full-Stack React Native Application</h1>
-        
         <div class="job-details__meta">
           <span class="tag-budget" id="detailBudget">$4,000 - $6,000</span>
           <span class="job-details__time" id="detailTime">Posted 2h ago</span>
         </div>
-        
         <div class="tag-group" id="detailSkills">
           <span class="tag-skill">React Native</span>
           <span class="tag-skill">Node.js</span>
           <span class="tag-skill">PostgreSQL</span>
         </div>
-
         <div class="job-details__section">
           <h3 class="job-details__subtitle">Job Description</h3>
           <p class="job-details__text" id="detailDesc">We are looking for an experienced full-stack developer to build a cross-platform mobile application using React Native. The backend will be powered by Node.js and PostgreSQL.</p>
         </div>
-
         <div class="job-details__section">
           <h3 class="job-details__subtitle">Key Responsibilities</h3>
           <ul class="job-details__list" id="detailResponsibilities">
@@ -218,8 +275,60 @@
         </div>
       </div>
 
+      <!-- Details Section: Job 2 -->
+      <div class="job-details-panel" id="detailPanel2">
+        <h1 class="job-details__title">SaaS Dashboard UI Refactor</h1>
+        <div class="job-details__meta">
+          <span class="tag-budget">$2,000 - $3,500</span>
+          <span class="job-details__time">Posted 4h ago</span>
+        </div>
+        <div class="tag-group">
+          <span class="tag-skill">React</span>
+          <span class="tag-skill">Tailwind CSS</span>
+          <span class="tag-skill">Figma</span>
+        </div>
+        <div class="job-details__section">
+          <h3 class="job-details__subtitle">Job Description</h3>
+          <p class="job-details__text">Seeking a UI/UX developer to refactor an existing React dashboard. Needs to implement modern accessibility standards, sleek dark mode support, and interactive analytics charts.</p>
+        </div>
+        <div class="job-details__section">
+          <h3 class="job-details__subtitle">Key Responsibilities</h3>
+          <ul class="job-details__list">
+            <li>Audit existing component library for UX gaps.</li>
+            <li>Translate high-fidelity Figma specifications into React components.</li>
+            <li>Optimize dashboard rendering performance and chart interactions.</li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- Details Section: Job 3 -->
+      <div class="job-details-panel" id="detailPanel3">
+        <h1 class="job-details__title">Marketing Site Development</h1>
+        <div class="job-details__meta">
+          <span class="tag-budget">$1,500 - $2,500</span>
+          <span class="job-details__time">Posted 1d ago</span>
+        </div>
+        <div class="tag-group">
+          <span class="tag-skill">Next.js</span>
+          <span class="tag-skill">SEO</span>
+          <span class="tag-skill">CMS</span>
+        </div>
+        <div class="job-details__section">
+          <h3 class="job-details__subtitle">Job Description</h3>
+          <p class="job-details__text">Need a fast, SEO-optimized marketing site built with Next.js. The design is finalized in Figma. Must achieve 95+ score on Google Lighthouse and integrate with headless CMS.</p>
+        </div>
+        <div class="job-details__section">
+          <h3 class="job-details__subtitle">Key Responsibilities</h3>
+          <ul class="job-details__list">
+            <li>Implement responsive pages based on Figma components.</li>
+            <li>Integrate content models with headless CMS API.</li>
+            <li>Ensure sub-second page loads and complete SEO metadata.</li>
+          </ul>
+        </div>
+      </div>
+
       <!-- Submit Proposal Form -->
-      <form id="jobProposalForm" class="proposal-form" method="POST" action="submit-proposal.php">
+      <form id="jobProposalForm" class="proposal-form" method="GET" action="job_listing.html#proposal-submitted">
         <h2 class="proposal-form__title">Submit Proposal</h2>
         
         <div class="form-group">
@@ -269,159 +378,13 @@
   <!-- REQUIRE: shared-footer.php END -->
 
   <!-- Toast Container -->
-  <div class="toast-container" id="toastContainer"></div>
+  <div class="toast-container" id="toastContainer">
+    <div class="toast toast--success" id="proposal-submitted">
+      Proposal successfully submitted!
+      <a href="job_listing.html" class="toast-close" style="color:white; margin-left:12px; text-decoration:underline;">Dismiss</a>
+    </div>
+  </div>
 
-  <script>
-    // Mobile Navbar Toggle
-    const mobileToggle = document.getElementById('mobileToggle');
-    const navbarMenu = document.getElementById('navbarMenu');
-    if (mobileToggle && navbarMenu) {
-      mobileToggle.addEventListener('click', () => {
-        navbarMenu.classList.toggle('navbar__center--mobile-open');
-      });
-    }
-
-    // Interactive Job Selection & Detail View
-    const jobCards = document.querySelectorAll('.job-card');
-    const detailTitle = document.getElementById('detailTitle');
-    const detailBudget = document.getElementById('detailBudget');
-    const detailTime = document.getElementById('detailTime');
-    const detailSkills = document.getElementById('detailSkills');
-    const detailDesc = document.getElementById('detailDesc');
-    const detailResponsibilities = document.getElementById('detailResponsibilities');
-    const proposedRateInput = document.getElementById('proposedRate');
-    const detailsSidebar = document.getElementById('detailsSidebar');
-
-    function selectJob(card) {
-      jobCards.forEach(c => {
-        c.classList.remove('job-card--active');
-        const btn = c.querySelector('.btn-select-job');
-        if (btn) {
-          btn.classList.remove('btn--solid');
-          btn.classList.add('btn--outline');
-        }
-      });
-
-      card.classList.add('job-card--active');
-      const activeBtn = card.querySelector('.btn-select-job');
-      if (activeBtn) {
-        activeBtn.classList.remove('btn--outline');
-        activeBtn.classList.add('btn--solid');
-      }
-
-      // Update Sidebar
-      detailTitle.textContent = card.dataset.title;
-      detailBudget.textContent = card.dataset.budgetDisplay;
-      detailTime.textContent = card.dataset.posted;
-      detailDesc.textContent = card.dataset.desc;
-      if (proposedRateInput && card.dataset.suggestedRate) {
-        proposedRateInput.value = card.dataset.suggestedRate;
-      }
-
-      // Update Skills
-      detailSkills.innerHTML = '';
-      const skills = card.dataset.skills.split(', ');
-      skills.forEach(skill => {
-        const span = document.createElement('span');
-        span.className = 'tag-skill';
-        span.textContent = skill;
-        detailSkills.appendChild(span);
-      });
-
-      // Update Responsibilities
-      detailResponsibilities.innerHTML = '';
-      const items = card.dataset.responsibilities.split(';');
-      items.forEach(item => {
-        if (item.trim()) {
-          const li = document.createElement('li');
-          li.textContent = item.trim();
-          detailResponsibilities.appendChild(li);
-        }
-      });
-    }
-
-    jobCards.forEach(card => {
-      card.addEventListener('click', () => {
-        selectJob(card);
-        if (window.innerWidth <= 1120) {
-          detailsSidebar.scrollIntoView({ behavior: 'smooth' });
-        }
-      });
-    });
-
-    // Filter Logic
-    const categoryCheckboxes = document.querySelectorAll('.filter-category');
-    const filterBudget = document.getElementById('filterBudget');
-    const filterLength = document.getElementById('filterLength');
-    const resetFiltersBtn = document.getElementById('resetFilters');
-
-    function applyFilters() {
-      const selectedCategories = Array.from(categoryCheckboxes)
-        .filter(cb => cb.checked)
-        .map(cb => cb.value);
-      const selectedBudget = filterBudget.value;
-      const selectedLength = filterLength.value;
-
-      let visibleCount = 0;
-      jobCards.forEach(card => {
-        const catMatch = selectedCategories.includes(card.dataset.category);
-        const budgetMatch = selectedBudget === 'any' || card.dataset.budget === selectedBudget;
-        const lengthMatch = selectedLength === 'any' || card.dataset.duration === selectedLength;
-
-        if (catMatch && budgetMatch && lengthMatch) {
-          card.style.display = 'flex';
-          visibleCount++;
-        } else {
-          card.style.display = 'none';
-        }
-      });
-
-      // If active card became hidden, select first visible
-      const activeCard = document.querySelector('.job-card--active');
-      if (activeCard && activeCard.style.display === 'none') {
-        const firstVisible = Array.from(jobCards).find(c => c.style.display !== 'none');
-        if (firstVisible) {
-          selectJob(firstVisible);
-        }
-      }
-    }
-
-    categoryCheckboxes.forEach(cb => cb.addEventListener('change', applyFilters));
-    filterBudget.addEventListener('change', applyFilters);
-    filterLength.addEventListener('change', applyFilters);
-
-    resetFiltersBtn.addEventListener('click', () => {
-      categoryCheckboxes.forEach(cb => cb.checked = true);
-      filterBudget.value = 'any';
-      filterLength.value = 'any';
-      applyFilters();
-      showToast('Filters have been reset', 'info');
-    });
-
-    // Proposal Form Submission with Toast
-    const proposalForm = document.getElementById('jobProposalForm');
-    const toastContainer = document.getElementById('toastContainer');
-
-    function showToast(message, type = 'success') {
-      const toast = document.createElement('div');
-      toast.className = `toast toast--${type}`;
-      toast.textContent = message;
-      toastContainer.appendChild(toast);
-      setTimeout(() => {
-        toast.style.opacity = '0';
-        toast.style.transform = 'translateY(10px)';
-        toast.style.transition = 'all 0.3s ease';
-        setTimeout(() => toast.remove(), 300);
-      }, 3500);
-    }
-
-    proposalForm.addEventListener('submit', (e) => {
-      e.preventDefault();
-      const currentTitle = detailTitle.textContent;
-      showToast(`Proposal successfully submitted for "${currentTitle}"!`, 'success');
-      proposalForm.reset();
-      proposedRateInput.value = '4800';
-    });
-  </script>
+  <!-- // JS-removal replacement: job selection and category filter handled via pure CSS -->
 </body>
 </html>
