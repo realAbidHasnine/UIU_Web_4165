@@ -6,6 +6,46 @@
   <title>SkillMatch — Portfolio & Project Manager</title>
   <link rel="stylesheet" href="assets/css/style.css">
   <link rel="stylesheet" href="../assets/css/global.css">
+  <style>
+    /* // JS-removal replacement */
+    .navbar:has(#mobileNavToggle:checked) .navbar__center,
+    #mobileNavToggle:checked ~ .navbar__center {
+      display: flex;
+    }
+
+    /* Modal open/close via :target */
+    .modal-overlay:target {
+      display: flex !important;
+      opacity: 1 !important;
+      visibility: visible !important;
+    }
+
+    /* New Project Card Reveal via :target */
+    #newProjectCard {
+      display: none;
+    }
+    body:has(#project-added:target) #newProjectCard {
+      display: flex !important;
+    }
+
+    /* Toast Reveals */
+    #project-toast, #sync-toast {
+      display: none;
+    }
+    body:has(#project-added:target) #project-toast {
+      display: block;
+      opacity: 1;
+      transform: translateY(0);
+    }
+    body:has(#synced:target) #sync-toast {
+      display: block;
+      opacity: 1;
+      transform: translateY(0);
+    }
+    body:has(#synced:target) #syncStatus {
+      color: var(--color-success);
+    }
+  </style>
 </head>
 <body>
 
@@ -27,12 +67,14 @@
       <a href="portfolio_link.html" class="navbar__link navbar__link--active">Projects</a>
     </nav>
     
+    <input type="checkbox" id="mobileNavToggle" class="mobile-nav-toggle" style="display:none;" aria-hidden="true">
+    
     <div class="navbar__right">
-      <button class="navbar__mobile-toggle" id="mobileToggle" aria-label="Toggle navigation">
+      <label for="mobileNavToggle" class="navbar__mobile-toggle" id="mobileToggle" aria-label="Toggle navigation" role="button" tabindex="0">
         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
         </svg>
-      </button>
+      </label>
 
       <a href="freelancer_chat.html" class="navbar__icon" aria-label="Notifications" title="Notifications">
         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -80,12 +122,12 @@
         </div>
       </div>
       <div>
-        <button type="button" class="btn btn--outline" id="btnSync">
+        <a href="#synced" class="btn btn--outline" id="btnSync" style="text-decoration:none; display: inline-flex; align-items: center; gap: 8px;">
           <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
           </svg>
           <span id="syncBtnText">Sync Repositories</span>
-        </button>
+        </a>
       </div>
     </section>
 
@@ -93,7 +135,7 @@
     <section class="portfolio-section">
       <div class="portfolio-section__header">
         <h2 class="portfolio-section__title">Showcase Projects</h2>
-        <button type="button" class="btn btn--solid" id="btnOpenModal">+ Add Project</button>
+        <a href="#addProjectModal" class="btn btn--solid" id="btnOpenModal" style="text-decoration:none;">+ Add Project</a>
       </div>
 
       <div class="portfolio-grid" id="portfolioGrid">
@@ -140,8 +182,29 @@
           </div>
         </article>
 
+        <!-- Pre-rendered Project Card (:target flow) -->
+        <article class="project-card" id="newProjectCard">
+          <div class="project-card__image" style="background: linear-gradient(135deg, #7c3aed 0%, #a855f7 100%);">
+            <div class="project-card__preview-art">
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4" />
+              </svg>
+              <span>Live Project</span>
+            </div>
+          </div>
+          <div class="project-card__content">
+            <h3 class="project-card__title">AI-Powered SaaS Dashboard</h3>
+            <p class="project-card__desc">Intelligent analytics platform featuring predictive forecasting, automated reporting, and modern dark-mode interface.</p>
+            <div class="project-card__tags">
+              <span class="tag">Next.js</span>
+              <span class="tag">TypeScript</span>
+              <span class="tag">Tailwind</span>
+            </div>
+          </div>
+        </article>
+
         <!-- Add Item Card -->
-        <div class="add-card" id="cardAddProject">
+        <a href="#addProjectModal" class="add-card" id="cardAddProject" style="text-decoration:none; color:inherit; display:flex; flex-direction:column; align-items:center; justify-content:center;">
           <div class="add-card__icon">
             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
@@ -149,7 +212,7 @@
           </div>
           <h3 class="add-card__title">Add Portfolio Project</h3>
           <p class="add-card__desc">Upload screenshots, live links, and highlight your technology stack.</p>
-        </div>
+        </a>
 
       </div>
     </section>
@@ -161,9 +224,9 @@
     <div class="modal-content">
       <div class="modal-header">
         <h3 class="modal-title">Add Portfolio Project</h3>
-        <button type="button" class="modal-close" id="btnCloseModal">&times;</button>
+        <a href="#" class="modal-close" id="btnCloseModal" style="text-decoration:none;">&times;</a>
       </div>
-      <form id="projectCreateForm" method="POST" action="add-project.php">
+      <form id="projectCreateForm" method="GET" action="#project-added">
         <div class="form-group">
           <label class="form-group__label" for="projTitle">Project Title</label>
           <input type="text" id="projTitle" name="project_title" class="form-input" placeholder="e.g. AI-Powered CRM Suite" required>
@@ -177,12 +240,14 @@
           <input type="text" id="projSkills" name="project_technologies" class="form-input" placeholder="e.g. Next.js, TypeScript, Tailwind" required>
         </div>
         <div style="display: flex; gap: 10px; margin-top: 20px;">
-          <button type="button" class="btn btn--secondary" id="btnCancelModal" style="flex: 1;">Cancel</button>
+          <a href="#" class="btn btn--secondary" id="btnCancelModal" style="flex: 1; text-align: center; text-decoration: none;">Cancel</a>
           <button type="submit" class="btn btn--solid" style="flex: 1;">Save Project</button>
         </div>
       </form>
     </div>
   </div>
+  <div id="project-added" style="display:none;"></div>
+  <div id="synced" style="display:none;"></div>
 
   <!-- REQUIRE: shared-footer.php START -->
   <!-- SkillMatch Unified Footer -->
@@ -204,115 +269,17 @@
   <!-- REQUIRE: shared-footer.php END -->
 
   <!-- Toast Notification Container -->
-  <div class="toast-container" id="toastContainer"></div>
+  <div class="toast-container" id="toastContainer">
+    <div class="toast toast--success" id="project-toast">
+      Project added to your portfolio!
+      <a href="#" class="toast-close" style="color:white; margin-left:12px; text-decoration:underline;">Dismiss</a>
+    </div>
+    <div class="toast toast--success" id="sync-toast">
+      Successfully synced with GitHub! 8 public repositories updated.
+      <a href="#" class="toast-close" style="color:white; margin-left:12px; text-decoration:underline;">Dismiss</a>
+    </div>
+  </div>
 
-  <script>
-    // Mobile Navbar Toggle
-    const mobileToggle = document.getElementById('mobileToggle');
-    const navbarMenu = document.getElementById('navbarMenu');
-    if (mobileToggle && navbarMenu) {
-      mobileToggle.addEventListener('click', () => {
-        navbarMenu.classList.toggle('navbar__center--mobile-open');
-      });
-    }
-
-    const toastContainer = document.getElementById('toastContainer');
-    function showToast(message, type = 'info') {
-      const toast = document.createElement('div');
-      toast.className = `toast toast--${type}`;
-      toast.textContent = message;
-      toastContainer.appendChild(toast);
-      setTimeout(() => {
-        toast.style.opacity = '0';
-        toast.style.transform = 'translateY(10px)';
-        toast.style.transition = 'all 0.3s ease';
-        setTimeout(() => toast.remove(), 300);
-      }, 3500);
-    }
-
-    // GitHub Sync simulation
-    const btnSync = document.getElementById('btnSync');
-    const syncBtnText = document.getElementById('syncBtnText');
-    const syncStatus = document.getElementById('syncStatus');
-
-    btnSync.addEventListener('click', () => {
-      syncBtnText.textContent = 'Syncing...';
-      btnSync.disabled = true;
-      setTimeout(() => {
-        syncBtnText.textContent = 'Sync Repositories';
-        btnSync.disabled = false;
-        syncStatus.textContent = 'Connected as @SabbirHossain_dev \u2022 Synced just now';
-        showToast('Successfully synced with GitHub! 8 public repositories updated.', 'success');
-      }, 1200);
-    });
-
-    // Add Project Modal
-    const modal = document.getElementById('addProjectModal');
-    const btnOpenModal = document.getElementById('btnOpenModal');
-    const cardAddProject = document.getElementById('cardAddProject');
-    const btnCloseModal = document.getElementById('btnCloseModal');
-    const btnCancelModal = document.getElementById('btnCancelModal');
-    const projectForm = document.getElementById('projectCreateForm');
-    const portfolioGrid = document.getElementById('portfolioGrid');
-
-    function openModal() {
-      modal.classList.add('modal-overlay--open');
-    }
-
-    function closeModal() {
-      modal.classList.remove('modal-overlay--open');
-      projectForm.reset();
-    }
-
-    btnOpenModal.addEventListener('click', openModal);
-    cardAddProject.addEventListener('click', openModal);
-    btnCloseModal.addEventListener('click', closeModal);
-    btnCancelModal.addEventListener('click', closeModal);
-
-    // Dynamic project add
-    projectForm.addEventListener('submit', (e) => {
-      e.preventDefault();
-      const title = document.getElementById('projTitle').value.trim();
-      const desc = document.getElementById('projDesc').value.trim();
-      const skillsRaw = document.getElementById('projSkills').value.trim();
-
-      const tagsHtml = skillsRaw.split(',')
-        .map(s => s.trim())
-        .filter(s => s.length > 0)
-        .map(s => `<span class="tag">${s}</span>`)
-        .join('');
-
-      const gradients = [
-        'linear-gradient(135deg, #7c3aed 0%, #a855f7 100%)',
-        'linear-gradient(135deg, #ea580c 0%, #f97316 100%)',
-        'linear-gradient(135deg, #0284c7 0%, #38bdf8 100%)'
-      ];
-      const randomGrad = gradients[Math.floor(Math.random() * gradients.length)];
-
-      const newArticle = document.createElement('article');
-      newArticle.className = 'project-card';
-      newArticle.innerHTML = `
-        <div class="project-card__image" style="background: ${randomGrad};">
-          <div class="project-card__preview-art">
-            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4" />
-            </svg>
-            <span>Live Project</span>
-          </div>
-        </div>
-        <div class="project-card__content">
-          <h3 class="project-card__title">${title}</h3>
-          <p class="project-card__desc">${desc}</p>
-          <div class="project-card__tags">
-            ${tagsHtml}
-          </div>
-        </div>
-      `;
-
-      portfolioGrid.insertBefore(newArticle, cardAddProject);
-      closeModal();
-      showToast(`Project "${title}" added to your portfolio!`, 'success');
-    });
-  </script>
+  <!-- // JS-removal replacement: project modal, sync simulation, and project addition handled via pure CSS -->
 </body>
 </html>
