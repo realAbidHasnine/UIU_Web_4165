@@ -6,6 +6,13 @@
   <title>SkillMatch — Select Skill Categories</title>
   <link rel="stylesheet" href="assets/css/style.css">
   <link rel="stylesheet" href="../assets/css/global.css">
+  <style>
+    /* // JS-removal replacement */
+    .navbar:has(#mobileNavToggle:checked) .navbar__center,
+    #mobileNavToggle:checked ~ .navbar__center {
+      display: flex;
+    }
+  </style>
 </head>
 <body>
 
@@ -27,12 +34,14 @@
       <a href="portfolio_link.html" class="navbar__link">Projects</a>
     </nav>
     
+    <input type="checkbox" id="mobileNavToggle" class="mobile-nav-toggle" style="display:none;" aria-hidden="true">
+    
     <div class="navbar__right">
-      <button class="navbar__mobile-toggle" id="mobileToggle" aria-label="Toggle navigation">
+      <label for="mobileNavToggle" class="navbar__mobile-toggle" id="mobileToggle" aria-label="Toggle navigation" role="button" tabindex="0">
         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
         </svg>
-      </button>
+      </label>
 
       <a href="freelancer_chat.html" class="navbar__icon" aria-label="Notifications" title="Notifications">
         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -63,22 +72,14 @@
       <h1 class="selection-card__title">Select Your Skill Categories</h1>
       <p class="selection-card__subtitle">Choose up to 5 categories that best describe your expertise to unlock verification tests.</p>
 
-      <!-- Live Search Box -->
-      <div class="search-box">
-        <svg class="search-box__icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-        </svg>
-        <input type="text" id="skillSearch" class="search-box__input" placeholder="Filter categories (e.g. React, Design, Backend)..." autocomplete="off">
-      </div>
-
-      <!-- Categories Header & Dynamic Counter -->
+      <!-- Categories Header & Instruction -->
       <div class="categories-header">
         <span class="categories-header__label">Available Categories</span>
-        <span class="categories-header__count" id="selectionCounter">3 of 5 selected</span>
+        <span class="categories-header__count" id="selectionCounter">Select up to 5</span>
       </div>
 
       <!-- Skills Pills Form -->
-      <form id="skillCategoryForm" action="select-skill.php" method="POST">
+      <form id="skillCategoryForm" action="skill_test.html" method="GET">
         <div class="skills-group" id="skillsGroup">
           
           <!-- Web Development -->
@@ -222,85 +223,6 @@
   <!-- Toast Container -->
   <div class="toast-container" id="toastContainer"></div>
 
-  <script>
-    // Mobile Navbar Toggle
-    const mobileToggle = document.getElementById('mobileToggle');
-    const navbarMenu = document.getElementById('navbarMenu');
-    if (mobileToggle && navbarMenu) {
-      mobileToggle.addEventListener('click', () => {
-        navbarMenu.classList.toggle('navbar__center--mobile-open');
-      });
-    }
-
-    const toastContainer = document.getElementById('toastContainer');
-    function showToast(message, type = 'info') {
-      const toast = document.createElement('div');
-      toast.className = `toast toast--${type}`;
-      toast.textContent = message;
-      toastContainer.appendChild(toast);
-      setTimeout(() => {
-        toast.style.opacity = '0';
-        toast.style.transform = 'translateY(10px)';
-        toast.style.transition = 'all 0.3s ease';
-        setTimeout(() => toast.remove(), 300);
-      }, 3500);
-    }
-
-    // Dynamic Pill Count & Max 5 Limit
-    const checkboxes = document.querySelectorAll('.skill-pill__input');
-    const counter = document.getElementById('selectionCounter');
-    const maxLimit = 5;
-
-    function updateCounter() {
-      const checkedCount = document.querySelectorAll('.skill-pill__input:checked').length;
-      counter.textContent = `${checkedCount} of ${maxLimit} selected`;
-      if (checkedCount >= maxLimit) {
-        counter.style.color = 'var(--color-warning)';
-      } else {
-        counter.style.color = 'var(--color-primary)';
-      }
-    }
-
-    checkboxes.forEach(cb => {
-      cb.addEventListener('change', (e) => {
-        const checkedCount = document.querySelectorAll('.skill-pill__input:checked').length;
-        if (checkedCount > maxLimit) {
-          e.target.checked = false;
-          showToast(`Maximum limit reached: You can select up to ${maxLimit} categories.`, 'info');
-        }
-        updateCounter();
-      });
-    });
-
-    // Live Search Filter
-    const searchInput = document.getElementById('skillSearch');
-    const pillContainers = document.querySelectorAll('.skill-pill');
-
-    searchInput.addEventListener('input', (e) => {
-      const query = e.target.value.toLowerCase().trim();
-      let matchedCount = 0;
-
-      pillContainers.forEach(container => {
-        const label = container.querySelector('.skill-pill__label span').textContent.toLowerCase();
-        if (label.includes(query)) {
-          container.style.display = 'inline-block';
-          matchedCount++;
-        } else {
-          container.style.display = 'none';
-        }
-      });
-    });
-
-    // Form Submission check
-    document.getElementById('skillCategoryForm').addEventListener('submit', (e) => {
-      const checkedCount = document.querySelectorAll('.skill-pill__input:checked').length;
-      if (checkedCount === 0) {
-        e.preventDefault();
-        showToast('Please select at least 1 category before proceeding.', 'info');
-      }
-    });
-
-    updateCounter();
-  </script>
+  <!-- // JS-removal replacement: category selection and navigation handled via native HTML forms -->
 </body>
 </html>
