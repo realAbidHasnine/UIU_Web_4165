@@ -6,6 +6,13 @@
   <title>SkillMatch — Submit Project Deliverable</title>
   <link rel="stylesheet" href="assets/css/style.css">
   <link rel="stylesheet" href="../assets/css/global.css">
+  <style>
+    /* // JS-removal replacement */
+    .navbar:has(#mobileNavToggle:checked) .navbar__center,
+    #mobileNavToggle:checked ~ .navbar__center {
+      display: flex;
+    }
+  </style>
 </head>
 <body>
 
@@ -27,12 +34,14 @@
       <a href="portfolio_link.html" class="navbar__link">Projects</a>
     </nav>
     
+    <input type="checkbox" id="mobileNavToggle" class="mobile-nav-toggle" style="display:none;" aria-hidden="true">
+    
     <div class="navbar__right">
-      <button class="navbar__mobile-toggle" id="mobileToggle" aria-label="Toggle navigation">
+      <label for="mobileNavToggle" class="navbar__mobile-toggle" id="mobileToggle" aria-label="Toggle navigation" role="button" tabindex="0">
         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
         </svg>
-      </button>
+      </label>
 
       <a href="freelancer_chat.html" class="navbar__icon" aria-label="Notifications" title="Notifications">
         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -59,7 +68,7 @@
 
   <!-- Main Content -->
   <main class="main">
-    <form id="uploadWorkForm" class="upload-container" method="POST" action="upload-work.php" enctype="multipart/form-data">
+    <form id="uploadWorkForm" class="upload-container" method="GET" action="index.html">
       
       <!-- Contract Header Info -->
       <header class="upload-header">
@@ -71,14 +80,14 @@
       </header>
 
       <!-- Interactive Drag & Dropzone -->
-      <div class="dropzone" id="dropZone">
+      <label for="fileUpload" class="dropzone" id="dropZone" style="cursor: pointer; display: flex; flex-direction: column; align-items: center; justify-content: center;">
         <svg class="dropzone__icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" />
         </svg>
-        <input type="file" id="fileUpload" name="uploaded_files[]" class="dropzone__input" multiple>
-        <label for="fileUpload" class="dropzone__btn">Choose Files</label>
-        <span class="dropzone__text">or drag and drop project archives, PDFs, or design bundles here</span>
-      </div>
+        <input type="file" id="fileUpload" name="uploaded_files[]" class="dropzone__input" multiple style="margin: 12px 0;">
+        <span class="dropzone__btn">Choose Files</span>
+        <span class="dropzone__text" style="margin-top: 8px;">or select project archives, PDFs, or design bundles to attach</span>
+      </label>
 
       <!-- File List -->
       <div class="file-list" id="fileList">
@@ -146,120 +155,6 @@
   <!-- Toast Notification Container -->
   <div class="toast-container" id="toastContainer"></div>
 
-  <script>
-    // Mobile Navbar Toggle
-    const mobileToggle = document.getElementById('mobileToggle');
-    const navbarMenu = document.getElementById('navbarMenu');
-    if (mobileToggle && navbarMenu) {
-      mobileToggle.addEventListener('click', () => {
-        navbarMenu.classList.toggle('navbar__center--mobile-open');
-      });
-    }
-
-    const toastContainer = document.getElementById('toastContainer');
-    function showToast(message, type = 'info') {
-      const toast = document.createElement('div');
-      toast.className = `toast toast--${type}`;
-      toast.textContent = message;
-      toastContainer.appendChild(toast);
-      setTimeout(() => {
-        toast.style.opacity = '0';
-        toast.style.transform = 'translateY(10px)';
-        toast.style.transition = 'all 0.3s ease';
-        setTimeout(() => toast.remove(), 300);
-      }, 3500);
-    }
-
-    const fileList = document.getElementById('fileList');
-    const fileUpload = document.getElementById('fileUpload');
-    const dropZone = document.getElementById('dropZone');
-
-    // Remove file handler
-    function bindRemoveButtons() {
-      document.querySelectorAll('.file-item__remove').forEach(btn => {
-        btn.onclick = (e) => {
-          const item = e.target.closest('.file-item');
-          item.remove();
-          checkEmptyList();
-          showToast('File removed', 'info');
-        };
-      });
-    }
-
-    function checkEmptyList() {
-      if (fileList.children.length === 0) {
-        fileList.innerHTML = '<div class="file-list__empty">No files attached yet. Drag files above or click Choose Files.</div>';
-      }
-    }
-
-    function addFiles(files) {
-      const emptyMsg = fileList.querySelector('.file-list__empty');
-      if (emptyMsg) emptyMsg.remove();
-
-      Array.from(files).forEach(file => {
-        const sizeMb = (file.size / (1024 * 1024)).toFixed(1);
-        const item = document.createElement('div');
-        item.className = 'file-item';
-        item.innerHTML = `
-          <div class="file-item__info">
-            <svg class="file-item__icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
-            </svg>
-            <div>
-              <span class="file-item__name">${file.name}</span>
-              <span class="file-item__size">(${sizeMb} MB)</span>
-            </div>
-          </div>
-          <button type="button" class="file-item__remove" title="Remove file">Remove</button>
-        `;
-        fileList.appendChild(item);
-      });
-      bindRemoveButtons();
-      showToast(`${files.length} file(s) attached.`, 'success');
-    }
-
-    fileUpload.addEventListener('change', (e) => {
-      if (e.target.files && e.target.files.length > 0) {
-        addFiles(e.target.files);
-      }
-    });
-
-    // Drag and Drop
-    ['dragenter', 'dragover'].forEach(eventName => {
-      dropZone.addEventListener(eventName, (e) => {
-        e.preventDefault();
-        dropZone.classList.add('dropzone--active');
-      });
-    });
-
-    ['dragleave', 'drop'].forEach(eventName => {
-      dropZone.addEventListener(eventName, (e) => {
-        e.preventDefault();
-        dropZone.classList.remove('dropzone--active');
-      });
-    });
-
-    dropZone.addEventListener('drop', (e) => {
-      e.preventDefault();
-      if (e.dataTransfer.files && e.dataTransfer.files.length > 0) {
-        addFiles(e.dataTransfer.files);
-      }
-    });
-
-    bindRemoveButtons();
-
-    // Form submission
-    document.getElementById('uploadWorkForm').addEventListener('submit', (e) => {
-      e.preventDefault();
-      if (fileList.querySelector('.file-item')) {
-        showToast('Work submitted successfully! Client has been notified for review.', 'success');
-        setTimeout(() => {
-          window.location.href = 'index.html';
-        }, 1800);
-      } else {
-        showToast('Please attach at least one file deliverable before submitting.', 'info');
-      }
-    });
-  </script>
+  <!-- // JS-removal replacement: drop zone wrapped in label and form submission routes natively -->
 </body>
 </html>
