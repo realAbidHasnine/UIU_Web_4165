@@ -294,37 +294,5 @@
       </div>
     </div>
   </footer>
-  <!-- REQUIRE: guest-footer.php END -->
-
-  <script>
-  (function () {
-    var root = document.documentElement;
-    root.classList.add('js-overdrive');
-    var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    var supports = function (v) { try { return window.CSS && CSS.supports && CSS.supports(v); } catch (e) { return false; } };
-    var nativeScroll = supports('animation-timeline: scroll()');
-    var nativeView = supports('animation-timeline: view()');
-    if (nativeView) { root.classList.remove('js-overdrive'); }
-    var progress = document.querySelector('.scroll-progress');
-    var onScroll = function () {
-      if (!progress || reduce || nativeScroll) return;
-      var h = document.documentElement;
-      var max = h.scrollHeight - h.clientHeight;
-      var p = max > 0 ? (h.scrollTop || document.body.scrollTop) / max : 0;
-      progress.style.transform = 'scaleX(' + p + ')';
-    };
-    document.addEventListener('scroll', onScroll, { passive: true });
-    window.addEventListener('resize', onScroll);
-    onScroll();
-    if (reduce || nativeView || !('IntersectionObserver' in window)) return;
-    var targets = document.querySelectorAll('.step, .talent-card, .freelancer-card, .score-beam__fill');
-    var io = new IntersectionObserver(function (entries) {
-      entries.forEach(function (en) {
-        if (en.isIntersecting) { en.target.classList.add('is-inview'); io.unobserve(en.target); }
-      });
-    }, { threshold: 0.2, rootMargin: '0px 0px -8% 0px' });
-    targets.forEach(function (t) { io.observe(t); });
-  })();
-  </script>
 </body>
 </html>
