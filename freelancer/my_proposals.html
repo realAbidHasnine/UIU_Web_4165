@@ -6,6 +6,60 @@
   <title>SkillMatch — My Proposals</title>
   <link rel="stylesheet" href="assets/css/style.css">
   <link rel="stylesheet" href="../assets/css/global.css">
+  <style>
+    /* // JS-removal replacement */
+    .navbar:has(#mobileNavToggle:checked) .navbar__center,
+    #mobileNavToggle:checked ~ .navbar__center {
+      display: flex;
+    }
+
+    /* Active filter tab */
+    body:has(#tab-all:checked) label[for="tab-all"],
+    body:has(#tab-pending:checked) label[for="tab-pending"],
+    body:has(#tab-viewed:checked) label[for="tab-viewed"],
+    body:has(#tab-accepted:checked) label[for="tab-accepted"],
+    body:has(#tab-declined:checked) label[for="tab-declined"] {
+      border-bottom: 2px solid var(--color-primary);
+      color: var(--color-primary);
+      font-weight: 600;
+    }
+
+    /* Proposal Card Filtering */
+    body:has(#tab-pending:checked) .proposal-card:not([data-status="pending"]),
+    body:has(#tab-viewed:checked) .proposal-card:not([data-status="viewed"]),
+    body:has(#tab-accepted:checked) .proposal-card:not([data-status="accepted"]),
+    body:has(#tab-declined:checked) .proposal-card:not([data-status="declined"]) {
+      display: none !important;
+    }
+
+    /* Modal Confirmation Dialog */
+    .modal-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(15, 23, 42, 0.6);
+      z-index: 1000;
+      align-items: center;
+      justify-content: center;
+      padding: 16px;
+    }
+    .modal-overlay:target {
+      display: flex !important;
+    }
+
+    /* Withdrawn Card State & Toast */
+    body:has(#withdrawn-1:target) .proposal-card[data-status="pending"] {
+      display: none !important;
+    }
+    #withdrawn-toast {
+      display: none;
+    }
+    body:has(#withdrawn-1:target) #withdrawn-toast {
+      display: block;
+      opacity: 1;
+      transform: translateY(0);
+    }
+  </style>
 </head>
 <body>
 
@@ -27,12 +81,14 @@
       <a href="portfolio_link.html" class="navbar__link">Projects</a>
     </nav>
     
+    <input type="checkbox" id="mobileNavToggle" class="mobile-nav-toggle" style="display:none;" aria-hidden="true">
+    
     <div class="navbar__right">
-      <button class="navbar__mobile-toggle" id="mobileToggle" aria-label="Toggle navigation">
+      <label for="mobileNavToggle" class="navbar__mobile-toggle" id="mobileToggle" aria-label="Toggle navigation" role="button" tabindex="0">
         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
         </svg>
-      </button>
+      </label>
 
       <a href="freelancer_chat.html" class="navbar__icon" aria-label="Notifications" title="Notifications">
         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -57,6 +113,13 @@
   </header>
   <!-- REQUIRE: shared-header.php END -->
 
+  <!-- Hidden Radio Inputs for Proposal Status Tabs -->
+  <input type="radio" name="proposal_tab" id="tab-all" checked style="display:none;" aria-hidden="true">
+  <input type="radio" name="proposal_tab" id="tab-pending" style="display:none;" aria-hidden="true">
+  <input type="radio" name="proposal_tab" id="tab-viewed" style="display:none;" aria-hidden="true">
+  <input type="radio" name="proposal_tab" id="tab-accepted" style="display:none;" aria-hidden="true">
+  <input type="radio" name="proposal_tab" id="tab-declined" style="display:none;" aria-hidden="true">
+
   <!-- Main Content -->
   <main class="main">
     
@@ -68,21 +131,21 @@
     <!-- Filter Tabs Container -->
     <div class="tabs-wrapper">
       <div class="tabs-header" id="proposalTabs">
-        <button type="button" class="tab-btn tab-btn--active" data-status="all">
+        <label for="tab-all" class="tab-btn" role="button" tabindex="0" style="cursor: pointer;">
           All <span class="tab-count" id="countAll">4</span>
-        </button>
-        <button type="button" class="tab-btn" data-status="pending">
+        </label>
+        <label for="tab-pending" class="tab-btn" role="button" tabindex="0" style="cursor: pointer;">
           Pending <span class="tab-count" id="countPending">1</span>
-        </button>
-        <button type="button" class="tab-btn" data-status="viewed">
+        </label>
+        <label for="tab-viewed" class="tab-btn" role="button" tabindex="0" style="cursor: pointer;">
           Viewed <span class="tab-count" id="countViewed">1</span>
-        </button>
-        <button type="button" class="tab-btn" data-status="accepted">
+        </label>
+        <label for="tab-accepted" class="tab-btn" role="button" tabindex="0" style="cursor: pointer;">
           Accepted <span class="tab-count" id="countAccepted">1</span>
-        </button>
-        <button type="button" class="tab-btn" data-status="declined">
+        </label>
+        <label for="tab-declined" class="tab-btn" role="button" tabindex="0" style="cursor: pointer;">
           Declined <span class="tab-count" id="countDeclined">1</span>
-        </button>
+        </label>
       </div>
     </div>
 
@@ -121,7 +184,7 @@
             </svg>
             Pending
           </div>
-          <button type="button" class="btn btn--secondary btn-withdraw">Withdraw</button>
+          <a href="#confirm-withdraw-1" class="btn btn--secondary btn-withdraw" style="text-decoration:none;">Withdraw</a>
         </div>
       </div>
 
@@ -255,69 +318,27 @@
   </footer>
   <!-- REQUIRE: shared-footer.php END -->
 
+  <!-- Withdrawal Confirmation Modal -->
+  <div class="modal-overlay" id="confirm-withdraw-1">
+    <div class="modal-dialog" style="background: white; padding: 24px; border-radius: 8px; max-width: 440px; box-shadow: 0 10px 25px rgba(0,0,0,0.15); width: 100%;">
+      <h3 style="margin-bottom: 12px; font-size: 18px; font-weight: 600;">Confirm Withdrawal</h3>
+      <p style="color: var(--color-text-muted); margin-bottom: 20px; font-size: 14px; line-height: 1.5;">Are you sure you want to withdraw your proposal for "Senior Full-Stack Developer for SaaS Platform"?</p>
+      <div style="display: flex; gap: 12px; justify-content: flex-end;">
+        <a href="#" class="btn btn--secondary" style="text-decoration: none;">Cancel</a>
+        <a href="#withdrawn-1" class="btn btn--solid" style="background-color: var(--color-danger); border-color: var(--color-danger); text-decoration: none;">Confirm Withdraw</a>
+      </div>
+    </div>
+  </div>
+  <div id="withdrawn-1" style="display:none;"></div>
+
   <!-- Toast Container -->
-  <div class="toast-container" id="toastContainer"></div>
+  <div class="toast-container" id="toastContainer">
+    <div class="toast toast--info" id="withdrawn-toast">
+      Proposal for "Senior Full-Stack Developer for SaaS Platform" has been withdrawn.
+      <a href="#" class="toast-close" style="color:white; margin-left:12px; text-decoration:underline;">Dismiss</a>
+    </div>
+  </div>
 
-  <script>
-    // Mobile Navbar Toggle
-    const mobileToggle = document.getElementById('mobileToggle');
-    const navbarMenu = document.getElementById('navbarMenu');
-    if (mobileToggle && navbarMenu) {
-      mobileToggle.addEventListener('click', () => {
-        navbarMenu.classList.toggle('navbar__center--mobile-open');
-      });
-    }
-
-    // Interactive Tab Filtering
-    const tabButtons = document.querySelectorAll('#proposalTabs .tab-btn');
-    const proposalCards = document.querySelectorAll('#proposalsContainer .proposal-card');
-
-    tabButtons.forEach(btn => {
-      btn.addEventListener('click', () => {
-        tabButtons.forEach(b => b.classList.remove('tab-btn--active'));
-        btn.classList.add('tab-btn--active');
-
-        const targetStatus = btn.dataset.status;
-        proposalCards.forEach(card => {
-          if (targetStatus === 'all' || card.dataset.status === targetStatus) {
-            card.style.display = 'flex';
-          } else {
-            card.style.display = 'none';
-          }
-        });
-      });
-    });
-
-    // Withdraw action with toast feedback
-    const toastContainer = document.getElementById('toastContainer');
-    function showToast(message, type = 'info') {
-      const toast = document.createElement('div');
-      toast.className = `toast toast--${type}`;
-      toast.textContent = message;
-      toastContainer.appendChild(toast);
-      setTimeout(() => {
-        toast.style.opacity = '0';
-        toast.style.transform = 'translateY(10px)';
-        toast.style.transition = 'all 0.3s ease';
-        setTimeout(() => toast.remove(), 300);
-      }, 3500);
-    }
-
-    document.querySelectorAll('.btn-withdraw').forEach(btn => {
-      btn.addEventListener('click', (e) => {
-        const card = e.target.closest('.proposal-card');
-        const title = card.querySelector('.proposal-card__title').textContent;
-        if (confirm(`Are you sure you want to withdraw proposal for "${title}"?`)) {
-          card.style.opacity = '0';
-          card.style.transform = 'scale(0.95)';
-          card.style.transition = 'all 0.3s ease';
-          setTimeout(() => {
-            card.remove();
-            showToast(`Proposal for "${title}" has been withdrawn.`, 'info');
-          }, 300);
-        }
-      });
-    });
-  </script>
+  <!-- // JS-removal replacement: proposal tabs and withdrawal confirmation handled via pure CSS -->
 </body>
 </html>
