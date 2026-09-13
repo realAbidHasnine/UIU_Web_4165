@@ -6,6 +6,43 @@
   <title>SkillMatch — Chat & Messages</title>
   <link rel="stylesheet" href="assets/css/style.css">
   <link rel="stylesheet" href="../assets/css/global.css">
+  <style>
+    /* // JS-removal replacement */
+    .navbar:has(#mobileNavToggle:checked) .navbar__center,
+    #mobileNavToggle:checked ~ .navbar__center {
+      display: flex;
+    }
+
+    /* Active inbox item styling */
+    body:has(#chat-tab-1:checked) #inboxItem1,
+    body:has(#chat-tab-2:checked) #inboxItem2,
+    body:has(#chat-tab-3:checked) #inboxItem3 {
+      background-color: var(--color-bg-page);
+      border-left: 3px solid var(--color-primary);
+    }
+    body:has(#chat-tab-1:checked) #inboxItem1 .client-unread { display: none; }
+    body:has(#chat-tab-1:checked) #totalUnread { display: none; }
+
+    /* Dynamic header title based on active tab */
+    .chat-name-1, .chat-name-2, .chat-name-3 { display: none; }
+    body:has(#chat-tab-1:checked) .chat-name-1 { display: inline; }
+    body:has(#chat-tab-2:checked) .chat-name-2 { display: inline; }
+    body:has(#chat-tab-3:checked) .chat-name-3 { display: inline; }
+
+    /* Conversation thread switching */
+    .thread-messages { display: none; }
+    body:has(#chat-tab-1:checked) #thread1 { display: flex; flex-direction: column; }
+    body:has(#chat-tab-2:checked) #thread2 { display: flex; flex-direction: column; }
+    body:has(#chat-tab-3:checked) #thread3 { display: flex; flex-direction: column; }
+
+    /* Pre-rendered sent message bubble behind :target */
+    #msg-sent {
+      display: none;
+    }
+    #msg-sent:target {
+      display: flex !important;
+    }
+  </style>
 </head>
 <body>
 
@@ -27,12 +64,14 @@
       <a href="portfolio_link.html" class="navbar__link">Projects</a>
     </nav>
     
+    <input type="checkbox" id="mobileNavToggle" class="mobile-nav-toggle" style="display:none;" aria-hidden="true">
+    
     <div class="navbar__right">
-      <button class="navbar__mobile-toggle" id="mobileToggle" aria-label="Toggle navigation">
+      <label for="mobileNavToggle" class="navbar__mobile-toggle" id="mobileToggle" aria-label="Toggle navigation" role="button" tabindex="0">
         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
         </svg>
-      </button>
+      </label>
 
       <a href="freelancer_chat.html" class="navbar__icon" aria-label="Notifications" title="Notifications">
         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -57,6 +96,11 @@
   </header>
   <!-- REQUIRE: shared-header.php END -->
 
+  <!-- Hidden Radio Inputs for Chat Conversation Switching -->
+  <input type="radio" name="active_chat" id="chat-tab-1" checked style="display:none;" aria-hidden="true">
+  <input type="radio" name="active_chat" id="chat-tab-2" style="display:none;" aria-hidden="true">
+  <input type="radio" name="active_chat" id="chat-tab-3" style="display:none;" aria-hidden="true">
+
   <!-- Main Content -->
   <main class="main main--wide">
     <div class="chat-layout">
@@ -70,7 +114,7 @@
         <div class="inbox__list" id="inboxList">
           
           <!-- Inbox Item 1 (Active) -->
-          <div class="inbox-item inbox-item--active" data-client-id="1" data-name="Naim Molla" data-badge="Client" data-project="Senior Full-Stack Developer for SaaS Platform">
+          <label for="chat-tab-1" class="inbox-item" id="inboxItem1" role="button" tabindex="0" style="cursor: pointer; display: flex;">
             <div class="avatar avatar--blue">NM</div>
             <div class="inbox-item__content">
               <div class="inbox-item__top">
@@ -85,10 +129,10 @@
                 <span class="unread-badge client-unread">2</span>
               </div>
             </div>
-          </div>
+          </label>
 
           <!-- Inbox Item 2 -->
-          <div class="inbox-item" data-client-id="2" data-name="Anjon Ganguli" data-badge="Client" data-project="UX/UI Redesign for E-commerce Mobile App">
+          <label for="chat-tab-2" class="inbox-item" id="inboxItem2" role="button" tabindex="0" style="cursor: pointer; display: flex;">
             <div class="avatar avatar--gray">AG</div>
             <div class="inbox-item__content">
               <div class="inbox-item__top">
@@ -102,10 +146,10 @@
                 <span class="inbox-item__preview">Invoice received, processing milestone 2...</span>
               </div>
             </div>
-          </div>
+          </label>
 
           <!-- Inbox Item 3 -->
-          <div class="inbox-item" data-client-id="3" data-name="Tonmoy Das" data-badge="Client" data-project="Website Redesign Deliverables">
+          <label for="chat-tab-3" class="inbox-item" id="inboxItem3" role="button" tabindex="0" style="cursor: pointer; display: flex;">
             <div class="avatar avatar--purple">TD</div>
             <div class="inbox-item__content">
               <div class="inbox-item__top">
@@ -119,7 +163,7 @@
                 <span class="inbox-item__preview">Thanks for the quick turnaround on the files!</span>
               </div>
             </div>
-          </div>
+          </label>
 
         </div>
       </aside>
@@ -130,7 +174,11 @@
         <!-- Chat Header -->
         <header class="chat__header">
           <div class="chat__header-info">
-            <h2 class="chat__header-name" id="chatHeaderName">Naim Molla</h2>
+            <h2 class="chat__header-name" id="chatHeaderName">
+              <span class="chat-name-1">Naim Molla</span>
+              <span class="chat-name-2">Anjon Ganguli</span>
+              <span class="chat-name-3">Tonmoy Das</span>
+            </h2>
             <span class="badge-client" id="chatHeaderBadge">Client</span>
           </div>
           <a href="upload_comp_work.html" class="chat__header-link" id="chatHeaderProjectLink">View Project Deliverable &rarr;</a>
@@ -139,55 +187,105 @@
         <!-- Chat Messages Area -->
         <div class="chat__messages" id="chatMessages">
           
-          <div class="chat__date-separator">
-            <span>Today</span>
+          <!-- Thread 1: Naim Molla -->
+          <div class="thread-messages" id="thread1">
+            <div class="chat__date-separator">
+              <span>Today</span>
+            </div>
+
+            <div class="message message--received">
+              <div class="message__bubble">
+                Hi Sabbir! I reviewed the latest designs for the landing page. They look really clean and well organized.
+              </div>
+              <span class="message__time">10:15 AM</span>
+            </div>
+
+            <div class="message message--received">
+              <div class="message__bubble">
+                Could we explore making the primary CTA button slightly larger? I want to ensure it stands out more on mobile screens.
+              </div>
+              <span class="message__time">10:16 AM</span>
+            </div>
+
+            <div class="message message--sent">
+              <div class="message__bubble">
+                Absolutely, Naim. I agree that the CTA could use a bit more visual weight. I'll increase the padding and font size slightly to improve the touch target on mobile devices.
+              </div>
+              <span class="message__time">10:30 AM</span>
+            </div>
+
+            <div class="message message--sent">
+              <div class="message__bubble">
+                I'll have the updated wireframes ready for you to review by this afternoon.
+              </div>
+              <span class="message__time">10:31 AM</span>
+            </div>
+
+            <div class="message message--received">
+              <div class="message__bubble">
+                Great, let's proceed with the wireframes as discussed!
+              </div>
+              <span class="message__time">10:42 AM</span>
+            </div>
+
+            <!-- Sent Message (:target flow) -->
+            <div class="message message--sent" id="msg-sent">
+              <div class="message__bubble">
+                Sounds great! I'll push the final wireframe revisions now.
+              </div>
+              <span class="message__time">Just now</span>
+            </div>
           </div>
 
-          <!-- Received Message 1 -->
-          <div class="message message--received">
-            <div class="message__bubble">
-              Hi Sabbir! I reviewed the latest designs for the landing page. They look really clean and well organized.
+          <!-- Thread 2: Anjon Ganguli -->
+          <div class="thread-messages" id="thread2">
+            <div class="chat__date-separator">
+              <span>Yesterday</span>
             </div>
-            <span class="message__time">10:15 AM</span>
+            <div class="message message--received">
+              <div class="message__bubble">
+                Hey Sabbir, how is the milestone 2 progress coming along?
+              </div>
+              <span class="message__time">Yesterday 2:15 PM</span>
+            </div>
+            <div class="message message--sent">
+              <div class="message__bubble">
+                Hi Anjon! Frontend refactoring for the cart and checkout flow is 90% complete.
+              </div>
+              <span class="message__time">Yesterday 3:00 PM</span>
+            </div>
+            <div class="message message--received">
+              <div class="message__bubble">
+                Invoice received, processing milestone 2 payment today.
+              </div>
+              <span class="message__time">Yesterday 4:20 PM</span>
+            </div>
           </div>
 
-          <!-- Received Message 2 -->
-          <div class="message message--received">
-            <div class="message__bubble">
-              Could we explore making the primary CTA button slightly larger? I want to ensure it stands out more on mobile screens.
+          <!-- Thread 3: Tonmoy Das -->
+          <div class="thread-messages" id="thread3">
+            <div class="chat__date-separator">
+              <span>Oct 12</span>
             </div>
-            <span class="message__time">10:16 AM</span>
-          </div>
-
-          <!-- Sent Message 1 -->
-          <div class="message message--sent">
-            <div class="message__bubble">
-              Absolutely, Naim. I agree that the CTA could use a bit more visual weight. I'll increase the padding and font size slightly to improve the touch target on mobile devices.
+            <div class="message message--sent">
+              <div class="message__bubble">
+                Hi Tonmoy, I have uploaded the final assets bundle and guidelines to the deliverable section.
+              </div>
+              <span class="message__time">Oct 12 11:00 AM</span>
             </div>
-            <span class="message__time">10:30 AM</span>
-          </div>
-
-          <!-- Sent Message 2 -->
-          <div class="message message--sent">
-            <div class="message__bubble">
-              I'll have the updated wireframes ready for you to review by this afternoon.
+            <div class="message message--received">
+              <div class="message__bubble">
+                Thanks for the quick turnaround on the files! Approved and 5-star rating left.
+              </div>
+              <span class="message__time">Oct 12 11:45 AM</span>
             </div>
-            <span class="message__time">10:31 AM</span>
-          </div>
-
-          <!-- Received Message 3 -->
-          <div class="message message--received">
-            <div class="message__bubble">
-              Great, let's proceed with the wireframes as discussed!
-            </div>
-            <span class="message__time">10:42 AM</span>
           </div>
 
         </div>
 
         <!-- Chat Input Form -->
-        <form id="chatMessageForm" class="chat__input-area" method="POST" action="send-message.php">
-          <input type="text" id="chatInput" name="message" class="chat__input" placeholder="Type a message..." autocomplete="off" required>
+        <form id="chatMessageForm" class="chat__input-area" method="GET" action="#msg-sent">
+          <input type="text" id="chatInput" name="message" class="chat__input" placeholder="Type a message..." autocomplete="off">
           <button type="submit" class="chat__btn">Send</button>
         </form>
 
@@ -215,124 +313,6 @@
   </footer>
   <!-- REQUIRE: shared-footer.php END -->
 
-  <script>
-    // Mobile Navbar Toggle
-    const mobileToggle = document.getElementById('mobileToggle');
-    const navbarMenu = document.getElementById('navbarMenu');
-    if (mobileToggle && navbarMenu) {
-      mobileToggle.addEventListener('click', () => {
-        navbarMenu.classList.toggle('navbar__center--mobile-open');
-      });
-    }
-
-    // Message Database per client
-    const conversations = {
-      '1': [
-        { type: 'received', text: 'Hi Sabbir! I reviewed the latest designs for the landing page. They look really clean and well organized.', time: '10:15 AM' },
-        { type: 'received', text: 'Could we explore making the primary CTA button slightly larger? I want to ensure it stands out more on mobile screens.', time: '10:16 AM' },
-        { type: 'sent', text: "Absolutely, Naim. I agree that the CTA could use a bit more visual weight. I'll increase the padding and font size slightly to improve the touch target on mobile devices.", time: '10:30 AM' },
-        { type: 'sent', text: "I'll have the updated wireframes ready for you to review by this afternoon.", time: '10:31 AM' },
-        { type: 'received', text: "Great, let's proceed with the wireframes as discussed!", time: '10:42 AM' }
-      ],
-      '2': [
-        { type: 'received', text: 'Hey Sabbir, how is the milestone 2 progress coming along?', time: 'Yesterday 2:15 PM' },
-        { type: 'sent', text: 'Hi Anjon! Frontend refactoring for the cart and checkout flow is 90% complete.', time: 'Yesterday 3:00 PM' },
-        { type: 'received', text: 'Invoice received, processing milestone 2 payment today.', time: 'Yesterday 4:20 PM' }
-      ],
-      '3': [
-        { type: 'sent', text: 'Hi Tonmoy, I have uploaded the final assets bundle and guidelines to the deliverable section.', time: 'Oct 12 11:00 AM' },
-        { type: 'received', text: 'Thanks for the quick turnaround on the files! Approved and 5-star rating left.', time: 'Oct 12 11:45 AM' }
-      ]
-    };
-
-    let activeClientId = '1';
-
-    const inboxItems = document.querySelectorAll('.inbox-item');
-    const chatHeaderName = document.getElementById('chatHeaderName');
-    const chatHeaderProjectLink = document.getElementById('chatHeaderProjectLink');
-    const chatMessages = document.getElementById('chatMessages');
-    const chatMessageForm = document.getElementById('chatMessageForm');
-    const chatInput = document.getElementById('chatInput');
-
-    function renderConversation(clientId) {
-      chatMessages.innerHTML = `
-        <div class="chat__date-separator">
-          <span>Today</span>
-        </div>
-      `;
-
-      const thread = conversations[clientId] || [];
-      thread.forEach(msg => {
-        const msgDiv = document.createElement('div');
-        msgDiv.className = `message message--${msg.type}`;
-        msgDiv.innerHTML = `
-          <div class="message__bubble">${msg.text}</div>
-          <span class="message__time">${msg.time}</span>
-        `;
-        chatMessages.appendChild(msgDiv);
-      });
-
-      chatMessages.scrollTop = chatMessages.scrollHeight;
-    }
-
-    inboxItems.forEach(item => {
-      item.addEventListener('click', () => {
-        inboxItems.forEach(i => i.classList.remove('inbox-item--active'));
-        item.classList.add('inbox-item--active');
-
-        // Clear unread badge
-        const badge = item.querySelector('.client-unread');
-        if (badge) {
-          badge.remove();
-          const totalUnread = document.getElementById('totalUnread');
-          if (totalUnread) totalUnread.textContent = '0';
-        }
-
-        activeClientId = item.dataset.clientId;
-        chatHeaderName.textContent = item.dataset.name;
-        renderConversation(activeClientId);
-      });
-    });
-
-    // Send Message
-    chatMessageForm.addEventListener('submit', (e) => {
-      e.preventDefault();
-      const text = chatInput.value.trim();
-      if (!text) return;
-
-      const now = new Date();
-      const timeStr = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-
-      // Append to memory
-      if (!conversations[activeClientId]) {
-        conversations[activeClientId] = [];
-      }
-      conversations[activeClientId].push({ type: 'sent', text, time: timeStr });
-
-      // Append to DOM
-      const msgDiv = document.createElement('div');
-      msgDiv.className = 'message message--sent';
-      msgDiv.innerHTML = `
-        <div class="message__bubble">${text}</div>
-        <span class="message__time">${timeStr}</span>
-      `;
-      chatMessages.appendChild(msgDiv);
-
-      chatInput.value = '';
-      chatMessages.scrollTop = chatMessages.scrollHeight;
-
-      // Update preview in inbox
-      const activeItem = document.querySelector(`.inbox-item[data-client-id="${activeClientId}"]`);
-      if (activeItem) {
-        const preview = activeItem.querySelector('.inbox-item__preview');
-        if (preview) preview.textContent = text;
-        const time = activeItem.querySelector('.inbox-item__time');
-        if (time) time.textContent = timeStr;
-      }
-    });
-
-    // Initial scroll
-    chatMessages.scrollTop = chatMessages.scrollHeight;
-  </script>
+  <!-- // JS-removal replacement: chat conversation switching and send flow handled via pure CSS -->
 </body>
 </html>
