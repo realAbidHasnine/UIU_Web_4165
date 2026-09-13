@@ -9,8 +9,9 @@
 </head>
 <body>
 
-  <div class="overlay" id="overlay">
-    <div class="dialog" role="alertdialog" aria-labelledby="notif-title" aria-describedby="notif-body">
+  <div class="overlay" id="overlay" style="position:relative;">
+    <a href="user-management.html" style="position:fixed;inset:0;z-index:1;cursor:pointer;" aria-label="Dismiss modal"></a>
+    <div class="dialog" role="alertdialog" aria-labelledby="notif-title" aria-describedby="notif-body" style="position:relative;z-index:2;">
 
       <div class="dialog-header">
         <span class="icon-badge" aria-hidden="true">
@@ -30,26 +31,12 @@
       <div class="dialog-divider"></div>
 
       <div class="dialog-actions">
-        <a href="#" id="cancelBtn" class="btn btn-cancel">Cancel</a>
-        <a href="#" id="confirmBtn" class="btn btn-confirm">Confirm Suspend</a>
+        <a href="user-management.html" id="cancelBtn" class="btn btn-cancel">Cancel</a>
+        <a href="notification-success.html?from=user-management.html" id="confirmBtn" class="btn btn-confirm">Confirm Suspend</a>
       </div>
 
     </div>
   </div>
-
-  <script>
-    var params = new URLSearchParams(window.location.search);
-    var from = params.get('from') || 'user-management.html';
-
-    document.getElementById('cancelBtn').href = from;
-    document.getElementById('confirmBtn').href = 'notification-success.html?from=' + encodeURIComponent(from);
-
-    document.getElementById('overlay').addEventListener('click', function (e) {
-      if (e.target === this) {
-        window.location.href = from;
-      }
-    });
-  </script>
 
 </body>
 </html>
