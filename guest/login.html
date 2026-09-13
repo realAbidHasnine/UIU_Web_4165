@@ -9,6 +9,46 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500;600&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="../assets/css/global.css">
   <link rel="stylesheet" href="assets/css/guest-global.css">
+  <style>
+    /* // JS-removal replacement */
+    .auth-notice {
+      display: none;
+      margin-bottom: var(--spacing-md);
+      padding: var(--spacing-sm) var(--spacing-md);
+      border-radius: var(--radius-sm);
+      font-size: 13px;
+      line-height: 1.4;
+      border: 1px solid transparent;
+    }
+    .auth-notice:target {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      animation: fadeInNotice 0.25s ease-out;
+    }
+    .auth-notice--info {
+      background-color: var(--color-proof-tint);
+      border-color: var(--color-proof-line);
+      color: var(--color-proof-dark);
+    }
+    .auth-notice__close {
+      color: currentColor;
+      opacity: 0.7;
+      text-decoration: none;
+      font-size: 18px;
+      font-weight: bold;
+      margin-left: var(--spacing-sm);
+      padding: 0 4px;
+      line-height: 1;
+    }
+    .auth-notice__close:hover {
+      opacity: 1;
+    }
+    @keyframes fadeInNotice {
+      from { opacity: 0; transform: translateY(-4px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+  </style>
 </head>
 <body class="page-login">
 
@@ -34,7 +74,18 @@
       <h2 class="modal__title">Welcome Back</h2>
     </div>
 
-    <form id="loginForm" action="login.php" method="POST" onsubmit="return handleLogin(event);">
+    <!-- Target Notices for pure CSS alert replacement -->
+    <div id="forgot-notice" class="auth-notice auth-notice--info">
+      <span>Password reset link has been dispatched if account exists.</span>
+      <a href="#" class="auth-notice__close" aria-label="Dismiss">&times;</a>
+    </div>
+
+    <div id="google-notice" class="auth-notice auth-notice--info">
+      <span>Google SSO authentication initialized.</span>
+      <a href="#" class="auth-notice__close" aria-label="Dismiss">&times;</a>
+    </div>
+
+    <form id="loginForm" action="../client/index.html" method="GET">
       <!-- Email -->
       <div class="form-group">
         <div class="form-label-row">
@@ -47,20 +98,20 @@
       <div class="form-group" style="margin-bottom: var(--spacing-lg);">
         <div class="form-label-row">
           <label for="password" class="form-label">Password</label>
-          <a href="#forgot" class="form-link" onclick="alert('Password reset link has been dispatched if account exists.')">Forgot password?</a>
+          <a href="#forgot-notice" class="form-link">Forgot password?</a>
         </div>
         <input type="password" id="password" name="password" class="form-input" placeholder="••••••••" required autocomplete="current-password">
       </div>
 
       <!-- Login Actions -->
-      <button type="submit" name="user_role" value="client" class="btn btn--solid btn--block" style="padding: 11px; margin-bottom: 8px;">Log In as Client</button>
-      <button type="submit" name="user_role" value="freelancer" class="btn btn--outline btn--block" style="padding: 11px; margin-bottom: 12px;">Log In as Freelancer</button>
+      <button type="submit" name="user_role" value="client" formaction="../client/index.html" class="btn btn--solid btn--block" style="padding: 11px; margin-bottom: 8px;">Log In as Client</button>
+      <button type="submit" name="user_role" value="freelancer" formaction="../freelancer/index.html" class="btn btn--outline btn--block" style="padding: 11px; margin-bottom: 12px;">Log In as Freelancer</button>
 
       <!-- OR Divider -->
       <div class="divider">OR</div>
 
       <!-- Google Sign In -->
-      <button type="button" class="btn btn--google" onclick="alert('Google SSO authentication initialized.')">
+      <a href="#google-notice" class="btn btn--google" style="text-decoration:none;">
         <svg viewBox="0 0 24 24" width="18" height="18" style="width: 18px; height: 18px; min-width: 18px; max-width: 18px;">
           <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/>
           <path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"/>
@@ -69,7 +120,7 @@
           <path d="M1 1h22v22H1z" fill="none"/>
         </svg>
         Continue with Google
-      </button>
+      </a>
 
       <!-- Footer -->
       <p class="modal__footer">
@@ -77,45 +128,6 @@
       </p>
     </form>
   </div>
-
-  <script>
-    // Functional default role for this page.
-    // TODO: replace with PHP session-based auth: $_SESSION['role']='client'/'freelancer'
-    // once a backend exists; the redirects below are demo stubs.
-    var defaultRole = 'client';
-
-    // Honor ?role= query param (set by the role picker on sign_in.html) as the
-    // functional default AND visual highlight, not just a CSS toggle.
-    var preselected = new URLSearchParams(window.location.search).get('role');
-    if (preselected === 'client') {
-      defaultRole = 'client';
-    } else if (preselected === 'freelancer') {
-      defaultRole = 'freelancer';
-    }
-    var activeBtn = document.querySelector('button[name="user_role"][value="' + defaultRole + '"]');
-    if (activeBtn) {
-      activeBtn.focus();
-      activeBtn.classList.add('btn--outline');
-    }
-
-    function handleLogin(event) {
-      // Prefer the explicitly clicked role button; fall back to the defaultRole
-      // (from ?role=) so pressing Enter in a field still lands correctly.
-      var submitterRole = event.submitter && event.submitter.name === 'user_role' ? event.submitter.value : null;
-      var role = submitterRole || defaultRole;
-      var dest;
-      if (role === 'freelancer') {
-        dest = '../freelancer/index.html';
-        // TODO: PHP session $_SESSION['role']='freelancer'; then redirect()
-      } else {
-        dest = '../client/index.html';
-        // TODO: PHP session $_SESSION['role']='client'; then redirect()
-      }
-      event.preventDefault();
-      window.location.href = dest;
-      return false;
-    }
-  </script>
 
 </body>
 </html>
