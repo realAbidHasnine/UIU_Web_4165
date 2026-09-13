@@ -6,6 +6,13 @@
   <title>SkillMatch — Test Results & Skill Insights</title>
   <link rel="stylesheet" href="assets/css/style.css">
   <link rel="stylesheet" href="../assets/css/global.css">
+  <style>
+    /* // JS-removal replacement */
+    .navbar:has(#mobileNavToggle:checked) .navbar__center,
+    #mobileNavToggle:checked ~ .navbar__center {
+      display: flex;
+    }
+  </style>
 </head>
 <body>
 
@@ -27,12 +34,14 @@
       <a href="portfolio_link.html" class="navbar__link">Projects</a>
     </nav>
     
+    <input type="checkbox" id="mobileNavToggle" class="mobile-nav-toggle" style="display:none;" aria-hidden="true">
+    
     <div class="navbar__right">
-      <button class="navbar__mobile-toggle" id="mobileToggle" aria-label="Toggle navigation">
+      <label for="mobileNavToggle" class="navbar__mobile-toggle" id="mobileToggle" aria-label="Toggle navigation" role="button" tabindex="0">
         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
         </svg>
-      </button>
+      </label>
 
       <a href="freelancer_chat.html" class="navbar__icon" aria-label="Notifications" title="Notifications">
         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -145,15 +154,6 @@
   </footer>
   <!-- REQUIRE: shared-footer.php END -->
 
-  <script>
-    // Mobile Navbar Toggle
-    const mobileToggle = document.getElementById('mobileToggle');
-    const navbarMenu = document.getElementById('navbarMenu');
-    if (mobileToggle && navbarMenu) {
-      mobileToggle.addEventListener('click', () => {
-        navbarMenu.classList.toggle('navbar__center--mobile-open');
-      });
-    }
-  </script>
+  <!-- // JS-removal replacement: navbar toggle handled via CSS :has(#mobileNavToggle:checked) -->
 </body>
 </html>
