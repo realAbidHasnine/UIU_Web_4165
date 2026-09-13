@@ -6,6 +6,13 @@
   <title>SkillMatch — Freelancer Profile</title>
   <link rel="stylesheet" href="assets/css/style.css">
   <link rel="stylesheet" href="../assets/css/global.css">
+  <style>
+    /* // JS-removal replacement */
+    .navbar:has(#mobileNavToggle:checked) .navbar__center,
+    #mobileNavToggle:checked ~ .navbar__center {
+      display: flex;
+    }
+  </style>
 </head>
 <body>
 
@@ -27,12 +34,14 @@
       <a href="portfolio_link.html" class="navbar__link">Projects</a>
     </nav>
     
+    <input type="checkbox" id="mobileNavToggle" class="mobile-nav-toggle" style="display:none;" aria-hidden="true">
+    
     <div class="navbar__right">
-      <button class="navbar__mobile-toggle" id="mobileToggle" aria-label="Toggle navigation">
+      <label for="mobileNavToggle" class="navbar__mobile-toggle" id="mobileToggle" aria-label="Toggle navigation" role="button" tabindex="0">
         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
         </svg>
-      </button>
+      </label>
 
       <a href="freelancer_chat.html" class="navbar__icon" aria-label="Notifications" title="Notifications">
         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -69,18 +78,18 @@
         
         <!-- Interactive Photo Upload -->
         <div class="photo-upload">
-          <div class="photo-upload__preview" id="photoPreviewContainer" title="Click to upload profile photo">
+          <label for="avatarFileInput" class="photo-upload__preview" id="photoPreviewContainer" title="Click to upload profile photo" style="cursor: pointer;">
             <svg id="defaultAvatarSvg" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
             </svg>
             <img id="avatarImage" src="" alt="Profile preview" style="display: none;">
-          </div>
+          </label>
           <input type="file" id="avatarFileInput" accept="image/*" class="photo-upload__input">
-          <button type="button" class="photo-upload__btn" id="btnUploadPhoto">Change Profile Photo</button>
+          <label for="avatarFileInput" class="photo-upload__btn" id="btnUploadPhoto" role="button" tabindex="0" style="cursor: pointer; display: inline-block; text-align: center;">Change Profile Photo</label>
         </div>
 
         <!-- Profile Form -->
-        <form id="profileEditForm" method="POST" action="profile.php">
+        <form id="profileEditForm" method="GET" action="index.html">
           <div class="form-group">
             <label class="form-group__label" for="fullName">Full Name</label>
             <input type="text" id="fullName" name="full_name" class="form-input" value="Sabbir Hossain" required>
@@ -133,66 +142,6 @@
   <!-- Toast Notification Container -->
   <div class="toast-container" id="toastContainer"></div>
 
-  <script>
-    // Mobile Navbar Toggle
-    const mobileToggle = document.getElementById('mobileToggle');
-    const navbarMenu = document.getElementById('navbarMenu');
-    if (mobileToggle && navbarMenu) {
-      mobileToggle.addEventListener('click', () => {
-        navbarMenu.classList.toggle('navbar__center--mobile-open');
-      });
-    }
-
-    const toastContainer = document.getElementById('toastContainer');
-    function showToast(message, type = 'info') {
-      const toast = document.createElement('div');
-      toast.className = `toast toast--${type}`;
-      toast.textContent = message;
-      toastContainer.appendChild(toast);
-      setTimeout(() => {
-        toast.style.opacity = '0';
-        toast.style.transform = 'translateY(10px)';
-        toast.style.transition = 'all 0.3s ease';
-        setTimeout(() => toast.remove(), 300);
-      }, 3500);
-    }
-
-    // Photo Upload Preview
-    const photoPreviewContainer = document.getElementById('photoPreviewContainer');
-    const avatarFileInput = document.getElementById('avatarFileInput');
-    const btnUploadPhoto = document.getElementById('btnUploadPhoto');
-    const defaultAvatarSvg = document.getElementById('defaultAvatarSvg');
-    const avatarImage = document.getElementById('avatarImage');
-
-    function triggerFileInput() {
-      avatarFileInput.click();
-    }
-
-    photoPreviewContainer.addEventListener('click', triggerFileInput);
-    btnUploadPhoto.addEventListener('click', triggerFileInput);
-
-    avatarFileInput.addEventListener('change', (e) => {
-      const file = e.target.files[0];
-      if (file) {
-        const reader = new FileReader();
-        reader.onload = (loadEvent) => {
-          avatarImage.src = loadEvent.target.result;
-          avatarImage.style.display = 'block';
-          defaultAvatarSvg.style.display = 'none';
-          showToast('Profile photo updated!', 'success');
-        };
-        reader.readAsDataURL(file);
-      }
-    });
-
-    // Save Profile
-    document.getElementById('profileEditForm').addEventListener('submit', (e) => {
-      e.preventDefault();
-      showToast('Profile changes successfully saved!', 'success');
-      setTimeout(() => {
-        window.location.href = 'index.html';
-      }, 1500);
-    });
-  </script>
+  <!-- // JS-removal replacement: photo picker triggered via label and form submission routes natively -->
 </body>
 </html>
