@@ -230,6 +230,36 @@ button.ic{background:none;border:0;cursor:pointer}
 .btn-orange-outline{transition:background-color 150ms ease,border-color 150ms ease,transform 120ms var(--ease-out)}
 .btn-orange-outline:hover{border-color:#b45309}
 .notif-row{transition:background-color 120ms ease}
+/* Project timeline (My Projects cards) */
+.timeline{margin:2px 22px 18px}
+.timeline summary{cursor:pointer;font-size:13.5px;font-weight:600;color:var(--primary-ink);list-style:none;display:inline-flex;align-items:center;gap:6px}
+.timeline summary::-webkit-details-marker{display:none}
+.timeline summary::marker{content:""}
+.timeline summary::before{content:"+";font-weight:800}
+.timeline[open] summary::before{content:"-"}
+.timeline summary:hover{text-decoration:underline}
+.timeline ol{list-style:none;margin:12px 0 2px;padding:0}
+.timeline li{position:relative;padding:0 0 14px 24px;font-size:13.5px}
+.timeline li:last-child{padding-bottom:2px}
+.timeline li::before{content:"";position:absolute;left:5px;top:5px;width:9px;height:9px;border-radius:50%;background:var(--border-soft)}
+.timeline li.done::before{background:var(--green-solid)}
+.timeline li.pending::before{background:#f59e0b}
+.timeline li::after{content:"";position:absolute;left:9px;top:18px;bottom:0;width:2px;background:var(--border-light)}
+.timeline li:last-child::after{display:none}
+.timeline .t-date{color:var(--muted);font-size:12px;font-weight:400}
+/* Getting started checklist (dashboard) */
+.start-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:14px}
+.start-step{display:flex;gap:10px;align-items:flex-start;border:1px solid var(--border-light);border-radius:8px;padding:12px 14px;color:var(--text)}
+.start-step:hover{background:#f5f7ff;text-decoration:none}
+.start-check{width:22px;height:22px;border-radius:50%;background:var(--green-solid);color:#fff;display:inline-flex;align-items:center;justify-content:center;flex:0 0 22px;font-size:13px;font-weight:800}
+.start-step strong{display:block;font-size:14px}
+.start-step span{font-size:12.5px;color:var(--muted)}
+@media(max-width:900px){.start-grid{grid-template-columns:1fr}}
+/* Dispute flow */
+.radio-card{display:flex;gap:10px;align-items:flex-start;border:1px solid var(--border);border-radius:8px;padding:12px 14px;margin-bottom:10px;cursor:pointer;font-size:14px}
+.radio-card input{margin-top:3px;accent-color:var(--primary-ink);flex:0 0 auto}
+.radio-card strong{display:block}
+.radio-card span span{display:block;color:var(--muted);font-size:13px;margin-top:2px}
 @media (prefers-reduced-motion: no-preference){
   details[open].notif-wrap>.notif-panel,details[open].profile-wrap>.profile-menu{animation:pop-in 220ms var(--ease-out);transform-origin:top right}
   @keyframes pop-in{from{opacity:0;transform:translateY(8px) scale(.98)}to{opacity:1;transform:none}}
