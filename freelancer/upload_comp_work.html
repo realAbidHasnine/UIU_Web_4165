@@ -7,10 +7,16 @@
   <link rel="stylesheet" href="assets/css/style.css">
   <link rel="stylesheet" href="../assets/css/global.css">
   <style>
-    /* // JS-removal replacement */
     .navbar:has(#mobileNavToggle:checked) .navbar__center,
     #mobileNavToggle:checked ~ .navbar__center {
       display: flex;
+    }
+    .dropzone {
+      border: 2px dashed var(--color-border);
+      border-radius: var(--radius-lg);
+      padding: 36px 20px;
+      text-align: center;
+      transition: all 0.2s ease;
     }
   </style>
 </head>
@@ -56,7 +62,7 @@
         </svg>
       </a>
 
-      <a href="profile.html" class="navbar__avatar" title="View Profile">SH</a>
+      <a href="profile.html" class="navbar__avatar" title="View Profile">SJ</a>
       <a href="../guest/login.html" class="navbar__icon" title="Log Out" aria-label="Log Out">
         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
@@ -68,65 +74,46 @@
 
   <!-- Main Content -->
   <main class="main">
-    <form id="uploadWorkForm" class="upload-container" method="GET" action="index.html">
+    <form id="uploadWorkForm" class="upload-container">
       
       <!-- Contract Header Info -->
       <header class="upload-header">
         <h1 class="upload-header__title">Submit Milestone Deliverable</h1>
         <div class="upload-header__meta">
-          <div>Contract: <strong>Senior Full-Stack Developer for SaaS Platform</strong></div>
-          <div>Client: <strong>TechNova Solutions</strong> &bull; Milestone 2 ($2,500)</div>
+          <div>Contract: <strong>Modern Fintech Dashboard in React & Spring Boot</strong></div>
+          <div>Client: <strong>Apex Capital Partners</strong> &bull; Milestone 1 ($2,000)</div>
         </div>
       </header>
 
       <!-- Interactive Drag & Dropzone -->
-      <label for="fileUpload" class="dropzone" id="dropZone" style="cursor: pointer; display: flex; flex-direction: column; align-items: center; justify-content: center;">
-        <svg class="dropzone__icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+      <div class="dropzone" id="dropZone" style="cursor: pointer; display: flex; flex-direction: column; align-items: center; justify-content: center;">
+        <svg class="dropzone__icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" width="36" height="36" style="color: var(--color-primary); margin-bottom: 8px;">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" />
         </svg>
-        <input type="file" id="fileUpload" name="uploaded_files[]" class="dropzone__input" multiple style="margin: 12px 0;">
-        <span class="dropzone__btn">Choose Files</span>
-        <span class="dropzone__text" style="margin-top: 8px;">or select project archives, PDFs, or design bundles to attach</span>
-      </label>
+        <input type="file" id="fileUpload" name="uploaded_files[]" class="dropzone__input" multiple style="display: none;">
+        <label for="fileUpload" class="dropzone__btn btn btn--outline" style="cursor: pointer;">Choose Files</label>
+        <span class="dropzone__text" style="margin-top: 8px; font-size: 13px; color: var(--color-text-muted);">or drag & drop project archives, PDFs, or code bundles here</span>
+      </div>
 
-      <!-- File List -->
-      <div class="file-list" id="fileList">
-        <div class="file-item">
-          <div class="file-item__info">
-            <svg class="file-item__icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
-            </svg>
-            <div>
-              <span class="file-item__name">final_project_bundle.zip</span>
-              <span class="file-item__size">(24.5 MB)</span>
-            </div>
-          </div>
-          <button type="button" class="file-item__remove" title="Remove file">Remove</button>
-        </div>
-
-        <div class="file-item">
-          <div class="file-item__info">
-            <svg class="file-item__icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z" />
-            </svg>
-            <div>
-              <span class="file-item__name">api_documentation_v1.pdf</span>
-              <span class="file-item__size">(1.2 MB)</span>
-            </div>
-          </div>
-          <button type="button" class="file-item__remove" title="Remove file">Remove</button>
-        </div>
+      <!-- File List Container -->
+      <div class="file-list" id="fileList" style="margin-top: 16px;">
+        <!-- Dynamically rendered by upload-work.js -->
       </div>
 
       <!-- Message to Client -->
-      <div class="message-box">
-        <label class="message-box__label" for="clientMessage">Submission Notes for Client</label>
-        <textarea id="clientMessage" name="client_message" class="message-box__textarea" placeholder="Add details regarding your deliverable, deployment notes, test credentials, or changelog..."></textarea>
+      <div class="message-box" style="margin-top: 20px;">
+        <label class="message-box__label" for="deliveryNotes" style="display: block; font-weight: 500; font-size: 14px; margin-bottom: 6px;">Submission Notes for Client</label>
+        <textarea id="deliveryNotes" name="delivery_notes" class="message-box__textarea form-input form-input--textarea" placeholder="Add details regarding your deliverable, deployment notes, test credentials, or changelog..." required></textarea>
+      </div>
+
+      <div class="form-group" style="margin-top: 16px;">
+        <label class="form-group__label" for="repoUrl" style="display: block; font-weight: 500; font-size: 14px; margin-bottom: 6px;">Repository / Live Preview Link (Optional)</label>
+        <input type="url" id="repoUrl" name="repo_url" class="form-input" placeholder="https://github.com/username/project">
       </div>
 
       <!-- Action Buttons -->
-      <div style="display: flex; gap: 12px;">
-        <a href="index.html" class="btn btn--secondary" style="flex: 1;">Cancel</a>
+      <div style="display: flex; gap: 12px; margin-top: 24px;">
+        <a href="index.html" class="btn btn--secondary" style="flex: 1; text-align: center; text-decoration: none;">Cancel</a>
         <button type="submit" class="btn btn--solid" style="flex: 2;">Submit for Client Review &rarr;</button>
       </div>
 
@@ -155,6 +142,8 @@
   <!-- Toast Notification Container -->
   <div class="toast-container" id="toastContainer"></div>
 
-  <!-- // JS-removal replacement: drop zone wrapped in label and form submission routes natively -->
+  <!-- JavaScript API & Upload Logic -->
+  <script src="../assets/js/api.js"></script>
+  <script src="../assets/js/upload-work.js"></script>
 </body>
 </html>

@@ -7,7 +7,6 @@
   <link rel="stylesheet" href="assets/css/style.css">
   <link rel="stylesheet" href="../assets/css/global.css">
   <style>
-    /* // JS-removal replacement */
     .navbar:has(#mobileNavToggle:checked) .navbar__center,
     #mobileNavToggle:checked ~ .navbar__center {
       display: flex;
@@ -56,7 +55,7 @@
         </svg>
       </a>
 
-      <a href="profile.html" class="navbar__avatar" title="View Profile">SH</a>
+      <a href="profile.html" class="navbar__avatar" title="View Profile">SJ</a>
       <a href="../guest/login.html" class="navbar__icon" title="Log Out" aria-label="Log Out">
         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
@@ -70,128 +69,18 @@
   <main class="main selection-container">
     <div class="selection-card">
       <h1 class="selection-card__title">Select Your Skill Categories</h1>
-      <p class="selection-card__subtitle">Choose up to 5 categories that best describe your expertise to unlock verification tests.</p>
+      <p class="selection-card__subtitle">Choose categories that best describe your expertise to unlock verification tests.</p>
 
       <!-- Categories Header & Instruction -->
       <div class="categories-header">
         <span class="categories-header__label">Available Categories</span>
-        <span class="categories-header__count" id="selectionCounter">Select up to 5</span>
+        <span class="categories-header__count" id="selectionCounter">Selected: 0/5</span>
       </div>
 
       <!-- Skills Pills Form -->
-      <form id="skillCategoryForm" action="skill_test.html" method="GET">
+      <form id="skillCategoryForm">
         <div class="skills-group" id="skillsGroup">
-          
-          <!-- Web Development -->
-          <div class="skill-pill">
-            <input type="checkbox" id="cat-web" name="categories[]" value="Web Development" class="skill-pill__input" checked>
-            <label for="cat-web" class="skill-pill__label">
-              <span>Web Development</span>
-              <svg class="skill-pill__icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7" />
-              </svg>
-            </label>
-          </div>
-
-          <!-- UI/UX Design -->
-          <div class="skill-pill">
-            <input type="checkbox" id="cat-design" name="categories[]" value="UI/UX Design" class="skill-pill__input" checked>
-            <label for="cat-design" class="skill-pill__label">
-              <span>UI/UX Design</span>
-              <svg class="skill-pill__icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7" />
-              </svg>
-            </label>
-          </div>
-
-          <!-- Mobile Dev -->
-          <div class="skill-pill">
-            <input type="checkbox" id="cat-mobile" name="categories[]" value="Mobile Dev" class="skill-pill__input" checked>
-            <label for="cat-mobile" class="skill-pill__label">
-              <span>Mobile Dev</span>
-              <svg class="skill-pill__icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7" />
-              </svg>
-            </label>
-          </div>
-
-          <!-- Graphic Design -->
-          <div class="skill-pill">
-            <input type="checkbox" id="cat-graphic" name="categories[]" value="Graphic Design" class="skill-pill__input">
-            <label for="cat-graphic" class="skill-pill__label">
-              <span>Graphic Design</span>
-              <svg class="skill-pill__icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7" />
-              </svg>
-            </label>
-          </div>
-
-          <!-- Data Science -->
-          <div class="skill-pill">
-            <input type="checkbox" id="cat-data" name="categories[]" value="Data Science" class="skill-pill__input">
-            <label for="cat-data" class="skill-pill__label">
-              <span>Data Science</span>
-              <svg class="skill-pill__icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7" />
-              </svg>
-            </label>
-          </div>
-
-          <!-- Copywriting -->
-          <div class="skill-pill">
-            <input type="checkbox" id="cat-copy" name="categories[]" value="Copywriting" class="skill-pill__input">
-            <label for="cat-copy" class="skill-pill__label">
-              <span>Copywriting</span>
-              <svg class="skill-pill__icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7" />
-              </svg>
-            </label>
-          </div>
-
-          <!-- Marketing -->
-          <div class="skill-pill">
-            <input type="checkbox" id="cat-marketing" name="categories[]" value="Marketing" class="skill-pill__input">
-            <label for="cat-marketing" class="skill-pill__label">
-              <span>Marketing</span>
-              <svg class="skill-pill__icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7" />
-              </svg>
-            </label>
-          </div>
-
-          <!-- SEO -->
-          <div class="skill-pill">
-            <input type="checkbox" id="cat-seo" name="categories[]" value="SEO" class="skill-pill__input">
-            <label for="cat-seo" class="skill-pill__label">
-              <span>SEO</span>
-              <svg class="skill-pill__icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7" />
-              </svg>
-            </label>
-          </div>
-
-          <!-- Backend Dev -->
-          <div class="skill-pill">
-            <input type="checkbox" id="cat-backend" name="categories[]" value="Backend Dev" class="skill-pill__input">
-            <label for="cat-backend" class="skill-pill__label">
-              <span>Backend Dev</span>
-              <svg class="skill-pill__icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7" />
-              </svg>
-            </label>
-          </div>
-
-          <!-- DevOps -->
-          <div class="skill-pill">
-            <input type="checkbox" id="cat-devops" name="categories[]" value="DevOps" class="skill-pill__input">
-            <label for="cat-devops" class="skill-pill__label">
-              <span>DevOps</span>
-              <svg class="skill-pill__icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7" />
-              </svg>
-            </label>
-          </div>
-
+          <!-- Dynamic Skill Pills rendered by select-skill.js -->
         </div>
 
         <hr class="selection-card__divider">
@@ -223,6 +112,8 @@
   <!-- Toast Container -->
   <div class="toast-container" id="toastContainer"></div>
 
-  <!-- // JS-removal replacement: category selection and navigation handled via native HTML forms -->
+  <!-- JavaScript API & Selection Logic -->
+  <script src="../assets/js/api.js"></script>
+  <script src="../assets/js/select-skill.js"></script>
 </body>
 </html>

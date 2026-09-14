@@ -7,43 +7,29 @@
   <link rel="stylesheet" href="assets/css/style.css">
   <link rel="stylesheet" href="../assets/css/global.css">
   <style>
-    /* // JS-removal replacement */
     .navbar:has(#mobileNavToggle:checked) .navbar__center,
     #mobileNavToggle:checked ~ .navbar__center {
       display: flex;
     }
 
-    /* Modal open/close via :target */
-    .modal-overlay:target {
-      display: flex !important;
-      opacity: 1 !important;
-      visibility: visible !important;
-    }
-
-    /* New Project Card Reveal via :target */
-    #newProjectCard {
+    .modal-overlay {
       display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(15, 23, 42, 0.6);
+      z-index: 1000;
+      align-items: center;
+      justify-content: center;
+      padding: 16px;
     }
-    body:has(#project-added:target) #newProjectCard {
-      display: flex !important;
-    }
-
-    /* Toast Reveals */
-    #project-toast, #sync-toast {
-      display: none;
-    }
-    body:has(#project-added:target) #project-toast {
-      display: block;
-      opacity: 1;
-      transform: translateY(0);
-    }
-    body:has(#synced:target) #sync-toast {
-      display: block;
-      opacity: 1;
-      transform: translateY(0);
-    }
-    body:has(#synced:target) #syncStatus {
-      color: var(--color-success);
+    .modal-content {
+      background: var(--color-white);
+      border-radius: var(--radius-lg);
+      max-width: 520px;
+      width: 100%;
+      padding: 28px;
+      box-shadow: var(--shadow-xl);
+      position: relative;
     }
   </style>
 </head>
@@ -89,7 +75,7 @@
         </svg>
       </a>
 
-      <a href="profile.html" class="navbar__avatar" title="View Profile">SH</a>
+      <a href="profile.html" class="navbar__avatar" title="View Profile">SJ</a>
       <a href="../guest/login.html" class="navbar__icon" title="Log Out" aria-label="Log Out">
         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
@@ -118,102 +104,29 @@
         </div>
         <div class="integration-card__text">
           <span class="integration-card__title">GitHub Integration Active</span>
-          <span class="integration-card__subtitle" id="syncStatus">Connected as @SabbirHossain_dev &bull; Last synced 2 hours ago</span>
+          <span class="integration-card__subtitle" id="syncStatus">Connected as @SarahJenkins_dev &bull; Synced</span>
         </div>
       </div>
       <div>
-        <a href="#synced" class="btn btn--outline" id="btnSync" style="text-decoration:none; display: inline-flex; align-items: center; gap: 8px;">
-          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <button type="button" class="btn btn--outline" id="githubSyncBtn" style="display: inline-flex; align-items: center; gap: 8px;">
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" width="18" height="18">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
           </svg>
           <span id="syncBtnText">Sync Repositories</span>
-        </a>
+        </button>
       </div>
     </section>
 
     <!-- Portfolio Projects Grid -->
     <section class="portfolio-section">
-      <div class="portfolio-section__header">
+      <div class="portfolio-section__header" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
         <h2 class="portfolio-section__title">Showcase Projects</h2>
-        <a href="#addProjectModal" class="btn btn--solid" id="btnOpenModal" style="text-decoration:none;">+ Add Project</a>
+        <button type="button" class="btn btn--solid" id="openAddProjectModal">+ Add Project</button>
       </div>
 
-      <div class="portfolio-grid" id="portfolioGrid">
-        
-        <!-- Project Card 1 -->
-        <article class="project-card">
-          <div class="project-card__image" style="background: linear-gradient(135deg, #1e3a8a 0%, #3b82f6 100%);">
-            <div class="project-card__preview-art">
-              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 8v8m-4-5v5m-4-2v2m-2 4h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
-              </svg>
-              <span>E-Commerce Analytics</span>
-            </div>
-          </div>
-          <div class="project-card__content">
-            <h3 class="project-card__title">E-Commerce Admin Dashboard</h3>
-            <p class="project-card__desc">A comprehensive admin panel for managing online retail stores, inventory, and customer orders with real-time chart analytics.</p>
-            <div class="project-card__tags">
-              <span class="tag">React</span>
-              <span class="tag">Node.js</span>
-              <span class="tag">PostgreSQL</span>
-            </div>
-          </div>
-        </article>
-
-        <!-- Project Card 2 -->
-        <article class="project-card">
-          <div class="project-card__image" style="background: linear-gradient(135deg, #065f46 0%, #10b981 100%);">
-            <div class="project-card__preview-art">
-              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 18h.01M8 21h8a2 2 0 002-2V5a2 2 0 00-2-2H8a2 2 0 00-2 2v14a2 2 0 002 2z" />
-              </svg>
-              <span>Fintech Wallet UI</span>
-            </div>
-          </div>
-          <div class="project-card__content">
-            <h3 class="project-card__title">Fintech Mobile Wallet App</h3>
-            <p class="project-card__desc">Secure cross-platform mobile application for personal finance management, budgeting, and quick peer-to-peer transfers.</p>
-            <div class="project-card__tags">
-              <span class="tag">Flutter</span>
-              <span class="tag">Firebase</span>
-              <span class="tag">Dart</span>
-            </div>
-          </div>
-        </article>
-
-        <!-- Pre-rendered Project Card (:target flow) -->
-        <article class="project-card" id="newProjectCard">
-          <div class="project-card__image" style="background: linear-gradient(135deg, #7c3aed 0%, #a855f7 100%);">
-            <div class="project-card__preview-art">
-              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4" />
-              </svg>
-              <span>Live Project</span>
-            </div>
-          </div>
-          <div class="project-card__content">
-            <h3 class="project-card__title">AI-Powered SaaS Dashboard</h3>
-            <p class="project-card__desc">Intelligent analytics platform featuring predictive forecasting, automated reporting, and modern dark-mode interface.</p>
-            <div class="project-card__tags">
-              <span class="tag">Next.js</span>
-              <span class="tag">TypeScript</span>
-              <span class="tag">Tailwind</span>
-            </div>
-          </div>
-        </article>
-
-        <!-- Add Item Card -->
-        <a href="#addProjectModal" class="add-card" id="cardAddProject" style="text-decoration:none; color:inherit; display:flex; flex-direction:column; align-items:center; justify-content:center;">
-          <div class="add-card__icon">
-            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
-            </svg>
-          </div>
-          <h3 class="add-card__title">Add Portfolio Project</h3>
-          <p class="add-card__desc">Upload screenshots, live links, and highlight your technology stack.</p>
-        </a>
-
+      <!-- Dynamic Portfolio Grid -->
+      <div class="portfolio-grid" id="portfolioGrid" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 24px;">
+        <!-- Populated by portfolio.js -->
       </div>
     </section>
 
@@ -222,32 +135,37 @@
   <!-- Add Project Modal -->
   <div class="modal-overlay" id="addProjectModal">
     <div class="modal-content">
-      <div class="modal-header">
-        <h3 class="modal-title">Add Portfolio Project</h3>
-        <a href="#" class="modal-close" id="btnCloseModal" style="text-decoration:none;">&times;</a>
-      </div>
-      <form id="projectCreateForm" method="GET" action="#project-added">
-        <div class="form-group">
-          <label class="form-group__label" for="projTitle">Project Title</label>
-          <input type="text" id="projTitle" name="project_title" class="form-input" placeholder="e.g. AI-Powered CRM Suite" required>
+      <button type="button" id="closeAddProjectModal" style="position: absolute; top: 16px; right: 16px; background: none; border: none; font-size: 20px; cursor: pointer; color: var(--color-text-muted);">&times;</button>
+      <h2 style="font-size: 18px; font-weight: 600; margin-bottom: 16px; color: var(--color-text-main);">Add Portfolio Project</h2>
+      
+      <form id="addProjectForm">
+        <div class="form-group" style="margin-bottom: 14px;">
+          <label class="form-group__label" for="projectTitle">Project Title</label>
+          <input type="text" id="projectTitle" name="title" class="form-input" placeholder="e.g. Real-Time Trading Platform" required>
         </div>
-        <div class="form-group">
-          <label class="form-group__label" for="projDesc">Description</label>
-          <textarea id="projDesc" name="project_description" class="form-input form-input--textarea" placeholder="Brief summary of what you engineered, challenges solved, and business impact..." required></textarea>
+
+        <div class="form-group" style="margin-bottom: 14px;">
+          <label class="form-group__label" for="projectCategory">Category</label>
+          <input type="text" id="projectCategory" name="category" class="form-input" placeholder="e.g. Web Application, Mobile, Design" required>
         </div>
-        <div class="form-group">
-          <label class="form-group__label" for="projSkills">Technologies Used (comma separated)</label>
-          <input type="text" id="projSkills" name="project_technologies" class="form-input" placeholder="e.g. Next.js, TypeScript, Tailwind" required>
+
+        <div class="form-group" style="margin-bottom: 14px;">
+          <label class="form-group__label" for="projectUrl">Repository or Live URL</label>
+          <input type="url" id="projectUrl" name="url" class="form-input" placeholder="https://github.com/..." required>
         </div>
-        <div style="display: flex; gap: 10px; margin-top: 20px;">
-          <a href="#" class="btn btn--secondary" id="btnCancelModal" style="flex: 1; text-align: center; text-decoration: none;">Cancel</a>
-          <button type="submit" class="btn btn--solid" style="flex: 1;">Save Project</button>
+
+        <div class="form-group" style="margin-bottom: 20px;">
+          <label class="form-group__label" for="projectDesc">Description & Highlights</label>
+          <textarea id="projectDesc" name="desc" class="form-input form-input--textarea" placeholder="Describe the technology stack, your key contributions, and project outcomes..." required></textarea>
+        </div>
+
+        <div style="display: flex; justify-content: flex-end; gap: 12px;">
+          <button type="button" class="btn btn--secondary" onclick="document.getElementById('addProjectModal').style.display='none'">Cancel</button>
+          <button type="submit" class="btn btn--solid">Save Project</button>
         </div>
       </form>
     </div>
   </div>
-  <div id="project-added" style="display:none;"></div>
-  <div id="synced" style="display:none;"></div>
 
   <!-- REQUIRE: shared-footer.php START -->
   <!-- SkillMatch Unified Footer -->
@@ -268,18 +186,11 @@
   </footer>
   <!-- REQUIRE: shared-footer.php END -->
 
-  <!-- Toast Notification Container -->
-  <div class="toast-container" id="toastContainer">
-    <div class="toast toast--success" id="project-toast">
-      Project added to your portfolio!
-      <a href="#" class="toast-close" style="color:white; margin-left:12px; text-decoration:underline;">Dismiss</a>
-    </div>
-    <div class="toast toast--success" id="sync-toast">
-      Successfully synced with GitHub! 8 public repositories updated.
-      <a href="#" class="toast-close" style="color:white; margin-left:12px; text-decoration:underline;">Dismiss</a>
-    </div>
-  </div>
+  <!-- Toast Container -->
+  <div class="toast-container" id="toastContainer"></div>
 
-  <!-- // JS-removal replacement: project modal, sync simulation, and project addition handled via pure CSS -->
+  <!-- JavaScript API & Portfolio Logic -->
+  <script src="../assets/js/api.js"></script>
+  <script src="../assets/js/portfolio.js"></script>
 </body>
 </html>

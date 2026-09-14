@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 
 <head>
@@ -164,43 +164,16 @@
             <h2>Recent Projects</h2><a href="my-projects.html" style="font-size:13.5px;font-weight:600">View All
                 Projects</a>
         </div>
-        <div class="card">
-            <div class="list-row">
-                <div>
-                    <p class="row-title">E-commerce Redesign and Migration <span class="badge badge-open">Open</span>
-                    </p>
-                    <div class="row-meta"><span>Posted 2 days ago</span><span>5 Proposals</span></div>
-                </div>
-                <div class="price"><strong>Fixed Price</strong>$4,500 <a class="btn btn-outline"
-                        style="margin-left:10px" href="review-proposal.html">View</a></div>
-            </div>
-            <div class="list-row">
-                <div>
-                    <p class="row-title">React Developer for SaaS <span class="badge badge-progress">In Progress</span>
-                    </p>
-                    <div class="row-meta"><span>Started 1 week ago</span><span>1 Freelancer</span></div>
-                </div>
-                <div class="price"><strong>Hourly</strong>$55/hr <span class="btn btn-outline" style="margin-left:10px"
-                        aria-disabled="true">View</span></div>
-            </div>
-            <div class="list-row">
-                <div>
-                    <p class="row-title">Logo Refresh <span class="badge badge-done">Completed</span></p>
-                    <div class="row-meta"><span>Finished 3 weeks ago</span></div>
-                </div>
-                <div class="price"><strong>Fixed Price</strong>$500 <span class="btn btn-outline"
-                        style="margin-left:10px" aria-disabled="true">View</span></div>
-            </div>
-            <div class="list-row">
-                <div>
-                    <p class="row-title">API Integration <span class="badge badge-await">Awaiting Approval</span></p>
-                    <div class="row-meta"><span>Submitted today</span></div>
-                </div>
-                <div class="price"><strong>Fixed Price</strong>$1,200 <span class="btn btn-outline"
-                        style="margin-left:10px" aria-disabled="true">View</span></div>
+        <div class="card" id="recentProjectsCard">
+            <!-- Populated dynamically by client-dashboard.js -->
+            <div style="padding: 30px; text-align: center; color: var(--muted);">
+                <div class="spinner" style="display:inline-block; width:28px; height:28px; border:3px solid rgba(37,99,235,0.2); border-top-color:var(--primary); border-radius:50%; animation: spin 0.8s linear infinite;"></div>
+                <p style="margin-top: 10px; font-size: 14px;">Loading recent projects...</p>
             </div>
         </div>
     </main>
+    <div class="toast-container" id="toastContainer"></div>
+    <script src="../assets/js/api.js"></script>
+    <script src="../assets/js/client-dashboard.js"></script>
 </body>
-
 </html>

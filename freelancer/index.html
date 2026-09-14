@@ -7,7 +7,6 @@
   <link rel="stylesheet" href="assets/css/style.css">
   <link rel="stylesheet" href="../assets/css/global.css">
   <style>
-    /* // JS-removal replacement */
     .navbar:has(#mobileNavToggle:checked) .navbar__center,
     #mobileNavToggle:checked ~ .navbar__center {
       display: flex;
@@ -56,9 +55,7 @@
         </svg>
       </a>
 
-      <a href="profile.html" class="navbar__avatar" title="View Sabbir's Profile">
-        SH
-      </a>
+      <a href="profile.html" class="navbar__avatar" title="View Profile">SJ</a>
       <a href="../guest/login.html" class="navbar__icon" title="Log Out" aria-label="Log Out">
         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
@@ -74,8 +71,8 @@
     <!-- Welcome & Action Banner -->
     <section class="welcome-banner">
       <div class="welcome-banner__content">
-        <h1>Welcome back, Sabbir</h1>
-        <p>You have 4 active contracts and 2 new client inquiries waiting today.</p>
+        <h1 id="welcomeTitle">Welcome back, Sarah</h1>
+        <p id="welcomeSubtitle">You have active contracts and fresh client inquiries waiting today.</p>
       </div>
       <div class="welcome-banner__action">
         <a href="select_skill.html" class="btn">Retake Skill Test</a>
@@ -91,20 +88,20 @@
           </svg>
         </div>
         <div class="stat-card__data">
-          <span class="stat-card__number">12</span>
-          <span class="stat-card__label">Active Projects</span>
+          <span class="stat-card__number" id="statActiveProjects">34</span>
+          <span class="stat-card__label">Completed Projects</span>
         </div>
       </div>
 
       <div class="stat-card">
         <div class="stat-card__icon stat-card__icon--indigo">
           <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
           </svg>
         </div>
         <div class="stat-card__data">
-          <span class="stat-card__number">24</span>
-          <span class="stat-card__label">Team Collaborators</span>
+          <span class="stat-card__number" id="statPendingProposals">3</span>
+          <span class="stat-card__label">Active Proposals</span>
         </div>
       </div>
 
@@ -115,8 +112,8 @@
           </svg>
         </div>
         <div class="stat-card__data">
-          <span class="stat-card__number">98%</span>
-          <span class="stat-card__label">Completion Rate</span>
+          <span class="stat-card__number" id="statRating">94%</span>
+          <span class="stat-card__label">Verified Skill Score</span>
         </div>
       </div>
 
@@ -127,8 +124,8 @@
           </svg>
         </div>
         <div class="stat-card__data">
-          <span class="stat-card__number">$45,200</span>
-          <span class="stat-card__label">Earnings This Month</span>
+          <span class="stat-card__number" id="statEarnings">$28,450</span>
+          <span class="stat-card__label">Total Earnings</span>
         </div>
       </div>
     </section>
@@ -139,84 +136,45 @@
         <h2 class="dashboard-section__title">Active Contracts</h2>
         <a href="upload_comp_work.html" class="dashboard-section__link">Submit Deliverable &rarr;</a>
       </div>
-      <div class="dashboard-contracts-grid">
-        <div class="dashboard-contract-card">
-          <div class="dashboard-contract-card__top">
-            <h3 class="dashboard-contract-card__title">Website Redesign</h3>
-            <p class="dashboard-contract-card__desc">Complete overhaul of corporate website for Acme Corp</p>
-          </div>
-          <div class="dashboard-contract-card__bottom">
-            <span class="dashboard-contract-card__price">$2,500 &bull; 2 weeks left</span>
-            <a href="upload_comp_work.html" class="dashboard-contract-card__action">Upload Work</a>
-          </div>
-        </div>
 
-        <div class="dashboard-contract-card">
-          <div class="dashboard-contract-card__top">
-            <h3 class="dashboard-contract-card__title">Mobile App Development</h3>
-            <p class="dashboard-contract-card__desc">iOS and Android app for TechNova customer engagement</p>
+      <div class="contracts-grid">
+        <div class="contract-card">
+          <div class="contract-card__header">
+            <h3>Modern Fintech Dashboard in React & Spring Boot</h3>
+            <span class="status-badge status-badge--active">In Progress</span>
           </div>
-          <div class="dashboard-contract-card__bottom">
-            <span class="dashboard-contract-card__price">$5,000 &bull; 1 month left</span>
-            <a href="upload_comp_work.html" class="dashboard-contract-card__action">Upload Work</a>
+          <p class="contract-card__client">Client: Apex Capital Partners</p>
+          <div class="contract-card__progress">
+            <div class="progress-bar">
+              <div class="progress-fill" style="width: 65%;"></div>
+            </div>
+            <span class="progress-text">Milestone 1 of 2 &bull; 65% complete</span>
           </div>
-        </div>
-
-        <div class="dashboard-contract-card">
-          <div class="dashboard-contract-card__top">
-            <h3 class="dashboard-contract-card__title">SEO Optimization</h3>
-            <p class="dashboard-contract-card__desc">Improve search rankings, core web vitals and organic traffic</p>
-          </div>
-          <div class="dashboard-contract-card__bottom">
-            <span class="dashboard-contract-card__price">$1,200 &bull; 3 weeks left</span>
-            <a href="upload_comp_work.html" class="dashboard-contract-card__action">Upload Work</a>
-          </div>
-        </div>
-
-        <div class="dashboard-contract-card">
-          <div class="dashboard-contract-card__top">
-            <h3 class="dashboard-contract-card__title">Brand Identity</h3>
-            <p class="dashboard-contract-card__desc">Design system, logo, typography and brand guideline package</p>
-          </div>
-          <div class="dashboard-contract-card__bottom">
-            <span class="dashboard-contract-card__price">$800 &bull; 2 weeks left</span>
-            <a href="upload_comp_work.html" class="dashboard-contract-card__action">Upload Work</a>
+          <div class="contract-card__footer">
+            <span class="contract-price">$4,500</span>
+            <a href="upload_comp_work.html" class="btn btn--solid btn--sm">Submit Work</a>
           </div>
         </div>
       </div>
     </section>
 
-    <!-- Recent Proposals Section -->
+    <!-- Submitted Proposals Quick View -->
     <section class="dashboard-section">
       <div class="dashboard-section__header">
-        <h2 class="dashboard-section__title">Recent Proposals</h2>
-        <a href="my_proposals.html" class="dashboard-section__link">View All Proposals &rarr;</a>
+        <h2 class="dashboard-section__title">Recent Proposal Activity</h2>
+        <a href="my_proposals.html" class="dashboard-section__link">Manage Proposals &rarr;</a>
       </div>
-      
+
       <div class="dashboard-proposal-card">
         <div class="dashboard-proposal-card__info">
-          <h4>Senior Full-Stack Developer for SaaS Platform</h4>
-          <p>Submitted to TechNova Solutions &bull; $85/hr &bull; 2 days ago</p>
+          <h4>Full-Stack Cross-Platform Mobile Flutter App</h4>
+          <p>Submitted to Stride HealthTech &bull; $2,800 fixed &bull; 2 days ago</p>
         </div>
         <div class="status-badge status-badge--pending">
           <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
           </svg>
-          Pending
-        </div>
-      </div>
-
-      <div class="dashboard-proposal-card">
-        <div class="dashboard-proposal-card__info">
-          <h4>UX/UI Redesign for E-commerce Mobile App</h4>
-          <p>Submitted to RetailCore Inc. &bull; $4,500 fixed &bull; 1 week ago</p>
-        </div>
-        <div class="status-badge status-badge--viewed">
-          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
-          </svg>
-          Viewed
+          Under Review
         </div>
       </div>
 
@@ -246,6 +204,8 @@
   </footer>
   <!-- REQUIRE: shared-footer.php END -->
 
-  <!-- // JS-removal replacement: navbar toggle handled via CSS :has(#mobileNavToggle:checked) -->
+  <!-- JavaScript API & Dashboard Controller -->
+  <script src="../assets/js/api.js"></script>
+  <script src="../assets/js/freelancer-dashboard.js"></script>
 </body>
 </html>

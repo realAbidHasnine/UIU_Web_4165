@@ -7,32 +7,32 @@
   <link rel="stylesheet" href="assets/css/style.css">
   <link rel="stylesheet" href="../assets/css/global.css">
   <style>
-    /* // JS-removal replacement */
     .navbar:has(#mobileNavToggle:checked) .navbar__center,
     #mobileNavToggle:checked ~ .navbar__center {
       display: flex;
     }
 
-    /* Active filter tab */
-    body:has(#tab-all:checked) label[for="tab-all"],
-    body:has(#tab-pending:checked) label[for="tab-pending"],
-    body:has(#tab-viewed:checked) label[for="tab-viewed"],
-    body:has(#tab-accepted:checked) label[for="tab-accepted"],
-    body:has(#tab-declined:checked) label[for="tab-declined"] {
-      border-bottom: 2px solid var(--color-primary);
-      color: var(--color-primary);
+    /* Filter tab active state */
+    .filter-tab {
+      cursor: pointer;
+      background: none;
+      border: none;
+      border-bottom: 2px solid transparent;
+      padding: 12px 18px;
+      font-size: 14px;
+      font-weight: 500;
+      color: var(--color-text-muted);
+      transition: all 0.2s ease;
+    }
+    .filter-tab:hover {
+      color: var(--color-text-main);
+    }
+    .filter-tab--active {
+      border-bottom: 2px solid var(--color-primary) !important;
+      color: var(--color-primary) !important;
       font-weight: 600;
     }
 
-    /* Proposal Card Filtering */
-    body:has(#tab-pending:checked) .proposal-card:not([data-status="pending"]),
-    body:has(#tab-viewed:checked) .proposal-card:not([data-status="viewed"]),
-    body:has(#tab-accepted:checked) .proposal-card:not([data-status="accepted"]),
-    body:has(#tab-declined:checked) .proposal-card:not([data-status="declined"]) {
-      display: none !important;
-    }
-
-    /* Modal Confirmation Dialog */
     .modal-overlay {
       display: none;
       position: fixed;
@@ -43,22 +43,69 @@
       justify-content: center;
       padding: 16px;
     }
-    .modal-overlay:target {
-      display: flex !important;
+    .modal-content {
+      background: var(--color-white);
+      border-radius: var(--radius-lg);
+      max-width: 480px;
+      width: 100%;
+      padding: 24px;
+      box-shadow: var(--shadow-xl);
     }
 
-    /* Withdrawn Card State & Toast */
-    body:has(#withdrawn-1:target) .proposal-card[data-status="pending"] {
-      display: none !important;
+    .proposal-card {
+      background: var(--color-white);
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-lg);
+      padding: 20px;
+      margin-bottom: 16px;
+      transition: border-color 0.2s ease, box-shadow 0.2s ease;
     }
-    #withdrawn-toast {
-      display: none;
+    .proposal-card:hover {
+      border-color: var(--color-primary);
+      box-shadow: var(--shadow-sm);
     }
-    body:has(#withdrawn-1:target) #withdrawn-toast {
-      display: block;
-      opacity: 1;
-      transform: translateY(0);
+    .proposal-card__header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 12px;
     }
+    .proposal-card__title {
+      font-size: 17px;
+      font-weight: 600;
+      color: var(--color-text-main);
+      margin-bottom: 4px;
+    }
+    .proposal-card__meta {
+      font-size: 13px;
+      color: var(--color-text-muted);
+    }
+    .proposal-card__cover {
+      font-size: 14px;
+      color: var(--color-text-main);
+      line-height: 1.5;
+      margin-bottom: 16px;
+    }
+    .proposal-card__footer {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-top: 1px solid var(--color-border);
+      padding-top: 12px;
+    }
+    .proposal-card__terms {
+      display: flex;
+      gap: 16px;
+      font-size: 13px;
+    }
+    .proposal-card__actions {
+      display: flex;
+      gap: 8px;
+    }
+
+    .badge--accepted { background: #dcfce7; color: #15803d; }
+    .badge--pending { background: #fef9c3; color: #854d0e; }
+    .badge--declined { background: #fee2e2; color: #b91c1c; }
   </style>
 </head>
 <body>
@@ -103,7 +150,7 @@
         </svg>
       </a>
 
-      <a href="profile.html" class="navbar__avatar" title="View Profile">SH</a>
+      <a href="profile.html" class="navbar__avatar" title="View Profile">SJ</a>
       <a href="../guest/login.html" class="navbar__icon" title="Log Out" aria-label="Log Out">
         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
@@ -113,191 +160,42 @@
   </header>
   <!-- REQUIRE: shared-header.php END -->
 
-  <!-- Hidden Radio Inputs for Proposal Status Tabs -->
-  <input type="radio" name="proposal_tab" id="tab-all" checked style="display:none;" aria-hidden="true">
-  <input type="radio" name="proposal_tab" id="tab-pending" style="display:none;" aria-hidden="true">
-  <input type="radio" name="proposal_tab" id="tab-viewed" style="display:none;" aria-hidden="true">
-  <input type="radio" name="proposal_tab" id="tab-accepted" style="display:none;" aria-hidden="true">
-  <input type="radio" name="proposal_tab" id="tab-declined" style="display:none;" aria-hidden="true">
-
   <!-- Main Content -->
   <main class="main">
     
-    <div class="page-header">
-      <h1 class="page-title">My Proposals</h1>
-      <p class="page-header__subtitle">Track active applications, client responses, and accepted contracts.</p>
+    <div class="page-header" style="margin-bottom: 24px;">
+      <h1 class="page-title">My Submitted Proposals</h1>
+      <p class="page-header__subtitle">Track live applications, client response statuses, and project proposals.</p>
     </div>
 
     <!-- Filter Tabs Container -->
-    <div class="tabs-wrapper">
-      <div class="tabs-header" id="proposalTabs">
-        <label for="tab-all" class="tab-btn" role="button" tabindex="0" style="cursor: pointer;">
-          All <span class="tab-count" id="countAll">4</span>
-        </label>
-        <label for="tab-pending" class="tab-btn" role="button" tabindex="0" style="cursor: pointer;">
-          Pending <span class="tab-count" id="countPending">1</span>
-        </label>
-        <label for="tab-viewed" class="tab-btn" role="button" tabindex="0" style="cursor: pointer;">
-          Viewed <span class="tab-count" id="countViewed">1</span>
-        </label>
-        <label for="tab-accepted" class="tab-btn" role="button" tabindex="0" style="cursor: pointer;">
-          Accepted <span class="tab-count" id="countAccepted">1</span>
-        </label>
-        <label for="tab-declined" class="tab-btn" role="button" tabindex="0" style="cursor: pointer;">
-          Declined <span class="tab-count" id="countDeclined">1</span>
-        </label>
-      </div>
+    <div class="tabs-wrapper" style="border-bottom: 1px solid var(--color-border); margin-bottom: 24px; display: flex; gap: 8px;">
+      <button type="button" class="filter-tab filter-tab--active" data-filter="all">All Proposals</button>
+      <button type="button" class="filter-tab" data-filter="submitted">Submitted</button>
+      <button type="button" class="filter-tab" data-filter="active">Active</button>
+      <button type="button" class="filter-tab" data-filter="archived">Archived</button>
     </div>
 
-    <!-- Proposals List -->
-    <div class="proposal-list" id="proposalsContainer">
-      
-      <!-- Card 1: Pending -->
-      <div class="proposal-card" data-status="pending">
-        <div class="proposal-card__main">
-          <h3 class="proposal-card__title">Senior Full-Stack Developer for SaaS Platform</h3>
-          <div class="proposal-card__meta">
-            <span class="meta-item">
-              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
-              </svg>
-              TechNova Solutions
-            </span>
-            <span class="meta-item">
-              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-              </svg>
-              $85/hr &bull; 1-3 months
-            </span>
-            <span class="meta-item">
-              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
-              </svg>
-              Submitted Jun 10, 2026
-            </span>
-          </div>
-        </div>
-        <div class="proposal-card__actions">
-          <div class="status-badge status-badge--pending">
-            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
-            </svg>
-            Pending
-          </div>
-          <a href="#confirm-withdraw-1" class="btn btn--secondary btn-withdraw" style="text-decoration:none;">Withdraw</a>
-        </div>
-      </div>
-
-      <!-- Card 2: Viewed -->
-      <div class="proposal-card" data-status="viewed">
-        <div class="proposal-card__main">
-          <h3 class="proposal-card__title">UX/UI Redesign for E-commerce Mobile App</h3>
-          <div class="proposal-card__meta">
-            <span class="meta-item">
-              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
-              </svg>
-              RetailCore Inc.
-            </span>
-            <span class="meta-item">
-              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-              </svg>
-              $4,500 fixed &bull; Less than 1 month
-            </span>
-            <span class="meta-item">
-              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
-              </svg>
-              Submitted Jun 8, 2026
-            </span>
-          </div>
-        </div>
-        <div class="proposal-card__actions">
-          <div class="status-badge status-badge--viewed">
-            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
-            </svg>
-            Viewed
-          </div>
-          <a href="freelancer_chat.html" class="btn btn--outline">Message Client</a>
-        </div>
-      </div>
-
-      <!-- Card 3: Accepted -->
-      <div class="proposal-card" data-status="accepted">
-        <div class="proposal-card__main">
-          <h3 class="proposal-card__title">React Frontend Architecture Consultation</h3>
-          <div class="proposal-card__meta">
-            <span class="meta-item">
-              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
-              </svg>
-              StartUp Flow
-            </span>
-            <span class="meta-item">
-              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-              </svg>
-              $120/hr &bull; Active Contract
-            </span>
-            <span class="meta-item">
-              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
-              </svg>
-              Accepted May 28, 2026
-            </span>
-          </div>
-        </div>
-        <div class="proposal-card__actions">
-          <div class="status-badge status-badge--accepted">
-            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
-            </svg>
-            Accepted
-          </div>
-          <a href="upload_comp_work.html" class="btn btn--solid">Upload Deliverable</a>
-        </div>
-      </div>
-
-      <!-- Card 4: Declined -->
-      <div class="proposal-card proposal-card--declined" data-status="declined">
-        <div class="proposal-card__main">
-          <h3 class="proposal-card__title">Backend API Integration (Node.js)</h3>
-          <div class="proposal-card__meta">
-            <span class="meta-item">
-              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
-              </svg>
-              DataSync Partners
-            </span>
-            <span class="meta-item">
-              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-              </svg>
-              $65/hr
-            </span>
-            <span class="meta-item">
-              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
-              </svg>
-              Submitted May 15, 2026
-            </span>
-          </div>
-        </div>
-        <div class="proposal-card__actions">
-          <div class="status-badge status-badge--declined">
-            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z" />
-            </svg>
-            Declined
-          </div>
-        </div>
-      </div>
-
+    <!-- Dynamic Proposals Feed -->
+    <div class="proposal-list" id="proposalsFeed">
+      <!-- Dynamically rendered by my-proposals.js -->
     </div>
+
   </main>
+
+  <!-- Withdraw Confirmation Modal -->
+  <div class="modal-overlay" id="withdrawModal">
+    <div class="modal-content">
+      <h3 style="font-size: 18px; font-weight: 600; margin-bottom: 8px; color: var(--color-text-main);">Withdraw Proposal</h3>
+      <p style="color: var(--color-text-muted); font-size: 14px; margin-bottom: 20px; line-height: 1.5;">
+        Are you sure you want to withdraw this proposal? The client will be notified and your proposed terms will be cancelled.
+      </p>
+      <div style="display: flex; justify-content: flex-end; gap: 12px;">
+        <button type="button" class="btn btn--outline" id="cancelWithdrawBtn">Cancel</button>
+        <button type="button" class="btn btn--danger" id="confirmWithdrawBtn">Yes, Withdraw</button>
+      </div>
+    </div>
+  </div>
 
   <!-- REQUIRE: shared-footer.php START -->
   <!-- SkillMatch Unified Footer -->
@@ -306,10 +204,10 @@
       <div class="footer__logo">SkillMatch</div>
       <div class="footer__links">
         <a href="job_listing.html" class="footer__link">Browse Jobs</a>
-        <a href="my_proposals.html" class="footer__link">My Proposals</a>
+        <a href="my_proposals.html" class="footer__link">Proposals</a>
         <a href="portfolio_link.html" class="footer__link">Portfolio</a>
         <a href="freelancer_chat.html" class="footer__link">Messages</a>
-        <a href="profile.html" class="footer__link">Settings</a>
+        <a href="profile.html" class="footer__link">Profile</a>
       </div>
       <div class="footer__copyright">
         &copy; 2026 <strong>SkillMatch</strong>. All rights reserved.
@@ -318,27 +216,11 @@
   </footer>
   <!-- REQUIRE: shared-footer.php END -->
 
-  <!-- Withdrawal Confirmation Modal -->
-  <div class="modal-overlay" id="confirm-withdraw-1">
-    <div class="modal-dialog" style="background: white; padding: 24px; border-radius: 8px; max-width: 440px; box-shadow: 0 10px 25px rgba(0,0,0,0.15); width: 100%;">
-      <h3 style="margin-bottom: 12px; font-size: 18px; font-weight: 600;">Confirm Withdrawal</h3>
-      <p style="color: var(--color-text-muted); margin-bottom: 20px; font-size: 14px; line-height: 1.5;">Are you sure you want to withdraw your proposal for "Senior Full-Stack Developer for SaaS Platform"?</p>
-      <div style="display: flex; gap: 12px; justify-content: flex-end;">
-        <a href="#" class="btn btn--secondary" style="text-decoration: none;">Cancel</a>
-        <a href="#withdrawn-1" class="btn btn--solid" style="background-color: var(--color-danger); border-color: var(--color-danger); text-decoration: none;">Confirm Withdraw</a>
-      </div>
-    </div>
-  </div>
-  <div id="withdrawn-1" style="display:none;"></div>
+  <!-- Toast Notification Container -->
+  <div class="toast-container" id="toastContainer"></div>
 
-  <!-- Toast Container -->
-  <div class="toast-container" id="toastContainer">
-    <div class="toast toast--info" id="withdrawn-toast">
-      Proposal for "Senior Full-Stack Developer for SaaS Platform" has been withdrawn.
-      <a href="#" class="toast-close" style="color:white; margin-left:12px; text-decoration:underline;">Dismiss</a>
-    </div>
-  </div>
-
-  <!-- // JS-removal replacement: proposal tabs and withdrawal confirmation handled via pure CSS -->
+  <!-- JavaScript API & Proposals Logic -->
+  <script src="../assets/js/api.js"></script>
+  <script src="../assets/js/my-proposals.js"></script>
 </body>
 </html>

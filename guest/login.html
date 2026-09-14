@@ -10,7 +10,6 @@
   <link rel="stylesheet" href="../assets/css/global.css">
   <link rel="stylesheet" href="assets/css/guest-global.css">
   <style>
-    /* // JS-removal replacement */
     .auth-notice {
       display: none;
       margin-bottom: var(--spacing-md);
@@ -40,9 +39,6 @@
       margin-left: var(--spacing-sm);
       padding: 0 4px;
       line-height: 1;
-    }
-    .auth-notice__close:hover {
-      opacity: 1;
     }
     @keyframes fadeInNotice {
       from { opacity: 0; transform: translateY(-4px); }
@@ -74,7 +70,7 @@
       <h2 class="modal__title">Welcome Back</h2>
     </div>
 
-    <!-- Target Notices for pure CSS alert replacement -->
+    <!-- Target Notices -->
     <div id="forgot-notice" class="auth-notice auth-notice--info">
       <span>Password reset link has been dispatched if account exists.</span>
       <a href="#" class="auth-notice__close" aria-label="Dismiss">&times;</a>
@@ -85,7 +81,7 @@
       <a href="#" class="auth-notice__close" aria-label="Dismiss">&times;</a>
     </div>
 
-    <form id="loginForm" action="../client/index.html" method="GET">
+    <form id="loginForm">
       <!-- Email -->
       <div class="form-group">
         <div class="form-label-row">
@@ -103,9 +99,9 @@
         <input type="password" id="password" name="password" class="form-input" placeholder="••••••••" required autocomplete="current-password">
       </div>
 
-      <!-- Login Actions -->
-      <button type="submit" name="user_role" value="client" formaction="../client/index.html" class="btn btn--solid btn--block" style="padding: 11px; margin-bottom: 8px;">Log In as Client</button>
-      <button type="submit" name="user_role" value="freelancer" formaction="../freelancer/index.html" class="btn btn--outline btn--block" style="padding: 11px; margin-bottom: 12px;">Log In as Freelancer</button>
+      <!-- Dynamic Role-Based Login Buttons -->
+      <button type="submit" name="user_role" value="client" class="btn btn--solid btn--block" style="padding: 11px; margin-bottom: 8px;">Log In as Client</button>
+      <button type="submit" name="user_role" value="freelancer" class="btn btn--outline btn--block" style="padding: 11px; margin-bottom: 12px;">Log In as Freelancer</button>
 
       <!-- OR Divider -->
       <div class="divider">OR</div>
@@ -129,5 +125,11 @@
     </form>
   </div>
 
+  <!-- Global Toast Notification Container -->
+  <div class="toast-container" id="toastContainer"></div>
+
+  <!-- JavaScript API & Authentication Logic -->
+  <script src="../assets/js/api.js"></script>
+  <script src="../assets/js/auth.js"></script>
 </body>
 </html>

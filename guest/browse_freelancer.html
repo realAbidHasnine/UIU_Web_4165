@@ -151,111 +151,9 @@
           </form>
         </div>
 
-        <!-- Grid -->
-        <div class="freelancer-grid">
-          
-          <!-- Freelancer Card 1 -->
-          <article class="freelancer-card">
-            <div class="freelancer-card__header">
-              <a href="freelancer_public_profile.html" class="avatar avatar--1">AK</a>
-              <div class="freelancer-card__price">$85<span>/hr</span></div>
-            </div>
-            <div class="freelancer-card__info">
-              <h3 class="freelancer-card__name"><a href="freelancer_public_profile.html">Alif Khan</a></h3>
-              <p class="freelancer-card__title">Senior Frontend Developer</p>
-              <div class="freelancer-card__rating">
-                <span class="stars">★★★★★</span> 5.0
-              </div>
-            </div>
-            <hr class="freelancer-card__divider">
-            <div class="freelancer-card__skills">
-              <div class="score-beam">
-                <span class="score-beam__name">React</span>
-                <span class="score-beam__track"><span class="score-beam__fill" style="--beam: 98%;"></span></span>
-                <span class="score-beam__value">98%</span>
-              </div>
-              <div class="score-beam">
-                <span class="score-beam__name">TypeScript</span>
-                <span class="score-beam__track"><span class="score-beam__fill" style="--beam: 94%;"></span></span>
-                <span class="score-beam__value">94%</span>
-              </div>
-              <div class="score-beam">
-                <span class="score-beam__name">Tailwind</span>
-                <span class="score-beam__track"><span class="score-beam__fill" style="--beam: 99%;"></span></span>
-                <span class="score-beam__value">99%</span>
-              </div>
-            </div>
-            <a href="freelancer_public_profile.html" class="btn btn--outline btn--block">View Profile</a>
-          </article>
-
-          <!-- Freelancer Card 2 -->
-          <article class="freelancer-card">
-            <div class="freelancer-card__header">
-              <a href="freelancer_public_profile.html" class="avatar avatar--2">TS</a>
-              <div class="freelancer-card__price">$120<span>/hr</span></div>
-            </div>
-            <div class="freelancer-card__info">
-              <h3 class="freelancer-card__name"><a href="freelancer_public_profile.html">Tahsin Sumaiya</a></h3>
-              <p class="freelancer-card__title">Full Stack Engineer</p>
-              <div class="freelancer-card__rating">
-                <span class="stars">★★★★★</span> 4.8
-              </div>
-            </div>
-            <hr class="freelancer-card__divider">
-            <div class="freelancer-card__skills">
-              <div class="score-beam">
-                <span class="score-beam__name">Node.js</span>
-                <span class="score-beam__track"><span class="score-beam__fill" style="--beam: 91%;"></span></span>
-                <span class="score-beam__value">91%</span>
-              </div>
-              <div class="score-beam">
-                <span class="score-beam__name">Python</span>
-                <span class="score-beam__track"><span class="score-beam__fill" style="--beam: 85%;"></span></span>
-                <span class="score-beam__value">85%</span>
-              </div>
-              <div class="score-beam">
-                <span class="score-beam__name">AWS</span>
-                <span class="score-beam__track"><span class="score-beam__fill" style="--beam: 89%;"></span></span>
-                <span class="score-beam__value">89%</span>
-              </div>
-            </div>
-            <a href="freelancer_public_profile.html" class="btn btn--outline btn--block">View Profile</a>
-          </article>
-
-          <!-- Freelancer Card 3 -->
-          <article class="freelancer-card">
-            <div class="freelancer-card__header">
-              <a href="freelancer_public_profile.html" class="avatar avatar--3">MC</a>
-              <div class="freelancer-card__price">$65<span>/hr</span></div>
-            </div>
-            <div class="freelancer-card__info">
-              <h3 class="freelancer-card__name"><a href="freelancer_public_profile.html">Maria Choudhury</a></h3>
-              <p class="freelancer-card__title">UI/UX Designer</p>
-              <div class="freelancer-card__rating">
-                <span class="stars">★★★★★</span> 4.9
-              </div>
-            </div>
-            <hr class="freelancer-card__divider">
-            <div class="freelancer-card__skills">
-              <div class="score-beam">
-                <span class="score-beam__name">Figma</span>
-                <span class="score-beam__track"><span class="score-beam__fill" style="--beam: 98%;"></span></span>
-                <span class="score-beam__value">98%</span>
-              </div>
-              <div class="score-beam">
-                <span class="score-beam__name">Prototyping</span>
-                <span class="score-beam__track"><span class="score-beam__fill" style="--beam: 95%;"></span></span>
-                <span class="score-beam__value">95%</span>
-              </div>
-              <div class="score-beam">
-                <span class="score-beam__name">User Research</span>
-                <span class="score-beam__track"><span class="score-beam__fill" style="--beam: 82%;"></span></span>
-                <span class="score-beam__value">82%</span>
-              </div>
-            </div>
-            <a href="freelancer_public_profile.html" class="btn btn--outline btn--block">View Profile</a>
-          </article>
-
+        <!-- Dynamic Freelancers Grid -->
+        <div class="freelancer-grid" id="freelancersGrid">
+          <!-- Populated by browse-freelancers.js from Spring Boot / API -->
         </div>
       </section>
     </div>
@@ -302,6 +200,11 @@
         </div>
       </div>
     </div>
-  </footer>
+  <!-- Toast Notification Container -->
+  <div class="toast-container" id="toastContainer"></div>
+
+  <!-- JavaScript API & Freelancers Directory Logic -->
+  <script src="../assets/js/api.js"></script>
+  <script src="../assets/js/browse-freelancers.js"></script>
 </body>
 </html>

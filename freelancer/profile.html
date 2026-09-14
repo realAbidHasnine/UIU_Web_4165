@@ -7,10 +7,15 @@
   <link rel="stylesheet" href="assets/css/style.css">
   <link rel="stylesheet" href="../assets/css/global.css">
   <style>
-    /* // JS-removal replacement */
     .navbar:has(#mobileNavToggle:checked) .navbar__center,
     #mobileNavToggle:checked ~ .navbar__center {
       display: flex;
+    }
+    .photo-upload__preview {
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
     }
   </style>
 </head>
@@ -56,7 +61,7 @@
         </svg>
       </a>
 
-      <a href="profile.html" class="navbar__avatar" title="View Profile">SH</a>
+      <a href="profile.html" class="navbar__avatar" title="View Profile">SJ</a>
       <a href="../guest/login.html" class="navbar__icon" title="Log Out" aria-label="Log Out">
         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
@@ -84,34 +89,34 @@
             </svg>
             <img id="avatarImage" src="" alt="Profile preview" style="display: none;">
           </label>
-          <input type="file" id="avatarFileInput" accept="image/*" class="photo-upload__input">
+          <input type="file" id="avatarFileInput" accept="image/*" class="photo-upload__input" style="display: none;">
           <label for="avatarFileInput" class="photo-upload__btn" id="btnUploadPhoto" role="button" tabindex="0" style="cursor: pointer; display: inline-block; text-align: center;">Change Profile Photo</label>
         </div>
 
         <!-- Profile Form -->
-        <form id="profileEditForm" method="GET" action="index.html">
+        <form id="profileEditForm">
           <div class="form-group">
             <label class="form-group__label" for="fullName">Full Name</label>
-            <input type="text" id="fullName" name="full_name" class="form-input" value="Sabbir Hossain" required>
+            <input type="text" id="fullName" name="full_name" class="form-input" placeholder="Your Full Name" required>
           </div>
 
           <div class="form-group">
             <label class="form-group__label" for="email">Professional Email</label>
-            <input type="email" id="email" name="email" class="form-input" value="sabbir.hossain@skillmatch.io" required>
+            <input type="email" id="email" name="email" class="form-input" placeholder="name@domain.com" required>
           </div>
 
           <div class="form-group">
             <label class="form-group__label" for="bio">Professional Bio</label>
-            <textarea id="bio" name="bio" class="form-input form-input--textarea" required>Full-Stack Web & Mobile Engineer with 5+ years of production experience across React, React Native, Node.js, and cloud architectures. Passionate about building fast, accessible, and delightful digital products.</textarea>
+            <textarea id="bio" name="bio" class="form-input form-input--textarea" placeholder="Describe your background and expertise..." required></textarea>
           </div>
 
           <div class="form-group">
-            <label class="form-group__label" for="skills">Skills & Expertise</label>
-            <input type="text" id="skills" name="skills" class="form-input" value="React, React Native, TypeScript, Node.js, PostgreSQL, UI/UX Design" required>
+            <label class="form-group__label" for="skills">Skills & Expertise (Comma-separated)</label>
+            <input type="text" id="skills" name="skills" class="form-input" placeholder="e.g. React, TypeScript, Spring Boot" required>
           </div>
 
           <div style="display: flex; gap: 12px; margin-top: 24px;">
-            <a href="index.html" class="btn btn--secondary" style="flex: 1;">Cancel</a>
+            <a href="index.html" class="btn btn--secondary" style="flex: 1; text-align: center; text-decoration: none;">Cancel</a>
             <button type="submit" class="btn btn--solid" style="flex: 2;">Save Profile Changes</button>
           </div>
         </form>
@@ -127,7 +132,7 @@
       <div class="footer__logo">SkillMatch</div>
       <div class="footer__links">
         <a href="job_listing.html" class="footer__link">Browse Jobs</a>
-        <a href="my_proposals.html" class="footer__link">Proposals</a>
+        <a href="my_proposals.html" class="footer__link">My Proposals</a>
         <a href="portfolio_link.html" class="footer__link">Portfolio</a>
         <a href="freelancer_chat.html" class="footer__link">Messages</a>
         <a href="profile.html" class="footer__link">Profile</a>
@@ -142,6 +147,8 @@
   <!-- Toast Notification Container -->
   <div class="toast-container" id="toastContainer"></div>
 
-  <!-- // JS-removal replacement: photo picker triggered via label and form submission routes natively -->
+  <!-- JavaScript API & Profile Logic -->
+  <script src="../assets/js/api.js"></script>
+  <script src="../assets/js/profile.js"></script>
 </body>
 </html>

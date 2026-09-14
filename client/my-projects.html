@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 
 <head>
@@ -105,96 +105,17 @@
         </div>
         <div class="tabs"><a class="active" href="my-projects.html">All</a><a href="my-projects.html">Open</a><a
                 href="my-projects.html">In Progress</a><a href="my-projects.html">Completed</a></div>
-        <div class="card" style="margin-bottom:20px">
-            <div class="list-row">
-                <div>
-                    <p class="row-title">E-commerce Redesign &amp; Migration <span class="badge badge-await"
-                            style="color:#b45309;border-color:#fed7aa;background:#fffbeb">In Progress</span></p>
-                    <div class="row-meta"><span>$4,500 Fixed</span><span>34 proposals</span><span>Freelancer:
-                            Ahsan</span><span>Due in 14 days</span></div>
-                </div><a class="btn btn-outline" href="review-proposal.html">View details</a>
-            </div>
-            <details class="timeline">
-                <summary>View project timeline</summary>
-                <ol>
-                    <li class="done"><strong>Posted project</strong> <span class="t-date">Jul 18, 2026</span><br>Fixed
-                        $4,500 budget.</li>
-                    <li class="done"><strong>34 proposals received</strong> <span class="t-date">Jul 25, 2026</span>
-                    </li>
-                    <li class="done"><strong>Hired Ahsan</strong> <span class="t-date">Aug 1, 2026</span></li>
-                    <li class="done"><strong>Milestone 1 approved &amp; paid</strong> <span class="t-date">Aug 15,
-                            2026</span> — <a href="billing-payments.html">View in ledger</a></li>
-                    <li class="done"><strong>Milestone 2 approved &amp; paid $1,236</strong> <span class="t-date">Aug
-                            28, 2026</span> — <a href="billing-payments.html">View in ledger</a></li>
-                    <li class="pending"><strong>Milestone 3 submitted — held in escrow $824</strong> <span
-                            class="t-date">Sep 5, 2026</span><br>Awaiting your approval.</li>
-                </ol>
-            </details>
-        </div>
-        <div class="card" style="margin-bottom:20px">
-            <div class="list-row">
-                <div>
-                    <p class="row-title">React Native Mobile App Development <span class="badge badge-open"
-                            style="background:#e0e7ff;color:#1d4ed8">Open</span></p>
-                    <div class="row-meta"><span>$45 - $65 / hr</span><span>12 proposals</span><span>Posted 2 days
-                            ago</span></div>
-                </div><span class="btn btn-outline" aria-disabled="true">View details</span>
-            </div>
-            <details class="timeline">
-                <summary>View project timeline</summary>
-                <ol>
-                    <li class="done"><strong>Posted project</strong> <span class="t-date">Sep 7, 2026</span><br>$45 -
-                        $65 / hr budget.</li>
-                    <li class="pending"><strong>12 proposals received</strong> <span class="t-date">Sep 9,
-                            2026</span><br>Reviewing candidates.</li>
-                </ol>
-            </details>
-        </div>
-        <div class="card" style="margin-bottom:20px">
-            <div class="list-row">
-                <div>
-                    <p class="row-title">Brand Identity &amp; Logo Design <span class="badge badge-done"
-                            style="background:#fff;border:1px solid #a7f3d0;color:#10b981">Completed</span></p>
-                    <div class="row-meta"><span>$1,200 Fixed</span><span>Freelancer: Sadia</span><span>Finished Oct 12,
-                            2023</span></div>
-                </div><span class="btn btn-outline" aria-disabled="true">View Details</span>
-            </div>
-            <details class="timeline">
-                <summary>View project timeline</summary>
-                <ol>
-                    <li class="done"><strong>Posted project</strong> <span class="t-date">Sep 20, 2023</span></li>
-                    <li class="done"><strong>Hired Sadia</strong> <span class="t-date">Sep 28, 2023</span></li>
-                    <li class="done"><strong>Delivered &amp; approved — paid $1,200</strong> <span class="t-date">Oct
-                            12, 2023</span></li>
-                </ol>
-            </details>
-        </div>
-        <div class="card" style="margin-bottom:20px">
-            <div class="list-row">
-                <div>
-                    <p class="row-title">Python Data Scraping Script <span class="badge badge-await">Awaiting
-                            Approval</span></p>
-                    <div class="row-meta"><span>$450 Fixed</span><span>Freelancer: Moinul Islam</span><span>Milestone 1
-                            Submitted</span></div>
-                </div><a class="btn btn-primary" href="work-approval.html">Review Work</a>
-            </div>
-            <details class="timeline">
-                <summary>View project timeline</summary>
-                <ol>
-                    <li class="done"><strong>Posted project</strong> <span class="t-date">Aug 22, 2026</span><br>Fixed
-                        $450 budget.</li>
-                    <li class="done"><strong>Hired Moinul Islam</strong> <span class="t-date">Aug 29, 2026</span></li>
-                    <li class="pending"><strong>Milestone 1 submitted</strong> <span class="t-date">Sep 9,
-                            2026</span><br>Awaiting your approval.</li>
-                </ol>
-            </details>
-        </div>
+        <!-- Dynamic Projects Container populated by client-projects.js -->
+        <div id="clientProjectsContainer"></div>
+
         <div
             style="display:flex;justify-content:space-between;align-items:center;color:var(--muted);font-size:14px;margin-top:26px">
             <span>&lsaquo; Previous</span><span><span
                     style="background:#eef2ff;padding:6px 12px;border-radius:6px;color:var(--primary-ink);font-weight:700">1</span>&nbsp;&nbsp;
                 2 &nbsp;&nbsp; 3</span><span style="color:var(--text)">Next &rsaquo;</span></div>
     </main>
+    <div class="toast-container" id="toastContainer"></div>
+    <script src="../assets/js/api.js"></script>
+    <script src="../assets/js/client-projects.js"></script>
 </body>
-
 </html>

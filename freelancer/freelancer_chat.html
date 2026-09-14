@@ -7,40 +7,19 @@
   <link rel="stylesheet" href="assets/css/style.css">
   <link rel="stylesheet" href="../assets/css/global.css">
   <style>
-    /* // JS-removal replacement */
     .navbar:has(#mobileNavToggle:checked) .navbar__center,
     #mobileNavToggle:checked ~ .navbar__center {
       display: flex;
     }
 
     /* Active inbox item styling */
-    body:has(#chat-tab-1:checked) #inboxItem1,
-    body:has(#chat-tab-2:checked) #inboxItem2,
-    body:has(#chat-tab-3:checked) #inboxItem3 {
-      background-color: var(--color-bg-page);
-      border-left: 3px solid var(--color-primary);
+    .inbox-item--active {
+      background-color: var(--color-bg-page) !important;
+      border-left: 3px solid var(--color-primary) !important;
     }
-    body:has(#chat-tab-1:checked) #inboxItem1 .client-unread { display: none; }
-    body:has(#chat-tab-1:checked) #totalUnread { display: none; }
 
-    /* Dynamic header title based on active tab */
-    .chat-name-1, .chat-name-2, .chat-name-3 { display: none; }
-    body:has(#chat-tab-1:checked) .chat-name-1 { display: inline; }
-    body:has(#chat-tab-2:checked) .chat-name-2 { display: inline; }
-    body:has(#chat-tab-3:checked) .chat-name-3 { display: inline; }
-
-    /* Conversation thread switching */
-    .thread-messages { display: none; }
-    body:has(#chat-tab-1:checked) #thread1 { display: flex; flex-direction: column; }
-    body:has(#chat-tab-2:checked) #thread2 { display: flex; flex-direction: column; }
-    body:has(#chat-tab-3:checked) #thread3 { display: flex; flex-direction: column; }
-
-    /* Pre-rendered sent message bubble behind :target */
-    #msg-sent {
-      display: none;
-    }
-    #msg-sent:target {
-      display: flex !important;
+    .chat__messages {
+      scroll-behavior: smooth;
     }
   </style>
 </head>
@@ -86,7 +65,7 @@
         </svg>
       </a>
 
-      <a href="profile.html" class="navbar__avatar" title="View Profile">SH</a>
+      <a href="profile.html" class="navbar__avatar" title="View Profile">SJ</a>
       <a href="../guest/login.html" class="navbar__icon" title="Log Out" aria-label="Log Out">
         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
@@ -96,11 +75,6 @@
   </header>
   <!-- REQUIRE: shared-header.php END -->
 
-  <!-- Hidden Radio Inputs for Chat Conversation Switching -->
-  <input type="radio" name="active_chat" id="chat-tab-1" checked style="display:none;" aria-hidden="true">
-  <input type="radio" name="active_chat" id="chat-tab-2" style="display:none;" aria-hidden="true">
-  <input type="radio" name="active_chat" id="chat-tab-3" style="display:none;" aria-hidden="true">
-
   <!-- Main Content -->
   <main class="main main--wide">
     <div class="chat-layout">
@@ -109,62 +83,11 @@
       <aside class="inbox">
         <div class="inbox__header">
           <span>Client Messages</span>
-          <span class="unread-badge" id="totalUnread">2</span>
+          <span class="unread-badge" id="totalUnread" style="display:none;">0</span>
         </div>
+        <!-- Dynamic Inbox Threads List -->
         <div class="inbox__list" id="inboxList">
-          
-          <!-- Inbox Item 1 (Active) -->
-          <label for="chat-tab-1" class="inbox-item" id="inboxItem1" role="button" tabindex="0" style="cursor: pointer; display: flex;">
-            <div class="avatar avatar--blue">NM</div>
-            <div class="inbox-item__content">
-              <div class="inbox-item__top">
-                <div class="inbox-item__name-wrap">
-                  <span class="inbox-item__name">Naim Molla</span>
-                  <span class="badge-client">Client</span>
-                </div>
-                <span class="inbox-item__time">10:42 AM</span>
-              </div>
-              <div class="inbox-item__bottom">
-                <span class="inbox-item__preview">Great, let's proceed with the wireframes...</span>
-                <span class="unread-badge client-unread">2</span>
-              </div>
-            </div>
-          </label>
-
-          <!-- Inbox Item 2 -->
-          <label for="chat-tab-2" class="inbox-item" id="inboxItem2" role="button" tabindex="0" style="cursor: pointer; display: flex;">
-            <div class="avatar avatar--gray">AG</div>
-            <div class="inbox-item__content">
-              <div class="inbox-item__top">
-                <div class="inbox-item__name-wrap">
-                  <span class="inbox-item__name">Anjon Ganguli</span>
-                  <span class="badge-client">Client</span>
-                </div>
-                <span class="inbox-item__time">Yesterday</span>
-              </div>
-              <div class="inbox-item__bottom">
-                <span class="inbox-item__preview">Invoice received, processing milestone 2...</span>
-              </div>
-            </div>
-          </label>
-
-          <!-- Inbox Item 3 -->
-          <label for="chat-tab-3" class="inbox-item" id="inboxItem3" role="button" tabindex="0" style="cursor: pointer; display: flex;">
-            <div class="avatar avatar--purple">TD</div>
-            <div class="inbox-item__content">
-              <div class="inbox-item__top">
-                <div class="inbox-item__name-wrap">
-                  <span class="inbox-item__name">Tonmoy Das</span>
-                  <span class="badge-client">Client</span>
-                </div>
-                <span class="inbox-item__time">Oct 12</span>
-              </div>
-              <div class="inbox-item__bottom">
-                <span class="inbox-item__preview">Thanks for the quick turnaround on the files!</span>
-              </div>
-            </div>
-          </label>
-
+          <!-- Populated by chat.js -->
         </div>
       </aside>
 
@@ -174,118 +97,20 @@
         <!-- Chat Header -->
         <header class="chat__header">
           <div class="chat__header-info">
-            <h2 class="chat__header-name" id="chatHeaderName">
-              <span class="chat-name-1">Naim Molla</span>
-              <span class="chat-name-2">Anjon Ganguli</span>
-              <span class="chat-name-3">Tonmoy Das</span>
-            </h2>
+            <h2 class="chat__header-name" id="chatHeaderName">Select a Conversation</h2>
             <span class="badge-client" id="chatHeaderBadge">Client</span>
           </div>
           <a href="upload_comp_work.html" class="chat__header-link" id="chatHeaderProjectLink">View Project Deliverable &rarr;</a>
         </header>
 
-        <!-- Chat Messages Area -->
+        <!-- Dynamic Chat Messages Area -->
         <div class="chat__messages" id="chatMessages">
-          
-          <!-- Thread 1: Naim Molla -->
-          <div class="thread-messages" id="thread1">
-            <div class="chat__date-separator">
-              <span>Today</span>
-            </div>
-
-            <div class="message message--received">
-              <div class="message__bubble">
-                Hi Sabbir! I reviewed the latest designs for the landing page. They look really clean and well organized.
-              </div>
-              <span class="message__time">10:15 AM</span>
-            </div>
-
-            <div class="message message--received">
-              <div class="message__bubble">
-                Could we explore making the primary CTA button slightly larger? I want to ensure it stands out more on mobile screens.
-              </div>
-              <span class="message__time">10:16 AM</span>
-            </div>
-
-            <div class="message message--sent">
-              <div class="message__bubble">
-                Absolutely, Naim. I agree that the CTA could use a bit more visual weight. I'll increase the padding and font size slightly to improve the touch target on mobile devices.
-              </div>
-              <span class="message__time">10:30 AM</span>
-            </div>
-
-            <div class="message message--sent">
-              <div class="message__bubble">
-                I'll have the updated wireframes ready for you to review by this afternoon.
-              </div>
-              <span class="message__time">10:31 AM</span>
-            </div>
-
-            <div class="message message--received">
-              <div class="message__bubble">
-                Great, let's proceed with the wireframes as discussed!
-              </div>
-              <span class="message__time">10:42 AM</span>
-            </div>
-
-            <!-- Sent Message (:target flow) -->
-            <div class="message message--sent" id="msg-sent">
-              <div class="message__bubble">
-                Sounds great! I'll push the final wireframe revisions now.
-              </div>
-              <span class="message__time">Just now</span>
-            </div>
-          </div>
-
-          <!-- Thread 2: Anjon Ganguli -->
-          <div class="thread-messages" id="thread2">
-            <div class="chat__date-separator">
-              <span>Yesterday</span>
-            </div>
-            <div class="message message--received">
-              <div class="message__bubble">
-                Hey Sabbir, how is the milestone 2 progress coming along?
-              </div>
-              <span class="message__time">Yesterday 2:15 PM</span>
-            </div>
-            <div class="message message--sent">
-              <div class="message__bubble">
-                Hi Anjon! Frontend refactoring for the cart and checkout flow is 90% complete.
-              </div>
-              <span class="message__time">Yesterday 3:00 PM</span>
-            </div>
-            <div class="message message--received">
-              <div class="message__bubble">
-                Invoice received, processing milestone 2 payment today.
-              </div>
-              <span class="message__time">Yesterday 4:20 PM</span>
-            </div>
-          </div>
-
-          <!-- Thread 3: Tonmoy Das -->
-          <div class="thread-messages" id="thread3">
-            <div class="chat__date-separator">
-              <span>Oct 12</span>
-            </div>
-            <div class="message message--sent">
-              <div class="message__bubble">
-                Hi Tonmoy, I have uploaded the final assets bundle and guidelines to the deliverable section.
-              </div>
-              <span class="message__time">Oct 12 11:00 AM</span>
-            </div>
-            <div class="message message--received">
-              <div class="message__bubble">
-                Thanks for the quick turnaround on the files! Approved and 5-star rating left.
-              </div>
-              <span class="message__time">Oct 12 11:45 AM</span>
-            </div>
-          </div>
-
+          <!-- Populated by chat.js -->
         </div>
 
         <!-- Chat Input Form -->
-        <form id="chatMessageForm" class="chat__input-area" method="GET" action="#msg-sent">
-          <input type="text" id="chatInput" name="message" class="chat__input" placeholder="Type a message..." autocomplete="off">
+        <form id="chatInputForm" class="chat__input-area">
+          <input type="text" id="messageInput" name="message" class="chat__input" placeholder="Type a message..." autocomplete="off" required>
           <button type="submit" class="chat__btn">Send</button>
         </form>
 
@@ -313,6 +138,11 @@
   </footer>
   <!-- REQUIRE: shared-footer.php END -->
 
-  <!-- // JS-removal replacement: chat conversation switching and send flow handled via pure CSS -->
+  <!-- Global Toast Notification Container -->
+  <div class="toast-container" id="toastContainer"></div>
+
+  <!-- JavaScript API & Chat Logic -->
+  <script src="../assets/js/api.js"></script>
+  <script src="../assets/js/chat.js"></script>
 </body>
 </html>

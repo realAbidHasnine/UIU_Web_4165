@@ -7,55 +7,27 @@
   <link rel="stylesheet" href="assets/css/style.css">
   <link rel="stylesheet" href="../assets/css/global.css">
   <style>
-    /* // JS-removal replacement */
     .navbar:has(#mobileNavToggle:checked) .navbar__center,
     #mobileNavToggle:checked ~ .navbar__center {
       display: flex;
     }
-    /* Real Category Filter via modern CSS :has() */
-    .job-listing-layout:has(#cat-web:not(:checked)) .job-card[data-category="web"] {
-      display: none !important;
-    }
-    .job-listing-layout:has(#cat-uiux:not(:checked)) .job-card[data-category="uiux"] {
-      display: none !important;
-    }
-    .job-listing-layout:has(#cat-mobile:not(:checked)) .job-card[data-category="mobile"] {
-      display: none !important;
-    }
 
-    /* Job Selection Active States */
-    body:has(#job-select-1:checked) .job-card[data-id="1"],
-    body:has(#job-select-2:checked) .job-card[data-id="2"],
-    body:has(#job-select-3:checked) .job-card[data-id="3"] {
+    /* Active Card & Dynamic Styles */
+    .job-card {
+      cursor: pointer;
+      transition: border-color 0.2s ease, box-shadow 0.2s ease, transform 0.15s ease;
+    }
+    .job-card:hover {
       border-color: var(--color-primary);
-      box-shadow: 0 0 0 1px var(--color-primary), var(--shadow-sm);
+      transform: translateY(-2px);
     }
-    body:has(#job-select-1:checked) .job-card[data-id="1"] .btn-select-job,
-    body:has(#job-select-2:checked) .job-card[data-id="2"] .btn-select-job,
-    body:has(#job-select-3:checked) .job-card[data-id="3"] .btn-select-job {
-      background-color: var(--color-primary);
-      color: var(--color-white);
-      border-color: var(--color-primary);
+    .job-card--active {
+      border-color: var(--color-primary) !important;
+      box-shadow: 0 0 0 1px var(--color-primary), var(--shadow-sm) !important;
     }
 
-    /* Sidebar Detail Panels */
-    .job-details-panel {
-      display: none;
-    }
-    body:has(#job-select-1:checked) #detailPanel1,
-    body:has(#job-select-2:checked) #detailPanel2,
-    body:has(#job-select-3:checked) #detailPanel3 {
-      display: block;
-    }
-
-    /* Proposal Submission Toast Target */
-    #proposal-submitted {
-      display: none;
-    }
-    #proposal-submitted:target {
-      display: block;
-      opacity: 1;
-      transform: translateY(0);
+    @keyframes spin {
+      to { transform: rotate(360deg); }
     }
   </style>
 </head>
@@ -101,8 +73,8 @@
         </svg>
       </a>
 
-      <a href="profile.html" class="navbar__avatar" title="View Profile">SH</a>
-      <a href="../guest/login.html" class="navbar__icon" title="Log Out" aria-label="Log Out">
+      <a href="profile.html" class="navbar__avatar" title="View Profile">SJ</a>
+      <a href="../guest/login.html" class="navbar__icon" title="Log Out" aria-label="Log Out" id="navLogoutBtn">
         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
         </svg>
@@ -110,11 +82,6 @@
     </div>
   </header>
   <!-- REQUIRE: shared-header.php END -->
-
-  <!-- Hidden Radio Inputs for Pure CSS Job Selection -->
-  <input type="radio" name="selected_job" id="job-select-1" class="job-radio-select" checked style="display:none;" aria-hidden="true">
-  <input type="radio" name="selected_job" id="job-select-2" class="job-radio-select" style="display:none;" aria-hidden="true">
-  <input type="radio" name="selected_job" id="job-select-3" class="job-radio-select" style="display:none;" aria-hidden="true">
 
   <!-- 3-Column Layout -->
   <main class="main main--wide job-listing-layout">
@@ -144,191 +111,45 @@
           </label>
         </div>
 
-        <!-- Budget Range (Decorative) -->
+        <!-- Budget Range -->
         <div class="filter-group">
-          <div class="filter-group__title">Budget Range <small style="font-size:11px; opacity:0.7;">(Decorative)</small></div>
+          <div class="filter-group__title">Budget Range</div>
           <select name="budget_range" id="filterBudget" class="select-input">
             <option value="any">Any Budget</option>
-            <option value="low">Under $2,500</option>
-            <option value="mid">$2,500 – $4,500</option>
-            <option value="high">$4,500+</option>
+            <option value="under-1000">Under $1,000</option>
+            <option value="1000-3000">$1,000 – $3,000</option>
+            <option value="3000-5000">$3,000 – $5,000</option>
+            <option value="5000-plus">$5,000+</option>
           </select>
         </div>
 
-        <!-- Project Length (Decorative) -->
+        <!-- Project Length -->
         <div class="filter-group">
-          <div class="filter-group__title">Project Length <small style="font-size:11px; opacity:0.7;">(Decorative)</small></div>
+          <div class="filter-group__title">Project Length</div>
           <select name="project_length" id="filterLength" class="select-input">
             <option value="any">Any Duration</option>
-            <option value="lt1">Less than 1 month</option>
-            <option value="1to3">1 to 3 months</option>
-            <option value="3plus">3+ months</option>
+            <option value="less-1-month">Less than 1 month</option>
+            <option value="1-3-months">1 to 3 months</option>
+            <option value="more-3-months">3+ months</option>
           </select>
         </div>
       </form>
     </aside>
 
-    <!-- Column 2: Job List Feed -->
+    <!-- Column 2: Job List Feed (Dynamically Rendered via API) -->
     <section class="job-list" id="jobFeed">
-      
-      <!-- Card 1 -->
-      <article class="job-card job-card--active" data-id="1" data-category="mobile" data-budget="high" data-duration="1to3"
-        data-title="Full-Stack React Native Application"
-        data-budget-display="$4,000 - $6,000"
-        data-posted="Posted 2h ago"
-        data-skills="React Native, Node.js, PostgreSQL"
-        data-desc="We are looking for an experienced full-stack developer to build a cross-platform mobile application using React Native. The backend will be powered by Node.js and PostgreSQL."
-        data-responsibilities="Develop native-like mobile experiences.;Design and implement RESTful APIs.;Ensure robust security and data protection.;Deploy and configure app store build pipelines."
-        data-suggested-rate="4800">
-        <div class="job-card__header">
-          <h3 class="job-card__title">Full-Stack React Native Application</h3>
-          <span class="tag-budget">$4,000 - $6,000</span>
-        </div>
-        <p class="job-card__desc">We are looking for an experienced full-stack developer to build a cross-platform mobile application using React Native and Node.js.</p>
-        <div class="job-card__footer">
-          <div class="tag-group">
-            <span class="tag-skill">React Native</span>
-            <span class="tag-skill">Node.js</span>
-            <span class="tag-skill">PostgreSQL</span>
-          </div>
-          <label for="job-select-1" class="btn btn--solid btn-select-job" role="button" tabindex="0">Apply Now</label>
-        </div>
-      </article>
-
-      <!-- Card 2 -->
-      <article class="job-card" data-id="2" data-category="uiux" data-budget="mid" data-duration="lt1"
-        data-title="SaaS Dashboard UI Refactor"
-        data-budget-display="$2,000 - $3,500"
-        data-posted="Posted 4h ago"
-        data-skills="React, Tailwind CSS, Figma"
-        data-desc="Seeking a UI/UX developer to refactor an existing React dashboard. Needs to implement modern accessibility standards, sleek dark mode support, and interactive analytics charts."
-        data-responsibilities="Audit existing component library for UX gaps.;Translate high-fidelity Figma specifications into React components.;Optimize dashboard rendering performance and chart interactions."
-        data-suggested-rate="2800">
-        <div class="job-card__header">
-          <h3 class="job-card__title">SaaS Dashboard UI Refactor</h3>
-          <span class="tag-budget">$2,000 - $3,500</span>
-        </div>
-        <p class="job-card__desc">Seeking a UI/UX developer to refactor an existing React dashboard with modern accessibility standards, sleek design and responsive charts.</p>
-        <div class="job-card__footer">
-          <div class="tag-group">
-            <span class="tag-skill">React</span>
-            <span class="tag-skill">Tailwind CSS</span>
-            <span class="tag-skill">Figma</span>
-          </div>
-          <label for="job-select-2" class="btn btn--outline btn-select-job" role="button" tabindex="0">Apply Now</label>
-        </div>
-      </article>
-
-      <!-- Card 3 -->
-      <article class="job-card" data-id="3" data-category="web" data-budget="low" data-duration="lt1"
-        data-title="Marketing Site Development"
-        data-budget-display="$1,500 - $2,500"
-        data-posted="Posted 1d ago"
-        data-skills="Next.js, SEO, CMS"
-        data-desc="Need a fast, SEO-optimized marketing site built with Next.js. The design is finalized in Figma. Must achieve 95+ score on Google Lighthouse and integrate with headless CMS."
-        data-responsibilities="Implement responsive pages based on Figma components.;Integrate content models with headless CMS API.;Ensure sub-second page loads and complete SEO metadata."
-        data-suggested-rate="1800">
-        <div class="job-card__header">
-          <h3 class="job-card__title">Marketing Site Development</h3>
-          <span class="tag-budget">$1,500 - $2,500</span>
-        </div>
-        <p class="job-card__desc">Need a fast, SEO-optimized marketing site built with Next.js. Must achieve 95+ score on Google Lighthouse and integrate with headless CMS.</p>
-        <div class="job-card__footer">
-          <div class="tag-group">
-            <span class="tag-skill">Next.js</span>
-            <span class="tag-skill">SEO</span>
-            <span class="tag-skill">CMS</span>
-          </div>
-          <label for="job-select-3" class="btn btn--outline btn-select-job" role="button" tabindex="0">Apply Now</label>
-        </div>
-      </article>
-
+      <!-- Dynamic Job Cards rendered by job-listing.js -->
     </section>
 
     <!-- Column 3: Job Details & Proposal Sidebar -->
     <aside class="job-details-sidebar" id="detailsSidebar">
-      
-      <!-- Details Section: Job 1 -->
-      <div class="job-details-panel" id="detailPanel1">
-        <h1 class="job-details__title" id="detailTitle">Full-Stack React Native Application</h1>
-        <div class="job-details__meta">
-          <span class="tag-budget" id="detailBudget">$4,000 - $6,000</span>
-          <span class="job-details__time" id="detailTime">Posted 2h ago</span>
-        </div>
-        <div class="tag-group" id="detailSkills">
-          <span class="tag-skill">React Native</span>
-          <span class="tag-skill">Node.js</span>
-          <span class="tag-skill">PostgreSQL</span>
-        </div>
-        <div class="job-details__section">
-          <h3 class="job-details__subtitle">Job Description</h3>
-          <p class="job-details__text" id="detailDesc">We are looking for an experienced full-stack developer to build a cross-platform mobile application using React Native. The backend will be powered by Node.js and PostgreSQL.</p>
-        </div>
-        <div class="job-details__section">
-          <h3 class="job-details__subtitle">Key Responsibilities</h3>
-          <ul class="job-details__list" id="detailResponsibilities">
-            <li>Develop native-like mobile experiences.</li>
-            <li>Design and implement RESTful APIs.</li>
-            <li>Ensure robust security and data protection.</li>
-            <li>Deploy and configure app store build pipelines.</li>
-          </ul>
-        </div>
-      </div>
-
-      <!-- Details Section: Job 2 -->
-      <div class="job-details-panel" id="detailPanel2">
-        <h1 class="job-details__title">SaaS Dashboard UI Refactor</h1>
-        <div class="job-details__meta">
-          <span class="tag-budget">$2,000 - $3,500</span>
-          <span class="job-details__time">Posted 4h ago</span>
-        </div>
-        <div class="tag-group">
-          <span class="tag-skill">React</span>
-          <span class="tag-skill">Tailwind CSS</span>
-          <span class="tag-skill">Figma</span>
-        </div>
-        <div class="job-details__section">
-          <h3 class="job-details__subtitle">Job Description</h3>
-          <p class="job-details__text">Seeking a UI/UX developer to refactor an existing React dashboard. Needs to implement modern accessibility standards, sleek dark mode support, and interactive analytics charts.</p>
-        </div>
-        <div class="job-details__section">
-          <h3 class="job-details__subtitle">Key Responsibilities</h3>
-          <ul class="job-details__list">
-            <li>Audit existing component library for UX gaps.</li>
-            <li>Translate high-fidelity Figma specifications into React components.</li>
-            <li>Optimize dashboard rendering performance and chart interactions.</li>
-          </ul>
-        </div>
-      </div>
-
-      <!-- Details Section: Job 3 -->
-      <div class="job-details-panel" id="detailPanel3">
-        <h1 class="job-details__title">Marketing Site Development</h1>
-        <div class="job-details__meta">
-          <span class="tag-budget">$1,500 - $2,500</span>
-          <span class="job-details__time">Posted 1d ago</span>
-        </div>
-        <div class="tag-group">
-          <span class="tag-skill">Next.js</span>
-          <span class="tag-skill">SEO</span>
-          <span class="tag-skill">CMS</span>
-        </div>
-        <div class="job-details__section">
-          <h3 class="job-details__subtitle">Job Description</h3>
-          <p class="job-details__text">Need a fast, SEO-optimized marketing site built with Next.js. The design is finalized in Figma. Must achieve 95+ score on Google Lighthouse and integrate with headless CMS.</p>
-        </div>
-        <div class="job-details__section">
-          <h3 class="job-details__subtitle">Key Responsibilities</h3>
-          <ul class="job-details__list">
-            <li>Implement responsive pages based on Figma components.</li>
-            <li>Integrate content models with headless CMS API.</li>
-            <li>Ensure sub-second page loads and complete SEO metadata.</li>
-          </ul>
-        </div>
+      <!-- Dynamic Details Container -->
+      <div id="jobDetailsContent">
+        <!-- Dynamically populated by job-listing.js -->
       </div>
 
       <!-- Submit Proposal Form -->
-      <form id="jobProposalForm" class="proposal-form" method="GET" action="job_listing.html#proposal-submitted">
+      <form id="jobProposalForm" class="proposal-form">
         <h2 class="proposal-form__title">Submit Proposal</h2>
         
         <div class="form-group">
@@ -339,21 +160,20 @@
         <div class="form-row">
           <div class="form-group">
             <label class="form-group__label" for="proposedRate">Proposed Rate ($)</label>
-            <input type="number" id="proposedRate" name="proposed_rate" class="form-input" placeholder="e.g. 4500" value="4800" required>
+            <input type="number" id="proposedRate" name="proposed_rate" class="form-input" placeholder="e.g. 4200" required>
           </div>
           <div class="form-group">
             <label class="form-group__label" for="estimatedDuration">Estimated Duration</label>
             <select id="estimatedDuration" name="estimated_duration" class="form-input select-input" required>
-              <option value="lt1">Less than 1 month</option>
-              <option value="1to3" selected>1-3 months</option>
-              <option value="3to6">3-6 months</option>
+              <option value="less-1-month">Less than 1 month</option>
+              <option value="1-3-months" selected>1-3 months</option>
+              <option value="more-3-months">3+ months</option>
             </select>
           </div>
         </div>
 
         <button type="submit" class="btn btn--solid btn-submit">Submit Proposal</button>
       </form>
-
     </aside>
 
   </main>
@@ -377,14 +197,11 @@
   </footer>
   <!-- REQUIRE: shared-footer.php END -->
 
-  <!-- Toast Container -->
-  <div class="toast-container" id="toastContainer">
-    <div class="toast toast--success" id="proposal-submitted">
-      Proposal successfully submitted!
-      <a href="job_listing.html" class="toast-close" style="color:white; margin-left:12px; text-decoration:underline;">Dismiss</a>
-    </div>
-  </div>
+  <!-- Global Toast Notification Container -->
+  <div class="toast-container" id="toastContainer"></div>
 
-  <!-- // JS-removal replacement: job selection and category filter handled via pure CSS -->
+  <!-- JavaScript API & Page Logic -->
+  <script src="../assets/js/api.js"></script>
+  <script src="../assets/js/job-listing.js"></script>
 </body>
 </html>

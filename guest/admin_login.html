@@ -44,8 +44,7 @@
 
       <!-- Login Card -->
       <div class="admin-card">
-        <!-- TODO: replace with PHP session-based auth: $_SESSION['role']='admin'; then redirect() -->
-        <form id="adminLoginForm" action="../Admin/admin-login.html" method="POST" onsubmit="event.preventDefault(); window.location.href='../Admin/html/admin-dashboard.html';">
+        <form id="adminLoginForm">
           
           <!-- Email Input -->
           <div class="form-group">
@@ -60,7 +59,7 @@
           </div>
 
           <!-- Submit -->
-          <button type="submit" name="admin_login_submit" class="btn btn--solid btn--block" style="padding: 11px; background-color: var(--color-ink); border-color: var(--color-ink);">
+          <button type="submit" class="btn btn--solid btn--block" style="padding: 11px; background-color: var(--color-ink); border-color: var(--color-ink);">
             Log In to Console
           </button>
 
@@ -112,5 +111,11 @@
   </footer>
   <!-- REQUIRE: guest-footer.php END -->
 
+  <!-- Toast Container -->
+  <div class="toast-container" id="toastContainer"></div>
+
+  <!-- JavaScript API & Auth Logic -->
+  <script src="../assets/js/api.js"></script>
+  <script src="../assets/js/auth.js"></script>
 </body>
 </html>

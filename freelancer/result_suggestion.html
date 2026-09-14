@@ -7,7 +7,6 @@
   <link rel="stylesheet" href="assets/css/style.css">
   <link rel="stylesheet" href="../assets/css/global.css">
   <style>
-    /* // JS-removal replacement */
     .navbar:has(#mobileNavToggle:checked) .navbar__center,
     #mobileNavToggle:checked ~ .navbar__center {
       display: flex;
@@ -56,7 +55,7 @@
         </svg>
       </a>
 
-      <a href="profile.html" class="navbar__avatar" title="View Profile">SH</a>
+      <a href="profile.html" class="navbar__avatar" title="View Profile">SJ</a>
       <a href="../guest/login.html" class="navbar__icon" title="Log Out" aria-label="Log Out">
         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
@@ -71,12 +70,12 @@
     
     <!-- Header & Score Badge -->
     <section class="result-header">
-      <h1 class="result-header__title">React.js Developer Assessment</h1>
-      <p class="result-header__subtitle">Verification Completed on Jun 26, 2026 &bull; Verified Freelancer Badge Awarded</p>
+      <h1 class="result-header__title" id="assessmentTitle">Professional Skill Assessment</h1>
+      <p class="result-header__subtitle" id="assessmentSubtitle">Verification Completed &bull; Verified Freelancer Badge Awarded</p>
       
       <div class="score-container">
-        <div class="score-badge">88%</div>
-        <div class="score-status-badge">&#10003; Assessment Passed</div>
+        <div class="score-badge" id="scoreBadge">88%</div>
+        <div class="score-status-badge" id="scoreStatusBadge">&#10003; Assessment Passed</div>
       </div>
     </section>
 
@@ -88,7 +87,7 @@
         <h2 class="card__header">Proficiency Breakdown</h2>
         <div class="skill-list">
           <div class="skill-item">
-            <span class="skill-item__name">React Hooks (useState, useEffect)</span>
+            <span class="skill-item__name">Core Concepts & Architecture</span>
             <span class="skill-item__score skill-item__score--high">95%</span>
           </div>
           <div class="skill-item">
@@ -96,16 +95,16 @@
             <span class="skill-item__score skill-item__score--high">90%</span>
           </div>
           <div class="skill-item">
-            <span class="skill-item__name">JSX Syntax & Reconciliation</span>
+            <span class="skill-item__name">REST API & Integration</span>
             <span class="skill-item__score skill-item__score--high">85%</span>
           </div>
           <div class="skill-item">
             <span class="skill-item__name">Complex State Management</span>
-            <span class="skill-item__score skill-item__score--low">70%</span>
+            <span class="skill-item__score skill-item__score--high">80%</span>
           </div>
           <div class="skill-item">
-            <span class="skill-item__name">Async / Await API Integration</span>
-            <span class="skill-item__score skill-item__score--low">65%</span>
+            <span class="skill-item__name">Security & Error Handling</span>
+            <span class="skill-item__score skill-item__score--high">85%</span>
           </div>
         </div>
       </div>
@@ -113,11 +112,11 @@
       <!-- Recommended Improvements Card -->
       <div class="card">
         <h2 class="card__header">Recommended Growth Insights</h2>
-        <p class="improvements-desc">Based on your answers, mastering these high-impact concepts will qualify you for top-tier enterprise projects:</p>
+        <p class="improvements-desc">Based on your assessment, mastering these high-impact concepts will qualify you for top-tier enterprise projects:</p>
         <ul class="improvements-list">
-          <li><strong>Advanced State Management:</strong> Practice Redux Toolkit or Zustand slice patterns for large cross-component trees.</li>
+          <li><strong>Microservices Integration:</strong> Connect frontend state seamlessly with Spring Boot REST endpoints.</li>
           <li><strong>Robust Async Error Handling:</strong> Implement retry strategies, AbortControllers, and boundary error fallbacks.</li>
-          <li><strong>Memoization & Performance:</strong> Leverage React.memo, useMemo, and useCallback to eliminate redundant renders.</li>
+          <li><strong>Memoization & Performance:</strong> Optimize render trees to eliminate redundant network and DOM computations.</li>
         </ul>
       </div>
 
@@ -129,7 +128,7 @@
       <div class="cta-section__actions">
         <a href="index.html" class="btn btn--secondary">Back to Dashboard</a>
         <a href="job_listing.html" class="btn btn--solid">Browse Matching Jobs &rarr;</a>
-        <a href="skill_test.html" class="btn btn--outline">Retake Test</a>
+        <a href="skill_test.html" class="btn btn--outline" id="retakeBtn">Retake Test</a>
       </div>
     </section>
 
@@ -154,6 +153,8 @@
   </footer>
   <!-- REQUIRE: shared-footer.php END -->
 
-  <!-- // JS-removal replacement: navbar toggle handled via CSS :has(#mobileNavToggle:checked) -->
+  <!-- JavaScript API & Result Logic -->
+  <script src="../assets/js/api.js"></script>
+  <script src="../assets/js/result-suggestion.js"></script>
 </body>
 </html>
