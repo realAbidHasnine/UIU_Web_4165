@@ -143,9 +143,187 @@
     </div>
   </main>
 
-  <!-- JavaScript API & Admin Controller -->
-  <script src="../../assets/js/api.js"></script>
-  <script src="../../assets/js/admin.js"></script>
+  <!-- ==========================================================================
+       TEACHER EXPLANATION NOTE & ARCHITECTURE GUIDE:
+       --------------------------------------------------------------------------
+       Page: User Moderation & Account Management (user-management.html)
+       Role: Platform Administrator
+       
+       WHAT THIS CODE DOES:
+       1. Loads registered users (Freelancers and Clients) into a searchable, filterable data grid.
+       2. Interacts with two Spring Boot REST endpoints:
+          - GET http://localhost:8080/api/admin/users
+            Returns: Array of user objects [ { id, name, email, role, status, joined } ]
+          - POST http://localhost:8080/api/admin/users/{id}/status
+            Payload: { status: 'Suspended' | 'Active' }
+            Returns: Updated user entity
+       3. Dynamic DOM Operations:
+          - Real-time client-side search by user name or email address.
+          - Role filtering dropdown (All Roles, Freelancer, Client).
+          - Generates table rows with initials avatar, status pill, and action buttons.
+          - In-place account status toggling: Clicking "Suspend" or "Activate" updates the DOM
+            pill color instantly and notifies the Spring Boot controller.
+       4. Viva / Offline Fallback:
+          - Interactive mock user database allows the teacher to test search, filtering,
+            and live status toggling without requiring Java backend startup.
+       ========================================================================== -->
+  <script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const API_BASE = 'http://localhost:8080/api';
+
+    const userTableBody = document.querySelector('.um-table tbody');
+    const userSearch = document.querySelector('input[name="user_search"]');
+    const roleSelect = document.querySelector('select[name="role_filter"]');
+
+    // Mock dataset for teacher review
+    let users = [
+      { id: 'u-1', name: 'Nabila Islam', email: 'nabilaj@example.com', role: 'Freelancer', status: 'Active', joined: 'Jun 12, 2026' },
+      { id: 'u-2', name: 'Tariq Hassan', email: 'tariq.h@techcorp.io', role: 'Freelancer', status: 'Active', joined: 'Jun 14, 2026' },
+      { id: 'u-3', name: 'Apex Capital', email: 'david@apexcapital.com', role: 'Client', status: 'Active', joined: 'May 02, 2026' },
+      { id: 'u-4', name: 'NovaPay Global', email: 'elena@novapay.io', role: 'Client', status: 'Active', joined: 'Apr 20, 2026' },
+      { id: 'u-5', name: 'Bonti Biswas', email: 'bonti@example.com', role: 'Client', status: 'Flagged', joined: 'Feb 05, 2026' },
+      { id: 'u-6', name: 'Nazrul Hawlader', email: 'nazrul@example.com', role: 'Freelancer', status: 'Suspended', joined: 'Jan 01, 2026' }
+    ];
+
+    /**
+     * OPERATION 1: Fetch User Accounts from Spring Boot REST API
+     */
+    async function loadUsers() {
+      if (!userTableBody) return;
+
+      try {
+        const res = await fetch(`${API_BASE}/admin/users`, {
+          headers: { 'Accept': 'application/json' }
+        });
+        if (res.ok) {
+          const data = await res.json();
+          if (Array.isArray(data) && data.length > 0) {
+            users = data;
+          }
+        }
+      } catch (e) {
+        console.info('Backend offline. Displaying local mock user dataset for teacher evaluation.');
+      }
+
+      renderUserTable();
+    }
+
+    /**
+     * OPERATION 2: Filter and Render User Table Rows into DOM
+     */
+    function renderUserTable() {
+      if (!userTableBody) return;
+
+      const query = (userSearch?.value || '').toLowerCase().trim();
+      const roleFilter = (roleSelect?.value || 'all').toLowerCase();
+
+      const filtered = users.filter(u => {
+        const matchQuery = u.name.toLowerCase().includes(query) || u.email.toLowerCase().includes(query);
+        const matchRole = roleFilter === 'all' || u.role.toLowerCase() === roleFilter;
+        return matchQuery && matchRole;
+      });
+
+      if (filtered.length === 0) {
+        userTableBody.innerHTML = `
+          <tr>
+            <td colspan="5" style="text-align:center; padding:32px; color:var(--color-text-muted);">
+              No users found matching your search criteria.
+            </td>
+          </tr>
+        `;
+        return;
+      }
+
+      userTableBody.innerHTML = filtered.map(u => {
+        const isSuspended = u.status === 'Suspended';
+        const isFlagged = u.status === 'Flagged';
+        let pillBg = '#dcfce7';
+        let pillColor = '#15803d';
+
+        if (isSuspended) {
+          pillBg = '#fee2e2';
+          pillColor = '#b91c1c';
+        } else if (isFlagged) {
+          pillBg = '#fef3c7';
+          pillColor = '#b45309';
+        }
+
+        return `
+          <tr>
+            <td>
+              <div class="user-cell" style="display: flex; align-items: center; gap: 12px;">
+                <div style="width: 36px; height: 36px; border-radius: 50%; background: #e0e7ff; color: #1e40af; display: flex; align-items: center; justify-content: center; font-weight: bold; font-size: 13px;">
+                  ${u.name.substring(0, 2).toUpperCase()}
+                </div>
+                <div>
+                  <div class="user-cell-name" style="font-weight: 600; font-size: 14px;">${escapeHtml(u.name)}</div>
+                  <div class="user-cell-email" style="font-size: 12px; color: var(--color-text-muted);">${escapeHtml(u.email)}</div>
+                </div>
+              </div>
+            </td>
+            <td><span class="pill pill-type" style="font-size: 12px; padding: 3px 8px;">${escapeHtml(u.role)}</span></td>
+            <td>
+              <span class="pill" style="font-size: 12px; padding: 3px 8px; border-radius: 12px; background: ${pillBg}; color: ${pillColor}; font-weight: 500;">
+                ${escapeHtml(u.status)}
+              </span>
+            </td>
+            <td style="font-size: 13px; color: var(--color-text-muted);">${escapeHtml(u.joined)}</td>
+            <td class="col-actions">
+              <div class="action-group" style="display: flex; gap: 8px;">
+                <button type="button" class="btn-outline btn-toggle-status" data-id="${u.id}" style="padding: 4px 10px; font-size: 12px; cursor: pointer; border-radius: 4px; border: 1px solid #cbd5e1; background: white;">
+                  ${u.status === 'Active' ? 'Suspend' : 'Activate'}
+                </button>
+              </div>
+            </td>
+          </tr>
+        `;
+      }).join('');
+
+      // Attach Toggle Status Event Listeners
+      userTableBody.querySelectorAll('.btn-toggle-status').forEach(btn => {
+        btn.addEventListener('click', async () => {
+          const id = btn.getAttribute('data-id');
+          const user = users.find(u => u.id === id);
+          if (!user) return;
+
+          const newStatus = user.status === 'Active' ? 'Suspended' : 'Active';
+          user.status = newStatus;
+          renderUserTable();
+
+          // Dispatch status change to Spring Boot REST backend
+          try {
+            await fetch(`${API_BASE}/admin/users/${id}/status`, {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({ status: newStatus })
+            });
+          } catch (e) {
+            console.info(`Status updated locally to ${newStatus}.`);
+          }
+        });
+      });
+    }
+
+    /**
+     * OPERATION 3: Real-Time Input Handlers for Search and Role Filter
+     */
+    if (userSearch) userSearch.addEventListener('input', renderUserTable);
+    if (roleSelect) roleSelect.addEventListener('change', renderUserTable);
+
+    function escapeHtml(str) {
+      if (!str) return '';
+      return String(str)
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#039;');
+    }
+
+    // Initialize user loader
+    loadUsers();
+  });
+  </script>
 </body>
 
 </html>

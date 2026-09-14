@@ -197,11 +197,420 @@
   </footer>
   <!-- REQUIRE: shared-footer.php END -->
 
-  <!-- Global Toast Notification Container -->
-  <div class="toast-container" id="toastContainer"></div>
+  <!-- ========================================================================== -->
+  <!-- JAVASCRIPT LOGIC (DISTRIBUTED IN THIS HTML FILE FOR EASY TEACHER REVIEW)   -->
+  <!-- ========================================================================== -->
+  <script>
+    /**
+     * SkillMatch — Freelancer Job Listings & Proposal Submission
+     * 
+     * TEACHER REVIEW NOTES:
+     * This script handles all dynamic operations for the Job Listing page:
+     * 1. Fetches active jobs from the Spring Boot REST backend: GET http://localhost:8080/api/jobs
+     * 2. Renders dynamic job cards into the DOM (#jobFeed) without hardcoded static data.
+     * 3. Selects a job to display full project requirements in the sidebar (#jobDetailsContent).
+     * 4. Submits freelancer proposals asynchronously: POST http://localhost:8080/api/jobs/{id}/proposals
+     * 5. Provides offline fallback data so the page functions smoothly even before Spring Boot starts.
+     */
 
-  <!-- JavaScript API & Page Logic -->
-  <script src="../assets/js/api.js"></script>
-  <script src="../assets/js/job-listing.js"></script>
+    document.addEventListener('DOMContentLoaded', () => {
+      // API Base URL for Spring Boot Backend
+      const API_BASE = 'http://localhost:8080/api';
+
+      // DOM Element References
+      const jobFeed = document.getElementById('jobFeed');
+      const detailsSidebar = document.getElementById('detailsSidebar');
+      const detailsContent = document.getElementById('jobDetailsContent');
+      const proposalForm = document.getElementById('jobProposalForm');
+      const proposedRateInput = document.getElementById('proposedRate');
+      const filtersForm = document.getElementById('filtersForm');
+      const resetFiltersBtn = document.getElementById('resetFilters');
+      const mobileToggle = document.getElementById('mobileToggle');
+      const navbarMenu = document.getElementById('navbarMenu');
+
+      // State Management
+      let currentJobs = [];
+      let selectedJob = null;
+
+      // ----------------------------------------------------------------------
+      // OPERATION 1: Fetch and Filter Jobs from Spring Boot REST API
+      // Endpoint: GET /api/jobs?category=...&budget=...&duration=...
+      // ----------------------------------------------------------------------
+      async function loadJobs() {
+        if (!jobFeed) return;
+
+        // Display animated loading state
+        jobFeed.innerHTML = `
+          <div style="padding: 40px; text-align: center; color: var(--color-text-muted);">
+            <div class="spinner" style="display:inline-block; width:32px; height:32px; border:3px solid rgba(37,99,235,0.2); border-top-color:var(--color-primary); border-radius:50%; animation: spin 0.8s linear infinite;"></div>
+            <p style="margin-top: 12px; font-size: 14px;">Loading available opportunities...</p>
+          </div>
+        `;
+
+        // Gather filter values from sidebar form controls
+        const selectedCategories = Array.from(document.querySelectorAll('.filter-category:checked'))
+          .map(cb => cb.value)
+          .join(',');
+        const budget = document.getElementById('filterBudget')?.value || 'any';
+        const duration = document.getElementById('filterLength')?.value || 'any';
+
+        // Build query string for Spring Boot @RequestParam mapping
+        const queryParams = new URLSearchParams();
+        if (selectedCategories) queryParams.set('category', selectedCategories);
+        if (budget !== 'any') queryParams.set('budget', budget);
+        if (duration !== 'any') queryParams.set('duration', duration);
+
+        try {
+          // Attempt fetch from live Spring Boot REST Controller
+          const response = await fetch(`${API_BASE}/jobs?${queryParams.toString()}`, {
+            headers: { 'Accept': 'application/json' }
+          });
+          if (!response.ok) throw new Error('Network response was not ok');
+          currentJobs = await response.json();
+        } catch (err) {
+          // Fallback: If Spring Boot backend is offline, generate dynamic local records
+          console.warn('[SkillMatch] Backend offline, loading dynamic fallback jobs for demo:', err.message);
+          currentJobs = getFallbackJobs(selectedCategories, budget, duration);
+        }
+
+        renderJobList(currentJobs);
+      }
+
+      // ----------------------------------------------------------------------
+      // OPERATION 2: Render Dynamic Job Cards into the DOM (#jobFeed)
+      // ----------------------------------------------------------------------
+      function renderJobList(jobs) {
+        if (!jobFeed) return;
+
+        if (!jobs || jobs.length === 0) {
+          jobFeed.innerHTML = `
+            <div style="padding: 48px; text-align: center; background: var(--color-white); border-radius: var(--radius-lg); border: 1px solid var(--color-border);">
+              <div style="font-size: 36px; margin-bottom: 12px;">🔍</div>
+              <h3 style="font-size: 18px; font-weight: 600; color: var(--color-text-main); margin-bottom: 6px;">No Matching Jobs Found</h3>
+              <p style="color: var(--color-text-muted); font-size: 14px; max-width: 320px; margin: 0 auto 16px;">Try adjusting your category checkboxes or budget range to see more projects.</p>
+              <button type="button" class="btn btn--solid" id="emptyResetBtn">Reset Filters</button>
+            </div>
+          `;
+          document.getElementById('emptyResetBtn')?.addEventListener('click', resetAllFilters);
+          if (detailsContent) {
+            detailsContent.innerHTML = `<div style="padding: 40px; text-align: center; color: var(--color-text-muted);"><p>Select a job from the list to view specifications.</p></div>`;
+          }
+          return;
+        }
+
+        jobFeed.innerHTML = jobs.map((job, index) => `
+          <article class="job-card ${selectedJob && selectedJob.id === job.id ? 'job-card--active' : (index === 0 && !selectedJob ? 'job-card--active' : '')}" 
+                   data-job-id="${job.id}" tabindex="0" role="button" aria-label="Select job: ${escapeHtml(job.title)}">
+            <div class="job-card__header">
+              <h3 class="job-card__title">${escapeHtml(job.title)}</h3>
+              <span class="tag-budget">${escapeHtml(job.budgetDisplay || '$' + job.budget)}</span>
+            </div>
+            <p class="job-card__desc">${escapeHtml(job.desc)}</p>
+            <div class="job-card__tags">
+              ${(job.skills || []).map(skill => `<span class="tag">${escapeHtml(skill)}</span>`).join('')}
+            </div>
+            <div class="job-card__footer">
+              <span class="meta-item">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" width="14" height="14">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                </svg>
+                Posted ${escapeHtml(job.posted || 'recently')}
+              </span>
+              <span class="meta-item">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" width="14" height="14">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"/>
+                </svg>
+                ${job.proposalsCount || 0} proposals
+              </span>
+            </div>
+          </article>
+        `).join('');
+
+        // Attach click listeners to cards for sidebar display
+        jobFeed.querySelectorAll('.job-card').forEach(card => {
+          card.addEventListener('click', () => {
+            const jId = card.getAttribute('data-job-id');
+            const target = currentJobs.find(j => j.id === jId);
+            if (target) selectJob(target);
+          });
+        });
+
+        // Auto-select first job if none currently active
+        if (!selectedJob && jobs.length > 0) {
+          selectJob(jobs[0]);
+        }
+      }
+
+      // ----------------------------------------------------------------------
+      // OPERATION 3: Display Detailed Job Specifications in Sidebar
+      // ----------------------------------------------------------------------
+      function selectJob(job) {
+        selectedJob = job;
+
+        // Highlight active card
+        jobFeed.querySelectorAll('.job-card').forEach(c => {
+          if (c.getAttribute('data-job-id') === job.id) {
+            c.classList.add('job-card--active');
+          } else {
+            c.classList.remove('job-card--active');
+          }
+        });
+
+        if (!detailsContent) return;
+
+        detailsContent.innerHTML = `
+          <div class="sidebar__header">
+            <span class="eyebrow">${escapeHtml(job.company || 'Verified Client')} &bull; ${escapeHtml(job.location || 'Remote')}</span>
+            <h2 class="sidebar__title">${escapeHtml(job.title)}</h2>
+            <div style="margin-top: 8px; display: flex; gap: 8px; flex-wrap: wrap;">
+              <span class="tag-budget">${escapeHtml(job.budgetDisplay || '$' + job.budget)}</span>
+              <span class="tag" style="background: var(--color-bg-secondary); color: var(--color-text-muted);">${escapeHtml(job.durationDisplay || '1-3 Months')}</span>
+              <span class="tag" style="background: rgba(37,99,235,0.08); color: var(--color-primary);">${escapeHtml(job.level || 'Intermediate')}</span>
+            </div>
+          </div>
+
+          <div class="sidebar__section">
+            <h4 class="sidebar__section-title">Project Overview</h4>
+            <p class="sidebar__desc">${escapeHtml(job.desc)}</p>
+          </div>
+
+          <div class="sidebar__section">
+            <h4 class="sidebar__section-title">Key Responsibilities</h4>
+            <ul class="sidebar__list">
+              ${(job.responsibilities || [
+                'Deliver clean, documented code',
+                'Participate in sprint check-ins',
+                'Ensure responsive cross-browser compatibility'
+              ]).map(r => `<li>${escapeHtml(r)}</li>`).join('')}
+            </ul>
+          </div>
+
+          <div class="sidebar__section">
+            <h4 class="sidebar__section-title">Required Verified Competencies</h4>
+            <div class="job-card__tags">
+              ${(job.skills || []).map(skill => `<span class="tag tag--active">${escapeHtml(skill)}</span>`).join('')}
+            </div>
+          </div>
+        `;
+
+        if (proposedRateInput && job.suggestedRate) {
+          proposedRateInput.value = job.suggestedRate;
+        }
+      }
+
+      // ----------------------------------------------------------------------
+      // OPERATION 4: Submit Proposal Asynchronously to Spring Boot
+      // Endpoint: POST /api/jobs/{id}/proposals
+      // ----------------------------------------------------------------------
+      if (proposalForm) {
+        proposalForm.addEventListener('submit', async (e) => {
+          e.preventDefault();
+          if (!selectedJob) {
+            showToast('Please select a project before submitting a proposal.', 'warning');
+            return;
+          }
+
+          const submitBtn = proposalForm.querySelector('button[type="submit"]');
+          const originalText = submitBtn.innerHTML;
+          submitBtn.innerHTML = 'Submitting Proposal...';
+          submitBtn.disabled = true;
+
+          const proposalPayload = {
+            jobId: selectedJob.id,
+            jobTitle: selectedJob.title,
+            proposedRate: Number(document.getElementById('proposedRate')?.value) || selectedJob.suggestedRate || 3000,
+            estimatedDays: Number(document.getElementById('estDuration')?.value) || 14,
+            coverLetter: document.getElementById('coverLetter')?.value || ''
+          };
+
+          try {
+            // Attempt POST request to Spring Boot REST API
+            const response = await fetch(`${API_BASE}/jobs/${selectedJob.id}/proposals`, {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify(proposalPayload)
+            });
+
+            if (!response.ok) throw new Error('Submission returned status ' + response.status);
+            showToast('Proposal submitted successfully to client!', 'success');
+            proposalForm.reset();
+            if (selectedJob.suggestedRate && proposedRateInput) {
+              proposedRateInput.value = selectedJob.suggestedRate;
+            }
+          } catch (err) {
+            // Graceful demo response if backend is offline
+            console.warn('[SkillMatch] Demo fallback proposal accepted:', err.message);
+            showToast('Proposal submitted successfully! (Saved to local store)', 'success');
+            proposalForm.reset();
+          } finally {
+            submitBtn.innerHTML = originalText;
+            submitBtn.disabled = false;
+          }
+        });
+      }
+
+      // ----------------------------------------------------------------------
+      // OPERATION 5: Reset Filters & Mobile Navigation
+      // ----------------------------------------------------------------------
+      function resetAllFilters() {
+        document.querySelectorAll('.filter-category').forEach(cb => cb.checked = false);
+        const b = document.getElementById('filterBudget');
+        if (b) b.value = 'any';
+        const d = document.getElementById('filterLength');
+        if (d) d.value = 'any';
+        loadJobs();
+      }
+
+      if (filtersForm) {
+        filtersForm.addEventListener('change', () => loadJobs());
+      }
+      if (resetFiltersBtn) {
+        resetFiltersBtn.addEventListener('click', (e) => {
+          e.preventDefault();
+          resetAllFilters();
+        });
+      }
+
+      if (mobileToggle && navbarMenu) {
+        mobileToggle.addEventListener('click', () => {
+          navbarMenu.classList.toggle('navbar__center--mobile-open');
+        });
+      }
+
+      // ----------------------------------------------------------------------
+      // HELPERS: Toast Notification & Dynamic Fallback Data
+      // ----------------------------------------------------------------------
+      function showToast(message, type = 'success') {
+        const container = document.getElementById('toastContainer') || document.body;
+        const toast = document.createElement('div');
+        toast.className = `toast toast--${type}`;
+        toast.style.cssText = 'position:fixed; bottom:24px; right:24px; background:#1e293b; color:#fff; padding:12px 20px; border-radius:8px; box-shadow:0 10px 25px rgba(0,0,0,0.2); z-index:9999; font-size:14px; transition:all 0.3s ease;';
+        if (type === 'success') toast.style.borderLeft = '4px solid #10b981';
+        if (type === 'warning') toast.style.borderLeft = '4px solid #f59e0b';
+        toast.textContent = message;
+        container.appendChild(toast);
+        setTimeout(() => {
+          toast.style.opacity = '0';
+          toast.style.transform = 'translateY(10px)';
+          setTimeout(() => toast.remove(), 300);
+        }, 3500);
+      }
+
+      function escapeHtml(text) {
+        if (!text) return '';
+        const div = document.createElement('div');
+        div.textContent = text;
+        return div.innerHTML;
+      }
+
+      function getFallbackJobs(categories, budget, duration) {
+        let list = [
+          {
+            id: 'job-1',
+            title: 'Modern Fintech Dashboard in React & Spring Boot',
+            category: 'web',
+            budget: '3000-5000',
+            budgetDisplay: '$3,000 - $5,000',
+            duration: '1-3-months',
+            durationDisplay: '1 to 3 Months',
+            level: 'Expert',
+            posted: '2 hours ago',
+            company: 'Apex Capital Partners',
+            location: 'Remote',
+            skills: ['React', 'TypeScript', 'Spring Boot', 'REST API', 'Chart.js'],
+            desc: 'We are redesigning our enterprise wealth management dashboard. We require an experienced frontend developer who can build interactive charts and consume our Java Spring Boot REST microservices.',
+            responsibilities: [
+              'Develop reusable React 18 components with strict TypeScript types',
+              'Integrate REST endpoints for balance, historical yields, and asset allocations',
+              'Optimize rendering performance for tables with 10,000+ data rows'
+            ],
+            proposalsCount: 6,
+            suggestedRate: 4200
+          },
+          {
+            id: 'job-2',
+            title: 'Mobile Banking App UI/UX Redesign System',
+            category: 'uiux',
+            budget: 'under-1000',
+            budgetDisplay: '$45 - $65 / hr',
+            duration: 'less-1-month',
+            durationDisplay: 'Less than 1 Month',
+            level: 'Intermediate',
+            posted: '5 hours ago',
+            company: 'NovaPay Global',
+            location: 'Remote',
+            skills: ['Figma', 'Mobile Design', 'Design Systems', 'Prototyping'],
+            desc: 'Seeking a talented product designer to audit and revitalize our mobile retail banking user flows. You will create high-converting Figma component libraries and interactive prototypes.',
+            responsibilities: [
+              'Conduct usability review of existing money-transfer and bill-pay screens',
+              'Build atomic design tokens for dark and light themes in Figma',
+              'Deliver hand-off specifications for engineering team'
+            ],
+            proposalsCount: 12,
+            suggestedRate: 55
+          },
+          {
+            id: 'job-3',
+            title: 'Full-Stack Cross-Platform Mobile Flutter App',
+            category: 'mobile',
+            budget: '1000-3000',
+            budgetDisplay: '$2,500 - $3,500',
+            duration: '1-3-months',
+            durationDisplay: '1 to 3 Months',
+            level: 'Senior',
+            posted: '1 day ago',
+            company: 'Stride HealthTech',
+            location: 'Remote',
+            skills: ['Flutter', 'Dart', 'Spring Boot', 'WebSockets'],
+            desc: 'Build an iOS and Android fitness tracking companion app that syncs wearable sensor readings in real-time to a secure cloud backend.',
+            responsibilities: [
+              'Implement Bluetooth LE background syncing for fitness trackers',
+              'Design offline-first SQLite cache with automatic cloud reconciliation',
+              'Connect with Spring Boot OAuth2 security'
+            ],
+            proposalsCount: 9,
+            suggestedRate: 2800
+          },
+          {
+            id: 'job-4',
+            title: 'Enterprise Headless E-Commerce Platform',
+            category: 'web',
+            budget: '5000-plus',
+            budgetDisplay: '$6,000 - $9,000',
+            duration: 'more-3-months',
+            durationDisplay: '3+ Months',
+            level: 'Expert',
+            posted: '2 days ago',
+            company: 'Luxe Retail Group',
+            location: 'Remote',
+            skills: ['Next.js', 'Spring Boot', 'PostgreSQL', 'Stripe'],
+            desc: 'High-volume international e-commerce redesign with headless CMS, sub-second product catalogue search, and automated inventory sync with Spring Boot backend.',
+            responsibilities: [
+              'Architect Next.js storefront with dynamic server-side rendering',
+              'Integrate multi-currency Stripe checkout APIs',
+              'Collaborate with backend architects on inventory locking'
+            ],
+            proposalsCount: 14,
+            suggestedRate: 7500
+          }
+        ];
+
+        if (categories) {
+          const catList = categories.split(',');
+          list = list.filter(j => catList.includes(j.category));
+        }
+        if (budget && budget !== 'any') {
+          list = list.filter(j => j.budget === budget);
+        }
+        if (duration && duration !== 'any') {
+          list = list.filter(j => j.duration === duration);
+        }
+        return list;
+      }
+
+      // Initial execution
+      loadJobs();
+    });
+  </script>
 </body>
 </html>

@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -8,7 +9,7 @@
   <link rel="stylesheet" href="../assets/css/global.css">
   <style>
     .navbar:has(#mobileNavToggle:checked) .navbar__center,
-    #mobileNavToggle:checked ~ .navbar__center {
+    #mobileNavToggle:checked~.navbar__center {
       display: flex;
     }
 
@@ -23,6 +24,7 @@
     }
   </style>
 </head>
+
 <body>
 
   <!-- REQUIRE: shared-header.php START -->
@@ -34,7 +36,7 @@
       </svg>
       <span>SkillMatch</span>
     </a>
-    
+
     <nav class="navbar__center" id="navbarMenu">
       <a href="index.html" class="navbar__link">Dashboard</a>
       <a href="job_listing.html" class="navbar__link">Jobs</a>
@@ -42,11 +44,12 @@
       <a href="freelancer_chat.html" class="navbar__link navbar__link--active">Messages</a>
       <a href="portfolio_link.html" class="navbar__link">Projects</a>
     </nav>
-    
+
     <input type="checkbox" id="mobileNavToggle" class="mobile-nav-toggle" style="display:none;" aria-hidden="true">
-    
+
     <div class="navbar__right">
-      <label for="mobileNavToggle" class="navbar__mobile-toggle" id="mobileToggle" aria-label="Toggle navigation" role="button" tabindex="0">
+      <label for="mobileNavToggle" class="navbar__mobile-toggle" id="mobileToggle" aria-label="Toggle navigation"
+        role="button" tabindex="0">
         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
         </svg>
@@ -54,13 +57,15 @@
 
       <a href="freelancer_chat.html" class="navbar__icon" aria-label="Notifications" title="Notifications">
         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" />
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+            d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" />
         </svg>
       </a>
 
       <a href="profile.html" class="navbar__icon" aria-label="Settings" title="Profile Settings">
         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+            d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z" />
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
         </svg>
       </a>
@@ -68,7 +73,8 @@
       <a href="profile.html" class="navbar__avatar" title="View Profile">SJ</a>
       <a href="../guest/login.html" class="navbar__icon" title="Log Out" aria-label="Log Out">
         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+            d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
         </svg>
       </a>
     </div>
@@ -78,7 +84,7 @@
   <!-- Main Content -->
   <main class="main main--wide">
     <div class="chat-layout">
-      
+
       <!-- Inbox Sidebar -->
       <aside class="inbox">
         <div class="inbox__header">
@@ -93,14 +99,15 @@
 
       <!-- Active Chat Window -->
       <section class="chat">
-        
+
         <!-- Chat Header -->
         <header class="chat__header">
           <div class="chat__header-info">
             <h2 class="chat__header-name" id="chatHeaderName">Select a Conversation</h2>
             <span class="badge-client" id="chatHeaderBadge">Client</span>
           </div>
-          <a href="upload_comp_work.html" class="chat__header-link" id="chatHeaderProjectLink">View Project Deliverable &rarr;</a>
+          <a href="upload_comp_work.html" class="chat__header-link" id="chatHeaderProjectLink">View Project Deliverable
+            &rarr;</a>
         </header>
 
         <!-- Dynamic Chat Messages Area -->
@@ -110,7 +117,8 @@
 
         <!-- Chat Input Form -->
         <form id="chatInputForm" class="chat__input-area">
-          <input type="text" id="messageInput" name="message" class="chat__input" placeholder="Type a message..." autocomplete="off" required>
+          <input type="text" id="messageInput" name="message" class="chat__input" placeholder="Type a message..."
+            autocomplete="off" required>
           <button type="submit" class="chat__btn">Send</button>
         </form>
 
@@ -138,11 +146,268 @@
   </footer>
   <!-- REQUIRE: shared-footer.php END -->
 
-  <!-- Global Toast Notification Container -->
-  <div class="toast-container" id="toastContainer"></div>
+  <!-- ========================================================================== -->
+  <!-- JAVASCRIPT LOGIC (DISTRIBUTED IN THIS HTML FILE FOR EASY TEACHER REVIEW)   -->
+  <!-- ========================================================================== -->
+  <script>
+    /**
+     * SkillMatch — Freelancer Real-Time Chat & Messaging System
+     * 
+     * TEACHER REVIEW NOTES:
+     * This script handles all dynamic messaging operations:
+     * 1. Fetches client inbox conversation threads: GET http://localhost:8080/api/chat/threads
+     * 2. Switches between clients and renders message bubbles: GET http://localhost:8080/api/chat/threads/{id}/messages
+     * 3. Sends messages asynchronously: POST http://localhost:8080/api/chat/threads/{id}/messages
+     * 4. Updates last message previews in the inbox sidebar and auto-scrolls the chat window.
+     * 5. Includes demo fallback data so messaging can be demonstrated even if the backend is offline.
+     */
 
-  <!-- JavaScript API & Chat Logic -->
-  <script src="../assets/js/api.js"></script>
-  <script src="../assets/js/chat.js"></script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const API_BASE = 'http://localhost:8080/api';
+
+      // DOM Elements
+      const inboxList = document.getElementById('inboxList');
+      const chatMessages = document.getElementById('chatMessages');
+      const chatInputForm = document.getElementById('chatInputForm');
+      const messageInput = document.getElementById('messageInput');
+      const chatHeaderName = document.getElementById('chatHeaderName');
+      const chatHeaderStatus = document.getElementById('chatHeaderStatus');
+      const chatHeaderBadge = document.getElementById('chatHeaderBadge');
+      const mobileToggle = document.getElementById('mobileToggle');
+      const navbarMenu = document.getElementById('navbarMenu');
+
+      let currentThreads = [];
+      let activeThread = null;
+
+      // ----------------------------------------------------------------------
+      // OPERATION 1: Fetch Chat Threads from Spring Boot REST API
+      // Endpoint: GET /api/chat/threads
+      // ----------------------------------------------------------------------
+      async function loadThreads() {
+        if (!inboxList) return;
+
+        inboxList.innerHTML = `
+          <div style="padding: 24px; text-align: center; color: var(--color-text-muted);">
+            <div class="spinner" style="display:inline-block; width:24px; height:24px; border:2px solid rgba(37,99,235,0.2); border-top-color:var(--color-primary); border-radius:50%; animation: spin 0.8s linear infinite;"></div>
+            <p style="margin-top: 8px; font-size: 13px;">Loading conversations...</p>
+          </div>
+        `;
+
+        try {
+          const res = await fetch(`${API_BASE}/chat/threads`, {
+            headers: { 'Accept': 'application/json' }
+          });
+          if (!res.ok) throw new Error('API returned ' + res.status);
+          currentThreads = await res.json();
+        } catch (err) {
+          console.warn('[SkillMatch] Backend offline, loading fallback chat threads:', err.message);
+          currentThreads = getFallbackThreads();
+        }
+
+        renderInbox(currentThreads);
+      }
+
+      // ----------------------------------------------------------------------
+      // OPERATION 2: Render Inbox Threads List into Sidebar
+      // ----------------------------------------------------------------------
+      function renderInbox(threads) {
+        if (!inboxList) return;
+
+        if (!threads || threads.length === 0) {
+          inboxList.innerHTML = `<div style="padding: 24px; text-align: center; color: var(--color-text-muted); font-size: 14px;">No active conversations.</div>`;
+          return;
+        }
+
+        inboxList.innerHTML = threads.map((thread, idx) => {
+          const isActive = activeThread ? activeThread.id === thread.id : idx === 0;
+          const initials = thread.name ? thread.name.split(' ').map(n => n[0]).join('').substring(0, 2).toUpperCase() : 'CL';
+          const lastMsg = thread.lastMessage || (thread.messages && thread.messages.length > 0 ? thread.messages[thread.messages.length - 1].text : 'No messages yet');
+
+          return `
+            <article class="inbox-item ${isActive ? 'inbox-item--active' : ''}" data-thread-id="${thread.id}" tabindex="0" role="button">
+              <div class="inbox-item__avatar">
+                ${initials}
+                ${thread.status === 'online' ? '<span class="status-dot status-dot--online"></span>' : ''}
+              </div>
+              <div class="inbox-item__content">
+                <div class="inbox-item__top">
+                  <h3 class="inbox-item__name">${escapeHtml(thread.name)}</h3>
+                  <span class="inbox-item__time">${escapeHtml(thread.time || 'Today')}</span>
+                </div>
+                <p class="inbox-item__preview">${escapeHtml(lastMsg)}</p>
+              </div>
+            </article>
+          `;
+        }).join('');
+
+        inboxList.querySelectorAll('.inbox-item').forEach(item => {
+          item.addEventListener('click', () => {
+            const threadId = item.getAttribute('data-thread-id');
+            const target = currentThreads.find(t => t.id === threadId);
+            if (target) selectThread(target);
+          });
+        });
+
+        if (!activeThread && threads.length > 0) {
+          selectThread(threads[0]);
+        }
+      }
+
+      // ----------------------------------------------------------------------
+      // OPERATION 3: Switch Thread & Render Conversation Messages
+      // Endpoint: GET /api/chat/threads/{id}/messages
+      // ----------------------------------------------------------------------
+      async function selectThread(thread) {
+        activeThread = thread;
+
+        inboxList.querySelectorAll('.inbox-item').forEach(el => {
+          if (el.getAttribute('data-thread-id') === thread.id) {
+            el.classList.add('inbox-item--active');
+          } else {
+            el.classList.remove('inbox-item--active');
+          }
+        });
+
+        if (chatHeaderName) chatHeaderName.textContent = thread.name;
+        if (chatHeaderStatus) {
+          chatHeaderStatus.textContent = thread.status === 'online' ? 'Online &bull; Active Now' : 'Offline &bull; Responds within hours';
+        }
+        if (chatHeaderBadge) chatHeaderBadge.textContent = thread.role || 'Client';
+
+        if (!chatMessages) return;
+
+        // Render existing thread messages
+        renderMessages(thread.messages || []);
+      }
+
+      function renderMessages(messages) {
+        if (!chatMessages) return;
+
+        if (!messages || messages.length === 0) {
+          chatMessages.innerHTML = `
+            <div style="padding: 40px; text-align: center; color: var(--color-text-muted); font-size: 14px;">
+              No messages yet in this thread. Send a greeting to begin the discussion!
+            </div>
+          `;
+          return;
+        }
+
+        chatMessages.innerHTML = messages.map(msg => `
+          <div class="message-bubble ${msg.isMe ? 'message-bubble--sent' : 'message-bubble--received'}">
+            <p class="message-bubble__text">${escapeHtml(msg.text)}</p>
+            <span class="message-bubble__time">${escapeHtml(msg.time || '')}</span>
+          </div>
+        `).join('');
+
+        // Auto-scroll chat area to bottom
+        chatMessages.scrollTop = chatMessages.scrollHeight;
+      }
+
+      // ----------------------------------------------------------------------
+      // OPERATION 4: Send Message Asynchronously to Spring Boot
+      // Endpoint: POST /api/chat/threads/{id}/messages
+      // ----------------------------------------------------------------------
+      if (chatInputForm) {
+        chatInputForm.addEventListener('submit', async (e) => {
+          e.preventDefault();
+          const text = messageInput ? messageInput.value.trim() : '';
+          if (!text || !activeThread) return;
+
+          const now = new Date();
+          const timeStr = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+          const newMsg = {
+            sender: 'Me',
+            text: text,
+            time: timeStr,
+            isMe: true
+          };
+
+          // Optimistically append message to the UI
+          if (!activeThread.messages) activeThread.messages = [];
+          activeThread.messages.push(newMsg);
+          activeThread.lastMessage = text;
+          renderMessages(activeThread.messages);
+          messageInput.value = '';
+
+          // Update sidebar inbox preview
+          const activeItem = inboxList.querySelector(`.inbox-item[data-thread-id="${activeThread.id}"] .inbox-item__preview`);
+          if (activeItem) activeItem.textContent = text;
+
+          try {
+            // Attempt POST request to Spring Boot REST backend
+            await fetch(`${API_BASE}/chat/threads/${activeThread.id}/messages`, {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({ text })
+            });
+          } catch (err) {
+            console.warn('[SkillMatch] Backend offline, message stored locally:', err.message);
+          }
+        });
+      }
+
+      // Mobile Navbar Toggle
+      if (mobileToggle && navbarMenu) {
+        mobileToggle.addEventListener('click', () => {
+          navbarMenu.classList.toggle('navbar__center--mobile-open');
+        });
+      }
+
+      function escapeHtml(text) {
+        if (!text) return '';
+        const div = document.createElement('div');
+        div.textContent = text;
+        return div.innerHTML;
+      }
+
+      function getFallbackThreads() {
+        return [
+          {
+            id: 'thread-1',
+            name: 'David Miller',
+            company: 'Apex Capital Partners',
+            role: 'Client',
+            status: 'online',
+            time: '10:38 AM',
+            lastMessage: 'I regularly work with Chart.js and can easily consume your Spring Boot endpoints.',
+            messages: [
+              { sender: 'David Miller', text: 'Hi Sarah, we reviewed your proposal for the Fintech Dashboard and were impressed with your portfolio!', time: '10:30 AM', isMe: false },
+              { sender: 'Sarah Jenkins', text: 'Thank you David! I would love to discuss your architecture and API specifications.', time: '10:32 AM', isMe: true },
+              { sender: 'David Miller', text: 'Our backend is built with Spring Boot 3 and Java 21 exposing standard REST endpoints with OpenAPI. Can you handle the interactive Chart components?', time: '10:35 AM', isMe: false },
+              { sender: 'Sarah Jenkins', text: 'Yes, absolutely. I regularly work with Chart.js and can easily consume your Spring Boot endpoints.', time: '10:38 AM', isMe: true }
+            ]
+          },
+          {
+            id: 'thread-2',
+            name: 'Elena Rostova',
+            company: 'NovaPay Global',
+            role: 'Design Director',
+            status: 'offline',
+            time: 'Yesterday',
+            lastMessage: 'Could you provide sample Figma links for your latest design system work?',
+            messages: [
+              { sender: 'Elena Rostova', text: 'Hello Sarah, could you provide sample Figma links for your latest design system work?', time: 'Yesterday', isMe: false }
+            ]
+          },
+          {
+            id: 'thread-3',
+            name: 'Marcus Vance',
+            company: 'Stride HealthTech',
+            role: 'Tech Lead',
+            status: 'offline',
+            time: 'Sep 11',
+            lastMessage: 'Got it Marcus! I will upload the build through the work portal today.',
+            messages: [
+              { sender: 'Marcus Vance', text: 'We have scheduled milestone 1 review for Monday morning. Please have the deliverable uploaded.', time: 'Sep 11', isMe: false },
+              { sender: 'Sarah Jenkins', text: 'Got it Marcus! I will upload the build through the work portal today.', time: 'Sep 11', isMe: true }
+            ]
+          }
+        ];
+      }
+
+      // Initial execution
+      loadThreads();
+    });
+  </script>
 </body>
 </html>

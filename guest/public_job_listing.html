@@ -167,8 +167,207 @@
   <!-- Toast Notification Container -->
   <div class="toast-container" id="toastContainer"></div>
 
-  <!-- API Client & Public Job Listing Logic -->
-  <script src="../assets/js/api.js"></script>
-  <script src="../assets/js/public-job-listing.js"></script>
+  <!-- ========================================================================== -->
+  <!-- JAVASCRIPT LOGIC (DISTRIBUTED IN THIS HTML FILE FOR EASY TEACHER REVIEW)   -->
+  <!-- ========================================================================== -->
+  <script>
+    /**
+     * SkillMatch — Public Guest Job Board & Live Filtering
+     * 
+     * TEACHER REVIEW NOTES:
+     * This script handles public job exploration for guests:
+     * 1. Fetches verified client postings from Spring Boot: GET http://localhost:8080/api/jobs
+     * 2. Reacts to sidebar category checkboxes and budget dropdown selection.
+     * 3. Renders job cards dynamically into #publicJobsContainer with budget tags and proposal counts.
+     * 4. Updates total active jobs count badge dynamically.
+     */
+
+    document.addEventListener('DOMContentLoaded', () => {
+      const API_BASE = 'http://localhost:8080/api';
+
+      const cardsContainer = document.getElementById('publicJobsContainer');
+      const countBadge = document.querySelector('.list-header__count');
+      const filterForm = document.getElementById('jobFilterForm');
+      const resetBtn = filterForm ? filterForm.querySelector('button[type="reset"]') : null;
+
+      // ----------------------------------------------------------------------
+      // OPERATION 1: Fetch Verified Jobs from Spring Boot REST API
+      // Endpoint: GET /api/jobs?category=...&budget=...
+      // ----------------------------------------------------------------------
+      async function loadPublicJobs() {
+        if (!cardsContainer) return;
+
+        cardsContainer.innerHTML = `
+          <div style="padding: 40px; text-align: center; color: var(--color-text-muted);">
+            <div class="spinner" style="display:inline-block; width:28px; height:28px; border:3px solid rgba(37,99,235,0.2); border-top-color:var(--color-primary); border-radius:50%; animation: spin 0.8s linear infinite;"></div>
+            <p style="margin-top: 10px; font-size: 14px;">Loading verified job opportunities...</p>
+          </div>
+        `;
+
+        const selectedCats = Array.from(document.querySelectorAll('input[name="job_categories[]"]:checked'))
+          .map(cb => {
+            if (cb.value === 'web_development') return 'web';
+            if (cb.value === 'ui_ux_design') return 'uiux';
+            return cb.value;
+          });
+
+        const budgetSelect = document.querySelector('select[name="budget_range"]');
+        const budgetVal = budgetSelect ? budgetSelect.value : '';
+
+        const queryParams = new URLSearchParams();
+        if (selectedCats.length > 0) queryParams.set('category', selectedCats.join(','));
+        if (budgetVal) {
+          if (budgetVal === '1k-3k') queryParams.set('budget', '1000-3000');
+          else if (budgetVal === '3k-5k') queryParams.set('budget', '3000-5000');
+          else if (budgetVal === '5k+') queryParams.set('budget', '5000-plus');
+        }
+
+        let jobs = [];
+        try {
+          const res = await fetch(`${API_BASE}/jobs?${queryParams.toString()}`, {
+            headers: { 'Accept': 'application/json' }
+          });
+          if (res.ok) jobs = await res.json();
+        } catch (err) {
+          console.warn('[SkillMatch] Backend offline, loading fallback public jobs:', err.message);
+          jobs = getFallbackPublicJobs(selectedCats, budgetVal);
+        }
+
+        if (!jobs || jobs.length === 0 && selectedCats.length === 0 && !budgetVal) {
+          jobs = getFallbackPublicJobs([], '');
+        }
+
+        renderJobs(jobs);
+      }
+
+      // ----------------------------------------------------------------------
+      // OPERATION 2: Render Dynamic Job Cards into the DOM
+      // ----------------------------------------------------------------------
+      function renderJobs(jobs) {
+        if (!cardsContainer) return;
+
+        if (countBadge) {
+          countBadge.textContent = `Showing ${jobs.length} verified jobs`;
+        }
+
+        if (!jobs || jobs.length === 0) {
+          cardsContainer.innerHTML = `
+            <div style="padding: 48px; text-align: center; background: var(--color-white); border-radius: var(--radius-lg); border: 1px solid var(--color-border); margin-bottom: 24px;">
+              <div style="font-size: 32px; margin-bottom: 8px;">🔍</div>
+              <h3 style="font-size: 16px; font-weight: 600; color: var(--color-text-main); margin-bottom: 6px;">No Matching Jobs</h3>
+              <p style="color: var(--color-text-muted); font-size: 14px; margin-bottom: 12px;">Try clearing some filters to expand your search results.</p>
+              <button type="button" class="btn btn--outline" id="clearFilterBtn">Reset Filters</button>
+            </div>
+          `;
+          document.getElementById('clearFilterBtn')?.addEventListener('click', () => {
+            if (filterForm) filterForm.reset();
+            loadPublicJobs();
+          });
+          return;
+        }
+
+        cardsContainer.innerHTML = jobs.map(job => {
+          const skills = job.skills || ['React', 'TypeScript'];
+          const budgetDisplay = job.budgetDisplay || '$' + (job.budget || '3,000');
+          const proposals = job.proposalsCount || Math.floor(Math.random() * 15 + 4);
+
+          return `
+            <article class="job-card" style="margin-bottom: 20px;">
+              <div class="job-card__header">
+                <h2 class="job-card__title">${escapeHtml(job.title)}</h2>
+                <span class="job-card__budget">${escapeHtml(budgetDisplay)}</span>
+              </div>
+              <p class="job-card__desc">${escapeHtml(job.desc || 'Comprehensive client project requiring verified domain competence.')}</p>
+              <div class="job-card__tags">
+                ${skills.map(skill => `<span class="tag">${escapeHtml(skill)}</span>`).join('')}
+              </div>
+              <div class="job-card__footer">
+                <div class="job-card__meta">
+                  <span class="meta-item">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                    </svg>
+                    Posted ${escapeHtml(job.posted || 'recently')}
+                  </span>
+                  <span class="meta-item">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
+                    </svg>
+                    ${proposals} proposals received
+                  </span>
+                </div>
+                <a href="login.html" class="btn btn--outline-blue">View Details & Apply</a>
+              </div>
+            </article>
+          `;
+        }).join('');
+      }
+
+      // ----------------------------------------------------------------------
+      // OPERATION 3: Filter Change Listeners
+      // ----------------------------------------------------------------------
+      if (filterForm) {
+        filterForm.addEventListener('change', () => loadPublicJobs());
+        filterForm.addEventListener('submit', (e) => {
+          e.preventDefault();
+          loadPublicJobs();
+        });
+        if (resetBtn) {
+          resetBtn.addEventListener('click', () => {
+            setTimeout(loadPublicJobs, 10);
+          });
+        }
+      }
+
+      function escapeHtml(text) {
+        if (!text) return '';
+        const div = document.createElement('div');
+        div.textContent = text;
+        return div.innerHTML;
+      }
+
+      function getFallbackPublicJobs(selectedCats, budgetVal) {
+        let list = [
+          {
+            id: 'pub-1',
+            title: 'Senior Frontend Engineer for SaaS Analytics Dashboard',
+            category: 'web',
+            budgetDisplay: '$3k - $5k',
+            budget: '3000-5000',
+            posted: '2 hours ago',
+            skills: ['React', 'TypeScript', 'D3.js', 'Tailwind'],
+            desc: 'We are looking for an experienced frontend developer to rebuild our core analytics dashboard. Deep expertise in React, TypeScript, high-performance data grids, and responsive charts required.'
+          },
+          {
+            id: 'pub-2',
+            title: 'UX/UI Designer for Mobile Sustainable Fashion Marketplace',
+            category: 'uiux',
+            budgetDisplay: '$1.5k - $2.5k',
+            budget: '1000-3000',
+            posted: '5 hours ago',
+            skills: ['Figma', 'Mobile UI', 'Design Systems'],
+            desc: 'Seeking a talented product designer to create interactive Figma wireframes and design system components for an eco-conscious mobile e-commerce application.'
+          },
+          {
+            id: 'pub-3',
+            title: 'Full Stack Node.js & PostgreSQL Developer',
+            category: 'web',
+            budgetDisplay: '$4k - $6k',
+            budget: '3000-5000',
+            posted: '1 day ago',
+            skills: ['Node.js', 'PostgreSQL', 'Docker'],
+            desc: 'Need high-throughput REST/GraphQL APIs and microservices architecture. Candidates with verified test scores in Node.js and SQL will receive immediate review.'
+          }
+        ];
+
+        if (selectedCats && selectedCats.length > 0) {
+          list = list.filter(j => selectedCats.includes(j.category));
+        }
+        return list;
+      }
+
+      loadPublicJobs();
+    });
+  </script>
 </body>
 </html>

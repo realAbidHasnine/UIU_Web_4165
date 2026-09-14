@@ -127,8 +127,300 @@
   <!-- Toast Notification Container -->
   <div class="toast-container" id="toastContainer"></div>
 
-  <!-- JavaScript API & Test Logic -->
-  <script src="../assets/js/api.js"></script>
-  <script src="../assets/js/skill-test.js"></script>
+  <!-- ========================================================================== -->
+  <!-- JAVASCRIPT LOGIC (DISTRIBUTED IN THIS HTML FILE FOR EASY TEACHER REVIEW)   -->
+  <!-- ========================================================================== -->
+  <script>
+    /**
+     * SkillMatch — Freelancer Skill Verification Assessment
+     * 
+     * TEACHER REVIEW NOTES:
+     * This script handles the real-time technical examination:
+     * 1. Reads the category from URL query (?category=web) and fetches questions: GET http://localhost:8080/api/skills/tests/{category}
+     * 2. Starts an active 15:00 minute countdown clock that ticks every second and auto-submits when time expires.
+     * 3. Manages multi-step navigation (Question X of Y), updates progress bars, and tracks radio answer selections.
+     * 4. Asynchronously grades & submits answers: POST http://localhost:8080/api/skills/tests/{category}/submit
+     * 5. Saves the grading summary to sessionStorage and redirects to result_suggestion.html.
+     */
+
+    document.addEventListener('DOMContentLoaded', () => {
+      const API_BASE = 'http://localhost:8080/api';
+
+      // Parse Category from Query String (?category=web)
+      const urlParams = new URLSearchParams(window.location.search);
+      const category = urlParams.get('category') || 'web';
+
+      // DOM Elements
+      const timerDisplay = document.getElementById('testTimer');
+      const questionIndexDisplay = document.getElementById('questionIndexDisplay');
+      const testProgressBar = document.getElementById('testProgressBar');
+      const stepHeader = document.getElementById('testStepHeader');
+      const questionContent = document.getElementById('testQuestionContent');
+      const prevBtn = document.getElementById('prevQuestionBtn');
+      const nextBtn = document.getElementById('nextQuestionBtn');
+      const submitBtn = document.getElementById('submitTestBtn');
+      const testCategoryTitle = document.getElementById('testCategoryTitle');
+
+      // State Management
+      let questions = [];
+      let currentIndex = 0;
+      const userAnswers = {};
+      let timeRemainingSeconds = 15 * 60; // 15:00 minutes
+      let timerInterval = null;
+
+      // ----------------------------------------------------------------------
+      // OPERATION 1: Fetch Test Questions from Spring Boot REST API
+      // Endpoint: GET /api/skills/tests/{category}
+      // ----------------------------------------------------------------------
+      async function loadQuestions() {
+        if (!questionContent) return;
+
+        questionContent.innerHTML = `
+          <div style="padding: 40px; text-align: center; color: var(--color-text-muted);">
+            <div class="spinner" style="display:inline-block; width:28px; height:28px; border:3px solid rgba(37,99,235,0.2); border-top-color:var(--color-primary); border-radius:50%; animation: spin 0.8s linear infinite;"></div>
+            <p style="margin-top: 10px; font-size: 14px;">Loading verification questions for ${escapeHtml(category.toUpperCase())}...</p>
+          </div>
+        `;
+
+        try {
+          const res = await fetch(`${API_BASE}/skills/tests/${category}`, {
+            headers: { 'Accept': 'application/json' }
+          });
+          if (!res.ok) throw new Error('API returned status ' + res.status);
+          questions = await res.json();
+        } catch (err) {
+          console.warn('[SkillMatch] Backend offline, loading fallback question bank:', err.message);
+          questions = getFallbackQuestions(category);
+        }
+
+        if (testCategoryTitle) {
+          const formatted = category.charAt(0).toUpperCase() + category.slice(1);
+          testCategoryTitle.textContent = `${formatted} Technical Verification Test`;
+        }
+
+        startTimer();
+        renderCurrentQuestion();
+      }
+
+      // ----------------------------------------------------------------------
+      // OPERATION 2: Active 15-Minute Countdown Timer
+      // ----------------------------------------------------------------------
+      function startTimer() {
+        if (timerInterval) clearInterval(timerInterval);
+
+        function updateClock() {
+          const minutes = Math.floor(timeRemainingSeconds / 60);
+          const seconds = timeRemainingSeconds % 60;
+          if (timerDisplay) {
+            timerDisplay.textContent = `${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
+          }
+
+          if (timeRemainingSeconds <= 0) {
+            clearInterval(timerInterval);
+            alert('Time has expired! Submitting your test automatically.');
+            submitAssessment();
+          } else {
+            timeRemainingSeconds--;
+          }
+        }
+
+        updateClock();
+        timerInterval = setInterval(updateClock, 1000);
+      }
+
+      // ----------------------------------------------------------------------
+      // OPERATION 3: Render Current Question & Step Navigation
+      // ----------------------------------------------------------------------
+      function renderCurrentQuestion() {
+        if (!questions || questions.length === 0) return;
+        const q = questions[currentIndex];
+
+        // Update progress indicators
+        if (questionIndexDisplay) {
+          questionIndexDisplay.textContent = `Question ${currentIndex + 1} of ${questions.length}`;
+        }
+        if (stepHeader) {
+          stepHeader.textContent = `Step ${currentIndex + 1} of ${questions.length}`;
+        }
+        if (testProgressBar) {
+          const percent = ((currentIndex + 1) / questions.length) * 100;
+          testProgressBar.style.width = `${percent}%`;
+        }
+
+        // Render radio option items
+        questionContent.innerHTML = `
+          <h2 class="test-question__text">${escapeHtml(q.question)}</h2>
+          <div class="test-options">
+            ${q.options.map((opt, optIdx) => {
+              const isChecked = userAnswers[q.id] === optIdx;
+              return `
+                <label class="test-option-label" style="display:flex; align-items:center; padding:14px 18px; margin-bottom:12px; background:var(--color-bg-secondary); border:1px solid ${isChecked ? 'var(--color-primary)' : 'var(--color-border)'}; border-radius:var(--radius-md); cursor:pointer; transition:all 0.2s ease;">
+                  <input type="radio" name="questionOption" value="${optIdx}" ${isChecked ? 'checked' : ''} style="margin-right:12px; accent-color:var(--color-primary);">
+                  <span style="font-size:14px; font-weight:500; color:var(--color-text-main);">${escapeHtml(opt)}</span>
+                </label>
+              `;
+            }).join('')}
+          </div>
+        `;
+
+        // Listen for radio selections
+        questionContent.querySelectorAll('input[name="questionOption"]').forEach(radio => {
+          radio.addEventListener('change', (e) => {
+            userAnswers[q.id] = Number(e.target.value);
+            renderCurrentQuestion();
+          });
+        });
+
+        // Toggle Prev/Next/Submit button states
+        if (prevBtn) {
+          prevBtn.disabled = currentIndex === 0;
+          prevBtn.style.opacity = currentIndex === 0 ? '0.5' : '1';
+        }
+
+        const isLast = currentIndex === questions.length - 1;
+        if (nextBtn) {
+          nextBtn.style.display = isLast ? 'none' : 'inline-flex';
+        }
+        if (submitBtn) {
+          submitBtn.style.display = isLast ? 'inline-flex' : 'none';
+        }
+      }
+
+      if (prevBtn) {
+        prevBtn.addEventListener('click', () => {
+          if (currentIndex > 0) {
+            currentIndex--;
+            renderCurrentQuestion();
+          }
+        });
+      }
+
+      if (nextBtn) {
+        nextBtn.addEventListener('click', () => {
+          if (currentIndex < questions.length - 1) {
+            currentIndex++;
+            renderCurrentQuestion();
+          }
+        });
+      }
+
+      // ----------------------------------------------------------------------
+      // OPERATION 4: Submit Answers to Spring Boot REST Backend
+      // Endpoint: POST /api/skills/tests/{category}/submit
+      // ----------------------------------------------------------------------
+      if (submitBtn) {
+        submitBtn.addEventListener('click', submitAssessment);
+      }
+
+      async function submitAssessment() {
+        if (timerInterval) clearInterval(timerInterval);
+
+        if (submitBtn) {
+          submitBtn.disabled = true;
+          submitBtn.textContent = 'Grading Test...';
+        }
+
+        const payload = {
+          category: category,
+          answers: userAnswers,
+          completedAt: new Date().toISOString()
+        };
+
+        try {
+          // Attempt POST to Spring Boot grading controller
+          const res = await fetch(`${API_BASE}/skills/tests/${category}/submit`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(payload)
+          });
+          let resultData;
+          if (res.ok) {
+            resultData = await res.json();
+          } else {
+            resultData = calculateLocalGrade(questions, userAnswers, category);
+          }
+          sessionStorage.setItem('skillmatch_latest_test_result', JSON.stringify(resultData));
+          window.location.href = 'result_suggestion.html';
+        } catch (err) {
+          // Fallback demo calculation
+          console.warn('[SkillMatch] Backend offline, calculating score locally:', err.message);
+          const resultData = calculateLocalGrade(questions, userAnswers, category);
+          sessionStorage.setItem('skillmatch_latest_test_result', JSON.stringify(resultData));
+          window.location.href = 'result_suggestion.html';
+        }
+      }
+
+      function calculateLocalGrade(questList, answers, cat) {
+        let correct = 0;
+        questList.forEach(q => {
+          if (Number(answers[q.id]) === q.correct) correct++;
+        });
+        const score = Math.round((correct / questList.length) * 100);
+        return {
+          category: cat,
+          score: score,
+          passed: score >= 70,
+          correctCount: correct,
+          totalCount: questList.length,
+          verifiedBadge: score >= 70 ? 'Verified Pro' : null,
+          submittedAt: new Date().toISOString()
+        };
+      }
+
+      function escapeHtml(text) {
+        if (!text) return '';
+        const div = document.createElement('div');
+        div.textContent = text;
+        return div.innerHTML;
+      }
+
+      function getFallbackQuestions(cat) {
+        return [
+          {
+            id: 1,
+            question: 'In modern JavaScript and asynchronous programming, what does Promise.all() do when one of the input promises rejects?',
+            options: [
+              'It waits for all other promises to resolve before returning an error',
+              'It immediately rejects with the reason of the first promise that rejected',
+              'It ignores the rejected promise and returns successful results',
+              'It retries the rejected promise three times automatically'
+            ],
+            correct: 1
+          },
+          {
+            id: 2,
+            question: 'Which HTTP method is idempotent and intended to completely replace an existing resource on a REST API?',
+            options: ['POST', 'PATCH', 'PUT', 'CONNECT'],
+            correct: 2
+          },
+          {
+            id: 3,
+            question: 'What is the primary benefit of React Virtual DOM reconciliation (Diffing Algorithm)?',
+            options: [
+              'Bypassing CSS cascade calculations completely',
+              'Minimizing costly native DOM layout recalculations and repaints',
+              'Guaranteeing zero memory consumption during animation loops',
+              'Converting JSX syntax directly into native machine assembly'
+            ],
+            correct: 1
+          },
+          {
+            id: 4,
+            question: 'In database systems, what does the "I" in the ACID guarantee stand for?',
+            options: ['Integrity', 'Isolation', 'Indexation', 'Idempotence'],
+            correct: 1
+          },
+          {
+            id: 5,
+            question: 'In Spring Boot REST controllers, which annotation extracts query parameters from the request URL (e.g., /api/jobs?category=web)?',
+            options: ['@PathVariable', '@RequestParam', '@RequestBody', '@RequestHeader'],
+            correct: 1
+          }
+        ];
+      }
+
+      loadQuestions();
+    });
+  </script>
 </body>
 </html>

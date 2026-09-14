@@ -112,8 +112,141 @@
   <!-- Toast Container -->
   <div class="toast-container" id="toastContainer"></div>
 
-  <!-- JavaScript API & Selection Logic -->
-  <script src="../assets/js/api.js"></script>
-  <script src="../assets/js/select-skill.js"></script>
+  <!-- ========================================================================== -->
+  <!-- JAVASCRIPT LOGIC (DISTRIBUTED IN THIS HTML FILE FOR EASY TEACHER REVIEW)   -->
+  <!-- ========================================================================== -->
+  <script>
+    /**
+     * SkillMatch — Freelancer Skill Category Selection
+     * 
+     * TEACHER REVIEW NOTES:
+     * This script handles skill category discovery & assessment launch:
+     * 1. Fetches available testing domains from Spring Boot: GET http://localhost:8080/api/skills/categories
+     * 2. Renders dynamic skill domain cards with icons, question counts, and difficulty levels.
+     * 3. Enforces a maximum selection limit of 5 and dynamically updates the selected counter.
+     * 4. Validates user choice and launches the interactive exam: skill_test.html?category={selected}
+     */
+
+    document.addEventListener('DOMContentLoaded', () => {
+      const API_BASE = 'http://localhost:8080/api';
+
+      const grid = document.querySelector('.skill-grid');
+      const counterBadge = document.getElementById('selectedCounter');
+      const startBtn = document.getElementById('startAssessmentBtn');
+
+      let selectedCategories = new Set(['web']); // Default initial selection
+
+      // ----------------------------------------------------------------------
+      // OPERATION 1: Fetch Categories from Spring Boot REST API
+      // Endpoint: GET /api/skills/categories
+      // ----------------------------------------------------------------------
+      async function loadCategories() {
+        if (!grid) return;
+
+        grid.innerHTML = `
+          <div style="grid-column: 1 / -1; padding: 40px; text-align: center; color: var(--color-text-muted);">
+            <div class="spinner" style="display:inline-block; width:28px; height:28px; border:3px solid rgba(37,99,235,0.2); border-top-color:var(--color-primary); border-radius:50%; animation: spin 0.8s linear infinite;"></div>
+            <p style="margin-top: 10px; font-size: 14px;">Loading verified test disciplines...</p>
+          </div>
+        `;
+
+        let categories = [];
+        try {
+          const res = await fetch(`${API_BASE}/skills/categories`, {
+            headers: { 'Accept': 'application/json' }
+          });
+          if (res.ok) categories = await res.json();
+        } catch (err) {
+          console.warn('[SkillMatch] Backend offline, loading fallback categories:', err.message);
+        }
+
+        if (!categories || categories.length === 0) {
+          categories = [
+            { id: 'web', name: 'Web Development', icon: '💻', questionCount: 5, difficulty: 'Intermediate - Expert' },
+            { id: 'uiux', name: 'UI / UX Design', icon: '🎨', questionCount: 5, difficulty: 'All Levels' },
+            { id: 'mobile', name: 'Mobile App Development', icon: '📱', questionCount: 5, difficulty: 'Intermediate' },
+            { id: 'cloud', name: 'Cloud & Spring Boot Architecture', icon: '☁️', questionCount: 5, difficulty: 'Advanced' }
+          ];
+        }
+
+        renderCategoryGrid(categories);
+      }
+
+      // ----------------------------------------------------------------------
+      // OPERATION 2: Render Interactive Category Cards
+      // ----------------------------------------------------------------------
+      function renderCategoryGrid(categories) {
+        if (!grid) return;
+
+        grid.innerHTML = categories.map(cat => {
+          const isSelected = selectedCategories.has(cat.id);
+          return `
+            <article class="skill-card ${isSelected ? 'skill-card--selected' : ''}" 
+                     data-category-id="${cat.id}" tabindex="0" role="button" aria-pressed="${isSelected}">
+              <div class="skill-card__header">
+                <span class="skill-card__icon" style="font-size: 28px;">${cat.icon || '⚡'}</span>
+                <span class="skill-card__check" style="${isSelected ? 'background:var(--color-primary); color:#fff;' : 'background:var(--color-bg-secondary);'}">
+                  ${isSelected ? '✓' : ''}
+                </span>
+              </div>
+              <h3 class="skill-card__title">${escapeHtml(cat.name)}</h3>
+              <p class="skill-card__subtitle">${cat.questionCount || 5} Questions &bull; ${escapeHtml(cat.difficulty || 'Intermediate')}</p>
+            </article>
+          `;
+        }).join('');
+
+        updateCounterDisplay();
+
+        // ----------------------------------------------------------------------
+        // OPERATION 3: Toggle Selection & Enforce Selection Limit
+        // ----------------------------------------------------------------------
+        grid.querySelectorAll('.skill-card').forEach(card => {
+          card.addEventListener('click', () => {
+            const catId = card.getAttribute('data-category-id');
+            if (selectedCategories.has(catId)) {
+              selectedCategories.delete(catId);
+            } else {
+              if (selectedCategories.size >= 5) {
+                alert('You can select a maximum of 5 categories at once.');
+                return;
+              }
+              selectedCategories.add(catId);
+            }
+            renderCategoryGrid(categories);
+          });
+        });
+      }
+
+      function updateCounterDisplay() {
+        if (counterBadge) {
+          counterBadge.textContent = `${selectedCategories.size} of 5 selected`;
+        }
+      }
+
+      // ----------------------------------------------------------------------
+      // OPERATION 4: Launch Assessment with Selected Domain
+      // ----------------------------------------------------------------------
+      if (startBtn) {
+        startBtn.addEventListener('click', (e) => {
+          if (selectedCategories.size === 0) {
+            e.preventDefault();
+            alert('Please select at least one skill domain to proceed with the technical verification.');
+            return;
+          }
+          const primaryCategory = Array.from(selectedCategories)[0];
+          startBtn.href = `skill_test.html?category=${primaryCategory}`;
+        });
+      }
+
+      function escapeHtml(text) {
+        if (!text) return '';
+        const div = document.createElement('div');
+        div.textContent = text;
+        return div.innerHTML;
+      }
+
+      loadCategories();
+    });
+  </script>
 </body>
 </html>

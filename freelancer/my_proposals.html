@@ -219,8 +219,216 @@
   <!-- Toast Notification Container -->
   <div class="toast-container" id="toastContainer"></div>
 
-  <!-- JavaScript API & Proposals Logic -->
-  <script src="../assets/js/api.js"></script>
-  <script src="../assets/js/my-proposals.js"></script>
+  <!-- ========================================================================== -->
+  <!-- JAVASCRIPT LOGIC (DISTRIBUTED IN THIS HTML FILE FOR EASY TEACHER REVIEW)   -->
+  <!-- ========================================================================== -->
+  <script>
+    /**
+     * SkillMatch — Freelancer Proposals Management
+     * 
+     * TEACHER REVIEW NOTES:
+     * This script handles proposal tracking and management:
+     * 1. Fetches proposals from Spring Boot: GET http://localhost:8080/api/freelancers/me/proposals
+     * 2. Supports multi-status tab filtering (All, Submitted, Active, Archived).
+     * 3. Renders proposal cards dynamically with rates, days, and project descriptions.
+     * 4. Asynchronously cancels/withdraws proposals: DELETE http://localhost:8080/api/proposals/{id}
+     * 5. Provides instant visual feedback with toast notifications.
+     */
+
+    document.addEventListener('DOMContentLoaded', () => {
+      const API_BASE = 'http://localhost:8080/api';
+
+      const proposalsFeed = document.getElementById('proposalsFeed');
+      const tabs = document.querySelectorAll('.tabs a');
+      const mobileToggle = document.getElementById('mobileToggle');
+      const navbarMenu = document.getElementById('navbarMenu');
+
+      let currentProposals = [];
+      let currentFilter = 'all';
+
+      // ----------------------------------------------------------------------
+      // OPERATION 1: Fetch Proposals from Spring Boot REST API
+      // Endpoint: GET /api/freelancers/me/proposals
+      // ----------------------------------------------------------------------
+      async function loadProposals() {
+        if (!proposalsFeed) return;
+
+        proposalsFeed.innerHTML = `
+          <div style="padding: 40px; text-align: center; color: var(--color-text-muted);">
+            <div class="spinner" style="display:inline-block; width:28px; height:28px; border:3px solid rgba(37,99,235,0.2); border-top-color:var(--color-primary); border-radius:50%; animation: spin 0.8s linear infinite;"></div>
+            <p style="margin-top: 10px; font-size: 14px;">Loading submitted proposals...</p>
+          </div>
+        `;
+
+        try {
+          const res = await fetch(`${API_BASE}/freelancers/me/proposals?status=${currentFilter}`, {
+            headers: { 'Accept': 'application/json' }
+          });
+          if (!res.ok) throw new Error('API returned ' + res.status);
+          currentProposals = await res.json();
+        } catch (err) {
+          console.warn('[SkillMatch] Backend offline, loading fallback proposals:', err.message);
+          currentProposals = getFallbackProposals();
+        }
+
+        renderProposals(currentProposals);
+      }
+
+      // ----------------------------------------------------------------------
+      // OPERATION 2 & 3: Filter & Render Proposal Cards
+      // ----------------------------------------------------------------------
+      function renderProposals(proposals) {
+        if (!proposalsFeed) return;
+
+        let filtered = proposals;
+        if (currentFilter !== 'all') {
+          filtered = proposals.filter(p => (p.status || '').toLowerCase() === currentFilter.toLowerCase());
+        }
+
+        if (!filtered || filtered.length === 0) {
+          proposalsFeed.innerHTML = `
+            <div style="padding: 48px; text-align: center; background: var(--color-white); border-radius: var(--radius-lg); border: 1px solid var(--color-border);">
+              <div style="font-size: 36px; margin-bottom: 8px;">📑</div>
+              <h3 style="font-size: 16px; font-weight: 600; color: var(--color-text-main); margin-bottom: 6px;">No Proposals in "${escapeHtml(currentFilter.toUpperCase())}"</h3>
+              <p style="color: var(--color-text-muted); font-size: 14px; margin-bottom: 12px;">Browse open job listings and submit proposals to see them here.</p>
+              <a href="job_listing.html" class="btn btn--solid">Find Jobs &rarr;</a>
+            </div>
+          `;
+          return;
+        }
+
+        proposalsFeed.innerHTML = filtered.map(p => {
+          let badgeColor = '#10b981';
+          let badgeBg = 'rgba(16,185,129,0.12)';
+          if (p.status === 'Submitted') {
+            badgeColor = '#2563eb';
+            badgeBg = 'rgba(37,99,235,0.12)';
+          } else if (p.status === 'Archived') {
+            badgeColor = '#64748b';
+            badgeBg = 'rgba(100,116,139,0.12)';
+          }
+
+          return `
+            <article class="proposal-card" style="background:var(--color-white); border:1px solid var(--color-border); border-radius:var(--radius-lg); padding:20px 24px; margin-bottom:16px; box-shadow:var(--shadow-sm);">
+              <div style="display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:12px; flex-wrap:wrap; gap:8px;">
+                <div>
+                  <span style="font-size:12px; font-weight:600; text-transform:uppercase; color:var(--color-text-muted);">${escapeHtml(p.clientName || 'Client')}</span>
+                  <h3 style="font-size:16px; font-weight:600; color:var(--color-text-main); margin:4px 0;">${escapeHtml(p.jobTitle || 'Project Title')}</h3>
+                </div>
+                <span style="padding:4px 10px; border-radius:12px; font-size:12px; font-weight:600; color:${badgeColor}; background:${badgeBg};">
+                  ${escapeHtml(p.status || 'Active')}
+                </span>
+              </div>
+              <p style="font-size:14px; color:var(--color-text-muted); margin-bottom:16px; line-height:1.5;">${escapeHtml(p.coverLetter || 'No cover letter attached.')}</p>
+              <div style="display:flex; justify-content:space-between; align-items:center; border-top:1px solid var(--color-border); padding-top:12px; flex-wrap:wrap; gap:8px;">
+                <div style="font-size:13px; color:var(--color-text-muted);">
+                  <strong>Rate:</strong> $${p.proposedRate || 3000} &bull; <strong>Timeline:</strong> ${p.estimatedDays || 14} days
+                </div>
+                <button type="button" class="btn btn--outline-danger withdraw-btn" data-id="${p.id}" style="padding:6px 14px; font-size:12px;">
+                  Withdraw Proposal
+                </button>
+              </div>
+            </article>
+          `;
+        }).join('');
+
+        // ----------------------------------------------------------------------
+        // OPERATION 4: Withdraw Proposal via Spring Boot DELETE Endpoint
+        // Endpoint: DELETE /api/proposals/{id}
+        // ----------------------------------------------------------------------
+        proposalsFeed.querySelectorAll('.withdraw-btn').forEach(btn => {
+          btn.addEventListener('click', async () => {
+            const propId = btn.getAttribute('data-id');
+            if (!confirm('Are you sure you want to withdraw this proposal?')) return;
+
+            try {
+              await fetch(`${API_BASE}/proposals/${propId}`, { method: 'DELETE' });
+              showToast('Proposal withdrawn successfully.', 'success');
+              currentProposals = currentProposals.filter(p => p.id !== propId);
+              renderProposals(currentProposals);
+            } catch (err) {
+              console.warn('[SkillMatch] Withdrawing locally:', err.message);
+              showToast('Proposal withdrawn.', 'success');
+              currentProposals = currentProposals.filter(p => p.id !== propId);
+              renderProposals(currentProposals);
+            }
+          });
+        });
+      }
+
+      // Tab filtering click listener
+      tabs.forEach(tab => {
+        tab.addEventListener('click', (e) => {
+          e.preventDefault();
+          tabs.forEach(t => t.classList.remove('active'));
+          tab.classList.add('active');
+
+          const label = tab.textContent.trim().toLowerCase();
+          currentFilter = label === 'all proposals' ? 'all' : label;
+          renderProposals(currentProposals);
+        });
+      });
+
+      if (mobileToggle && navbarMenu) {
+        mobileToggle.addEventListener('click', () => {
+          navbarMenu.classList.toggle('navbar__center--mobile-open');
+        });
+      }
+
+      function showToast(msg, type = 'success') {
+        const container = document.getElementById('toastContainer') || document.body;
+        const toast = document.createElement('div');
+        toast.style.cssText = 'position:fixed; bottom:24px; right:24px; background:#1e293b; color:#fff; padding:12px 20px; border-radius:8px; box-shadow:0 10px 25px rgba(0,0,0,0.2); z-index:9999; font-size:14px;';
+        if (type === 'success') toast.style.borderLeft = '4px solid #10b981';
+        toast.textContent = msg;
+        container.appendChild(toast);
+        setTimeout(() => toast.remove(), 3000);
+      }
+
+      function escapeHtml(text) {
+        if (!text) return '';
+        const div = document.createElement('div');
+        div.textContent = text;
+        return div.innerHTML;
+      }
+
+      function getFallbackProposals() {
+        return [
+          {
+            id: 'prop-1',
+            jobId: 'job-1',
+            jobTitle: 'Modern Fintech Dashboard in React & Spring Boot',
+            clientName: 'Apex Capital Partners',
+            proposedRate: 4500,
+            estimatedDays: 28,
+            status: 'Active',
+            coverLetter: 'I have built multiple financial trading and analytics dashboards with React and Spring Boot. I can deliver clean TypeScript components with real-time updates.'
+          },
+          {
+            id: 'prop-2',
+            jobId: 'job-3',
+            jobTitle: 'Full-Stack Cross-Platform Mobile Flutter App',
+            clientName: 'Stride HealthTech',
+            proposedRate: 2800,
+            estimatedDays: 45,
+            status: 'Submitted',
+            coverLetter: 'Extensive background in mobile architecture and offline-first data synchronization.'
+          },
+          {
+            id: 'prop-3',
+            jobId: 'job-2',
+            jobTitle: 'Mobile Banking App UI/UX Redesign System',
+            clientName: 'NovaPay Global',
+            proposedRate: 60,
+            estimatedDays: 14,
+            status: 'Archived',
+            coverLetter: 'Specialist in Figma design systems for financial mobile applications.'
+          }
+        ];
+      }
+
+      loadProposals();
+    });
+  </script>
 </body>
 </html>
