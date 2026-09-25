@@ -10,9 +10,35 @@
   RewriteCond %{REQUEST_FILENAME}.php -f
   RewriteRule ^(.*)$ $1.php [L,QSA]
 
-  # Route /api/jobs and /api/jobs/ to /api/jobs/index.php
-  RewriteRule ^jobs/?$ jobs/index.php [L,QSA]
+  # --- Auth ---
+  RewriteRule ^auth/login/?$ auth/login.php [L,QSA]
 
-  # Route /api/freelancers and /api/freelancers/ to /api/freelancers/index.php
+  # --- Jobs ---
+  RewriteRule ^jobs/?$ jobs/index.php [L,QSA]
+  RewriteRule ^jobs/([a-zA-Z0-9_-]+)/proposals/?$ jobs/index.php [L,QSA]
+  RewriteRule ^jobs/([a-zA-Z0-9_-]+)/?$ jobs/index.php [L,QSA]
+
+  # --- Freelancers ---
   RewriteRule ^freelancers/?$ freelancers/index.php [L,QSA]
+  RewriteRule ^freelancers/me/portfolio/?$ freelancers/portfolio.php [L,QSA]
+  RewriteRule ^freelancers/me/proposals/?$ proposals/index.php [L,QSA]
+  RewriteRule ^freelancers/me/?$ freelancers/me.php [L,QSA]
+  RewriteRule ^freelancers/([a-zA-Z0-9_-]+)/?$ freelancers/profile.php [L,QSA]
+
+  # --- Proposals ---
+  RewriteRule ^proposals/([a-zA-Z0-9_-]+)/?$ proposals/withdraw.php [L,QSA]
+
+  # --- Chat ---
+  RewriteRule ^chat/threads/?$ chat/threads.php [L,QSA]
+  RewriteRule ^chat/threads/([a-zA-Z0-9_-]+)/messages/?$ chat/messages.php [L,QSA]
+
+  # --- Skills ---
+  RewriteRule ^skills/categories/?$ skills/categories.php [L,QSA]
+  RewriteRule ^skills/tests/([a-zA-Z0-9_-]+)/submit/?$ skills/submit.php [L,QSA]
+  RewriteRule ^skills/tests/([a-zA-Z0-9_-]+)/?$ skills/tests.php [L,QSA]
+
+  # --- Admin ---
+  RewriteRule ^admin/metrics/?$ admin/metrics.php [L,QSA]
+  RewriteRule ^admin/users/?$ admin/users.php [L,QSA]
+  RewriteRule ^admin/users/([a-zA-Z0-9_-]+)/status/?$ admin/status.php [L,QSA]
 </IfModule>
