@@ -27,17 +27,21 @@ document.addEventListener('DOMContentLoaded', async () => {
         if (greetingEl && dash.clientName) {
           greetingEl.textContent = `Welcome back, ${dash.clientName}`;
         }
-        if (activeProjectsEl) activeProjectsEl.textContent = dash.activeProjects ?? 4;
-        if (proposalsCountEl) proposalsCountEl.textContent = dash.proposalsReceived ?? 12;
-        if (freelancersCountEl) freelancersCountEl.textContent = dash.freelancersHired ?? 8;
-        if (totalSpentEl) totalSpentEl.textContent = dash.totalSpent || '$12,450';
+        if (activeProjectsEl)   activeProjectsEl.textContent   = dash.activeProjects   !== undefined ? dash.activeProjects   : '—';
+        if (proposalsCountEl)   proposalsCountEl.textContent   = dash.proposalsReceived !== undefined ? dash.proposalsReceived : '—';
+        if (freelancersCountEl) freelancersCountEl.textContent = dash.freelancersHired  !== undefined ? dash.freelancersHired  : '—';
+        if (totalSpentEl)       totalSpentEl.textContent       = dash.totalSpent        !== undefined ? dash.totalSpent        : '—';
       }
 
       if (projects && recentProjectsCard) {
         renderRecentProjects(projects);
       }
     } catch (err) {
-      console.warn('Failed to load client dashboard dynamically:', err);
+      console.error('Failed to load client dashboard:', err);
+      [activeProjectsEl, proposalsCountEl, freelancersCountEl, totalSpentEl].forEach(el => {
+        if (el) el.textContent = 'Error';
+      });
+      SkillMatch.showToast('Dashboard data unavailable — check backend connection.', 'error');
     }
   }
 
@@ -58,18 +62,22 @@ document.addEventListener('DOMContentLoaded', async () => {
       else if (proj.status === 'Completed') badgeClass = 'badge-done';
       else if (proj.status === 'Awaiting Approval') badgeClass = 'badge-await';
 
+      const postedStr = proj.postedDate
+        ? escapeHtml(proj.postedDate)
+        : (proj.created_at ? new Date(proj.created_at).toLocaleDateString() : 'recently');
+
       return `
         <div class="list-row">
           <div>
             <p class="row-title">${escapeHtml(proj.title)} <span class="badge ${badgeClass}">${escapeHtml(proj.status)}</span></p>
             <div class="row-meta">
-              <span>Posted ${escapeHtml(proj.postedDate || 'recently')}</span>
-              <span>${proj.proposalsCount || 0} Proposals</span>
+              <span>Posted ${postedStr}</span>
+              <span>${proj.proposalsCount ?? 0} Proposals</span>
               ${proj.freelancer ? `<span>Freelancer: ${escapeHtml(proj.freelancer)}</span>` : ''}
             </div>
           </div>
           <div class="price">
-            <strong>${escapeHtml(proj.budgetType || 'Fixed Price')}</strong> ${escapeHtml(proj.budget || '$3,000')}
+            <strong>${escapeHtml(proj.budgetType ?? '')}</strong> ${escapeHtml(proj.budget ?? '')}
             <a class="btn btn-outline" style="margin-left:10px" href="review-proposal.html?id=${proj.id}">View</a>
           </div>
         </div>

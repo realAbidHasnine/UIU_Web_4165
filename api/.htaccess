@@ -15,7 +15,7 @@
 
   # --- Jobs ---
   RewriteRule ^jobs/?$ jobs/index.php [L,QSA]
-  RewriteRule ^jobs/([a-zA-Z0-9_-]+)/proposals/?$ jobs/index.php [L,QSA]
+  RewriteRule ^jobs/([a-zA-Z0-9_-]+)/proposals/?$ jobs/proposals.php [L,QSA]
   RewriteRule ^jobs/([a-zA-Z0-9_-]+)/?$ jobs/index.php [L,QSA]
 
   # --- Freelancers ---
@@ -34,8 +34,13 @@
 
   # --- Skills ---
   RewriteRule ^skills/categories/?$ skills/categories.php [L,QSA]
+  RewriteRule ^skills/tests/results/latest/?$ skills/results.php [L,QSA]
   RewriteRule ^skills/tests/([a-zA-Z0-9_-]+)/submit/?$ skills/submit.php [L,QSA]
   RewriteRule ^skills/tests/([a-zA-Z0-9_-]+)/?$ skills/tests.php [L,QSA]
+
+  # --- Clients ---
+  RewriteRule ^clients/me/dashboard/?$ clients/dashboard.php [L,QSA]
+  RewriteRule ^clients/me/projects/?$ clients/projects.php [L,QSA]
 
   # --- Admin ---
   RewriteRule ^admin/metrics/?$ admin/metrics.php [L,QSA]

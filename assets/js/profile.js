@@ -28,9 +28,9 @@ document.addEventListener('DOMContentLoaded', async () => {
   try {
     const user = await SkillMatch.api.get('/freelancers/me');
     if (user) {
-      if (fullNameInput) fullNameInput.value = user.name || '';
-      if (emailInput) emailInput.value = user.email || '';
-      if (bioInput) bioInput.value = user.bio || '';
+      if (fullNameInput) fullNameInput.value = user.name  ?? '';
+      if (emailInput)    emailInput.value    = user.email ?? '';
+      if (bioInput)      bioInput.value      = user.bio   ?? '';
       if (skillsInput && Array.isArray(user.skills)) {
         skillsInput.value = user.skills.join(', ');
       }
@@ -41,7 +41,13 @@ document.addEventListener('DOMContentLoaded', async () => {
       }
     }
   } catch (err) {
-    console.warn('Failed to load profile data:', err);
+    SkillMatch.showToast('Failed to load profile data. Check backend connection.', 'error');
+    if (form) {
+      const errMsg = document.createElement('p');
+      errMsg.style.cssText = 'color:var(--color-danger,#ef4444);font-size:14px;margin-bottom:12px;';
+      errMsg.textContent = 'Could not load profile — ensure XAMPP is running and database is imported.';
+      form.prepend(errMsg);
+    }
   }
 
   // Live avatar image preview via FileReader

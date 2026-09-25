@@ -22,9 +22,17 @@ document.addEventListener('DOMContentLoaded', async () => {
 
   try {
     const result = await SkillMatch.api.get('/skills/tests/results/latest');
-    const score = result.score !== undefined ? result.score : 85;
-    const passed = result.passed !== undefined ? result.passed : score >= 70;
-    const category = result.category || 'web';
+
+    if (!result || result.score === undefined) {
+      if (assessmentSubtitle) {
+        assessmentSubtitle.textContent = 'No test results found. Complete a skill verification test first.';
+      }
+      return;
+    }
+
+    const score    = result.score;
+    const passed   = result.passed;
+    const category = result.category;
 
     if (scoreBadge) {
       scoreBadge.textContent = `${score}%`;
@@ -44,7 +52,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     }
 
     if (assessmentSubtitle) {
-      const dateStr = new Date(result.submittedAt || Date.now()).toLocaleDateString('en-US', {
+      const dateStr = new Date(result.submittedAt).toLocaleDateString('en-US', {
         month: 'short',
         day: 'numeric',
         year: 'numeric'
@@ -57,5 +65,9 @@ document.addEventListener('DOMContentLoaded', async () => {
     }
   } catch (err) {
     console.error('Error loading result suggestions:', err);
+    if (assessmentSubtitle) {
+      assessmentSubtitle.textContent = 'Could not load results. Ensure the backend is running.';
+      assessmentSubtitle.style.color = 'var(--color-danger, #ef4444)';
+    }
   }
 });
