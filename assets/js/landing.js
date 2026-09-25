@@ -5,9 +5,13 @@
  */
 
 document.addEventListener('DOMContentLoaded', () => {
-  const featuredGrid = document.querySelector('.featured__grid');
+  const featuredGrid = document.querySelector('.featured__grid') || document.getElementById('featuredTalentGrid');
   const heroSearchForm = document.getElementById('heroSearchForm');
   const heroStatPros = document.querySelector('.hero__stat:nth-child(1) .hero__stat-value');
+
+  const isGuestDir = window.location.pathname.includes('/guest/');
+  const profileBaseUrl = isGuestDir ? 'freelancer_public_profile.html' : 'guest/freelancer_public_profile.html';
+  const browseBaseUrl = isGuestDir ? 'browse_freelancer.html' : 'guest/browse_freelancer.html';
 
   // Dynamic talent loading
   async function loadFeaturedTalent() {
@@ -28,9 +32,10 @@ document.addEventListener('DOMContentLoaded', () => {
         const initials = fl.name ? fl.name.split(' ').map(n => n[0]).join('').substring(0, 2).toUpperCase() : 'SM';
         const skills = fl.skills || ['React', 'TypeScript', 'Tailwind'];
         const mainSkills = skills.slice(0, 3);
+        const primarySkill = mainSkills[0] || 'Engineering';
 
         return `
-          <a href="guest/freelancer_public_profile.html?id=${fl.id}" class="talent-card" aria-label="View profile of ${escapeHtml(fl.name)}">
+          <a href="${profileBaseUrl}?id=${encodeURIComponent(fl.id)}" class="talent-card" aria-label="View profile of ${escapeHtml(fl.name)}">
             <div class="talent-card__top">
               <div class="talent-card__avatar talent-card__avatar--${(idx % 4) + 1}">${initials}</div>
               <span class="readout talent-card__rate">$${fl.hourlyRate || 65}/hr</span>
@@ -59,7 +64,7 @@ document.addEventListener('DOMContentLoaded', () => {
               <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" width="13" height="13">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
               </svg>
-              SkillScore verified &middot; #${(fl.id || '0101').replace(/\D/g, '').padStart(4, '0')}
+              SkillScore verified &middot; #${String(fl.id || '0101').replace(/\D/g, '').padStart(4, '0')}
             </span>
           </a>
         `;
@@ -76,9 +81,9 @@ document.addEventListener('DOMContentLoaded', () => {
       const input = heroSearchForm.querySelector('input[name="skill_query"]');
       const query = input ? input.value.trim() : '';
       if (query) {
-        window.location.href = `guest/browse_freelancer.html?query=${encodeURIComponent(query)}`;
+        window.location.href = `${browseBaseUrl}?query=${encodeURIComponent(query)}`;
       } else {
-        window.location.href = `guest/browse_freelancer.html`;
+        window.location.href = browseBaseUrl;
       }
     });
   }

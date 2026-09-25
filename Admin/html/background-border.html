@@ -43,6 +43,25 @@
     </div>
   </div>
 
+  <script>
+    var params = new URLSearchParams(window.location.search);
+    var from = params.get('from') || 'user-management.html';
+
+    var cancelBtn = document.getElementById('cancelBtn');
+    var confirmBtn = document.getElementById('confirmBtn');
+    var overlay = document.getElementById('overlay');
+
+    if (cancelBtn) cancelBtn.href = from;
+    if (confirmBtn) confirmBtn.href = 'notification-success.html?from=' + encodeURIComponent(from);
+
+    if (overlay) {
+      overlay.addEventListener('click', function (e) {
+        if (e.target === this) {
+          window.location.href = from;
+        }
+      });
+    }
+  </script>
 </body>
 
 </html>

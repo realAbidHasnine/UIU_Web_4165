@@ -7,8 +7,20 @@
 (function () {
   'use strict';
 
+  function resolveApiBaseUrl() {
+    if (window.SKILLMATCH_API_BASE) return window.SKILLMATCH_API_BASE;
+    // When served via XAMPP Apache (http://localhost/...), dynamically resolve to project /api
+    const loc = window.location;
+    if (loc && loc.origin && loc.origin.startsWith('http://localhost') && !loc.port.includes('8080')) {
+      const match = loc.pathname.match(/^(\/[^\/]+)/);
+      const projectRoot = match ? match[1] : '';
+      return `${loc.origin}${projectRoot}/api`;
+    }
+    return 'http://localhost:8080/api';
+  }
+
   const CONFIG = {
-    BASE_URL: 'http://localhost:8080/api',
+    BASE_URL: resolveApiBaseUrl(),
     TIMEOUT: 4000,
     STORAGE_KEY: 'skillmatch_db_v1',
     SESSION_KEY: 'skillmatch_session_v1'

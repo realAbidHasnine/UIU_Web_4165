@@ -28,6 +28,18 @@
     </div>
   </div>
 
+  <script>
+    var params = new URLSearchParams(window.location.search);
+    var from = params.get('from') || 'admin-dashboard.html';
+    var backdropLink = document.querySelector('.notification-overlay a');
+    if (backdropLink) backdropLink.href = from;
+
+    document.getElementById('overlay').addEventListener('click', function (e) {
+      if (e.target === this) {
+        window.location.href = from;
+      }
+    });
+  </script>
 </body>
 
 </html>

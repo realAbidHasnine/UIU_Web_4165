@@ -1,0 +1,18 @@
+<IfModule mod_rewrite.c>
+  RewriteEngine On
+
+  # Handle OPTIONS preflight requests directly
+  RewriteCond %{REQUEST_METHOD} OPTIONS
+  RewriteRule ^(.*)$ $1 [R=200,L]
+
+  # Route directory/endpoint without .php to matching file if it exists
+  RewriteCond %{REQUEST_FILENAME} !-f
+  RewriteCond %{REQUEST_FILENAME}.php -f
+  RewriteRule ^(.*)$ $1.php [L,QSA]
+
+  # Route /api/jobs and /api/jobs/ to /api/jobs/index.php
+  RewriteRule ^jobs/?$ jobs/index.php [L,QSA]
+
+  # Route /api/freelancers and /api/freelancers/ to /api/freelancers/index.php
+  RewriteRule ^freelancers/?$ freelancers/index.php [L,QSA]
+</IfModule>

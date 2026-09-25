@@ -50,9 +50,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
         setTimeout(() => {
           if (chosenRole === 'CLIENT') {
-            window.location.href = '../client/index.html';
+            window.location.href = window.location.pathname.includes('/guest/') ? '../client/index.html' : 'client/index.html';
           } else {
-            window.location.href = '../freelancer/index.html';
+            window.location.href = window.location.pathname.includes('/guest/') ? '../freelancer/index.html' : 'freelancer/index.html';
           }
         }, 600);
       } catch (err) {
@@ -82,7 +82,11 @@ document.addEventListener('DOMContentLoaded', () => {
         SkillMatch.showToast('Admin authentication successful.', 'success');
 
         setTimeout(() => {
-          window.location.href = '../Admin/html/admin-dashboard.html';
+          if (window.location.pathname.includes('/Admin/')) {
+            window.location.href = 'admin-dashboard.html';
+          } else {
+            window.location.href = '../Admin/html/admin-dashboard.html';
+          }
         }, 500);
       } catch (err) {
         SkillMatch.showToast(err.message || 'Admin authentication failed.', 'error');
