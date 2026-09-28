@@ -1,13 +1,42 @@
 /**
  * SkillMatch — Dynamic Freelancers Directory
- * Connects to Spring Boot REST Endpoints:
- * - GET /api/freelancers
+ * Connects to PHP REST Endpoints:
+ * - GET /api/freelancers (supports search, categories, experience, sort)
  */
 
 document.addEventListener('DOMContentLoaded', () => {
-  const container = document.getElementById('freelancersGrid') || document.querySelector('.freelancer-list') || document.getElementById('freelancerList');
-  const searchInput = document.getElementById('searchFreelancers') || document.querySelector('input[type="search"]') || document.getElementById('keyword');
-  const sortSelect = document.getElementById('sortSelect') || document.getElementById('sort');
+  const container = document.getElementById('freelancersGrid') || 
+                    document.querySelector('.freelancers-grid') || 
+                    document.querySelector('.freelancer-list') || 
+                    document.getElementById('freelancerList');
+
+  const searchInput = document.querySelector('input[name="freelancer_query"]') || 
+                      document.getElementById('searchFreelancers') || 
+                      document.querySelector('input[type="search"]') || 
+                      document.getElementById('keyword');
+
+  const searchForm = document.getElementById('freelancerSearchForm');
+  const filterForm = document.getElementById('freelancerFilterForm');
+  const sortSelect = document.querySelector('select[name="sort_by"]') || 
+                     document.getElementById('sortSelect') || 
+                     document.getElementById('sort');
+
+  // Pre-fill from URL query parameters (e.g. from Hero Search on index.html)
+  const urlParams = new URLSearchParams(window.location.search);
+  const initialSearch = urlParams.get('search') || urlParams.get('skill_query') || urlParams.get('q') || '';
+  if (searchInput && initialSearch) {
+    searchInput.value = initialSearch;
+  }
+
+  const initialCat = urlParams.get('categories') || urlParams.get('category') || '';
+  if (initialCat) {
+    const cats = initialCat.split(',').map(c => c.trim().toLowerCase());
+    document.querySelectorAll('input[name="categories[]"]').forEach(cb => {
+      if (cats.includes(cb.value.toLowerCase())) {
+        cb.checked = true;
+      }
+    });
+  }
 
   let allFreelancers = [];
 
@@ -21,13 +50,43 @@ document.addEventListener('DOMContentLoaded', () => {
       </div>
     `;
 
+    const params = {};
+
+    const query = searchInput ? searchInput.value.trim() : '';
+    if (query) {
+      params.search = query;
+    }
+
+    const checkedCats = Array.from(document.querySelectorAll('input[name="categories[]"]:checked'))
+      .map(cb => cb.value)
+      .filter(Boolean);
+    if (checkedCats.length > 0) {
+      params.categories = checkedCats.join(',');
+    }
+
+    const checkedExp = document.querySelector('input[name="experience"]:checked');
+    if (checkedExp && checkedExp.value && checkedExp.value !== 'all') {
+      params.experience = checkedExp.value;
+    }
+
+    const sortVal = sortSelect ? sortSelect.value : '';
+    if (sortVal) {
+      // Map sort labels to API sort keys
+      if (sortVal === 'highest_rated' || sortVal === 'rating') params.sort = 'rating';
+      else if (sortVal === 'most_reviews' || sortVal === 'skill_score') params.sort = 'skill_score';
+      else if (sortVal === 'rate_low_high' || sortVal === 'price_asc') params.sort = 'price_asc';
+      else if (sortVal === 'rate_high_low' || sortVal === 'price_desc') params.sort = 'price_desc';
+      else if (sortVal === 'newest') params.sort = 'newest';
+      else params.sort = sortVal;
+    }
+
     try {
-      allFreelancers = await SkillMatch.api.get('/freelancers');
+      allFreelancers = await SkillMatch.api.get('/freelancers', params);
       renderFreelancers(allFreelancers);
     } catch (err) {
       container.innerHTML = `
         <div style="grid-column: 1 / -1; padding: 32px; text-align: center; color: var(--color-danger);">
-          Failed to load freelancers.
+          Failed to load freelancers. Please verify XAMPP is running.
         </div>
       `;
     }
@@ -38,10 +97,18 @@ document.addEventListener('DOMContentLoaded', () => {
 
     if (!list || list.length === 0) {
       container.innerHTML = `
-        <div style="grid-column: 1 / -1; padding: 40px; text-align: center; background: white; border-radius: 8px; border: 1px solid var(--color-border);">
-          <h3>No freelancers found matching your criteria.</h3>
+        <div style="grid-column: 1 / -1; padding: 48px; text-align: center; background: white; border-radius: 12px; border: 1px solid var(--color-border);">
+          <div style="font-size: 32px; margin-bottom: 8px;">🔍</div>
+          <h3 style="font-size: 16px; font-weight: 600; color: var(--color-text-main); margin-bottom: 6px;">No freelancers found</h3>
+          <p style="color: var(--color-text-muted); font-size: 14px; margin-bottom: 12px;">Try adjusting your search terms or clearing some filters.</p>
+          <button type="button" class="btn btn--outline" id="clearFiltersBtn">Reset Filters</button>
         </div>
       `;
+      document.getElementById('clearFiltersBtn')?.addEventListener('click', () => {
+        if (searchInput) searchInput.value = '';
+        if (filterForm) filterForm.reset();
+        loadFreelancers();
+      });
       return;
     }
 
@@ -57,7 +124,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 ${escapeHtml(f.name)}
                 ${f.score >= 90 ? `<span style="margin-left: 8px; font-size: 12px; padding: 2px 8px; border-radius: 12px; background: #dbeafe; color: #1e40af;">★ Verified ${f.score}%</span>` : ''}
               </h3>
-              <p style="font-size: 14px; color: var(--color-text-muted); margin: 0;">${escapeHtml(f.title)}</p>
+              <p style="font-size: 14px; color: var(--color-text-muted); margin: 0;">${escapeHtml(f.title || 'Independent Professional')}</p>
             </div>
           </div>
           <div style="text-align: right;">
@@ -67,30 +134,48 @@ document.addEventListener('DOMContentLoaded', () => {
         </div>
 
         <p style="font-size: 14px; line-height: 1.5; color: var(--color-text-main); margin: 16px 0;">
-          ${escapeHtml(f.bio)}
+          ${escapeHtml(f.bio || 'Verified talent with proven expertise on SkillMatch.')}
         </p>
 
-        <div style="display: flex; justify-content: space-between; align-items: center; border-top: 1px solid var(--color-border); padding-top: 14px; margin-top: 14px;">
+        <div style="display: flex; justify-content: space-between; align-items: center; border-top: 1px solid var(--color-border); padding-top: 14px; margin-top: 14px; flex-wrap: wrap; gap: 10px;">
           <div style="display: flex; gap: 6px; flex-wrap: wrap;">
             ${(f.skills || []).map(s => `<span style="font-size: 12px; padding: 3px 10px; border-radius: 6px; background: #f1f5f9; color: #475569;">${escapeHtml(s)}</span>`).join('')}
           </div>
-          <a href="freelancer_public_profile.html?id=${f.id}" class="btn btn--outline" style="text-decoration: none; font-size: 13px; padding: 6px 14px;">View Profile</a>
+          <a href="freelancer_public_profile.html?id=${encodeURIComponent(f.id)}" class="btn btn--outline" style="text-decoration: none; font-size: 13px; padding: 6px 14px;">View Profile</a>
         </div>
       </article>
     `).join('');
   }
 
-  // Live search
+  // Live search input with debouncing
+  let debounceTimer = null;
   if (searchInput) {
-    searchInput.addEventListener('input', (e) => {
-      const q = e.target.value.toLowerCase().trim();
-      const filtered = allFreelancers.filter(f =>
-        f.name.toLowerCase().includes(q) ||
-        f.title.toLowerCase().includes(q) ||
-        (f.skills || []).some(s => s.toLowerCase().includes(q))
-      );
-      renderFreelancers(filtered);
+    searchInput.addEventListener('input', () => {
+      clearTimeout(debounceTimer);
+      debounceTimer = setTimeout(loadFreelancers, 250);
     });
+  }
+
+  if (searchForm) {
+    searchForm.addEventListener('submit', (e) => {
+      e.preventDefault();
+      loadFreelancers();
+    });
+  }
+
+  if (filterForm) {
+    filterForm.addEventListener('change', () => loadFreelancers());
+    filterForm.addEventListener('submit', (e) => {
+      e.preventDefault();
+      loadFreelancers();
+    });
+    filterForm.addEventListener('reset', () => {
+      setTimeout(loadFreelancers, 10);
+    });
+  }
+
+  if (sortSelect) {
+    sortSelect.addEventListener('change', () => loadFreelancers());
   }
 
   function getInitials(name) {

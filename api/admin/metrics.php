@@ -10,6 +10,8 @@ if ($_SERVER['REQUEST_METHOD'] !== 'GET') {
     sendResponse(['message' => 'Method Not Allowed'], 405);
 }
 
+requireRole($pdo, ['ADMIN']);
+
 // Aggregate metrics from the database
 $totalUsers   = $pdo->query("SELECT COUNT(*) FROM users")->fetchColumn();
 $freelancers  = $pdo->query("SELECT COUNT(*) FROM users WHERE role = 'FREELANCER'")->fetchColumn();

@@ -1,49 +1,28 @@
+# SkillMatch REST API — URL rewriting
+#
+# Routing itself lives in index.php (the front controller). Apache only needs to
+# do two things here:
+#   1. hand the Authorization header to PHP so Bearer tokens work
+#   2. hand every non-file request to index.php
+#
+# Do NOT re-introduce per-path RewriteRules. mod_dir enters each physical
+# sub-directory (api/freelancers/, api/jobs/, ...) and re-applies this ruleset
+# against the new per-directory prefix, which sent requests into an infinite
+# redirect loop (AH00124: Request exceeded the limit of 10 internal redirects).
+# A single catch-all rule cannot loop.
+
 <IfModule mod_rewrite.c>
   RewriteEngine On
 
-  # Handle OPTIONS preflight requests directly
-  RewriteCond %{REQUEST_METHOD} OPTIONS
-  RewriteRule ^(.*)$ $1 [R=200,L]
+  # Apache does not pass the Authorization header to PHP by default, so
+  # $_SERVER['HTTP_AUTHORIZATION'] is empty and every Bearer token is rejected.
+  RewriteCond %{HTTP:Authorization} ^(.*)
+  RewriteRule .* - [E=HTTP_AUTHORIZATION:%{HTTP:Authorization}]
 
-  # Route directory/endpoint without .php to matching file if it exists
-  RewriteCond %{REQUEST_FILENAME} !-f
-  RewriteCond %{REQUEST_FILENAME}.php -f
-  RewriteRule ^(.*)$ $1.php [L,QSA]
+  # Real files (uploads, existing .php entry points) are served untouched.
+  RewriteCond %{REQUEST_FILENAME} -f
+  RewriteRule ^ - [L]
 
-  # --- Auth ---
-  RewriteRule ^auth/login/?$ auth/login.php [L,QSA]
-
-  # --- Jobs ---
-  RewriteRule ^jobs/?$ jobs/index.php [L,QSA]
-  RewriteRule ^jobs/([a-zA-Z0-9_-]+)/proposals/?$ jobs/proposals.php [L,QSA]
-  RewriteRule ^jobs/([a-zA-Z0-9_-]+)/?$ jobs/index.php [L,QSA]
-
-  # --- Freelancers ---
-  RewriteRule ^freelancers/?$ freelancers/index.php [L,QSA]
-  RewriteRule ^freelancers/me/portfolio/?$ freelancers/portfolio.php [L,QSA]
-  RewriteRule ^freelancers/me/proposals/?$ proposals/index.php [L,QSA]
-  RewriteRule ^freelancers/me/?$ freelancers/me.php [L,QSA]
-  RewriteRule ^freelancers/([a-zA-Z0-9_-]+)/?$ freelancers/profile.php [L,QSA]
-
-  # --- Proposals ---
-  RewriteRule ^proposals/([a-zA-Z0-9_-]+)/?$ proposals/withdraw.php [L,QSA]
-
-  # --- Chat ---
-  RewriteRule ^chat/threads/?$ chat/threads.php [L,QSA]
-  RewriteRule ^chat/threads/([a-zA-Z0-9_-]+)/messages/?$ chat/messages.php [L,QSA]
-
-  # --- Skills ---
-  RewriteRule ^skills/categories/?$ skills/categories.php [L,QSA]
-  RewriteRule ^skills/tests/results/latest/?$ skills/results.php [L,QSA]
-  RewriteRule ^skills/tests/([a-zA-Z0-9_-]+)/submit/?$ skills/submit.php [L,QSA]
-  RewriteRule ^skills/tests/([a-zA-Z0-9_-]+)/?$ skills/tests.php [L,QSA]
-
-  # --- Clients ---
-  RewriteRule ^clients/me/dashboard/?$ clients/dashboard.php [L,QSA]
-  RewriteRule ^clients/me/projects/?$ clients/projects.php [L,QSA]
-
-  # --- Admin ---
-  RewriteRule ^admin/metrics/?$ admin/metrics.php [L,QSA]
-  RewriteRule ^admin/users/?$ admin/users.php [L,QSA]
-  RewriteRule ^admin/users/([a-zA-Z0-9_-]+)/status/?$ admin/status.php [L,QSA]
+  # Everything else is an API route.
+  RewriteRule ^ index.php [L,QSA]
 </IfModule>

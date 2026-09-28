@@ -35,31 +35,63 @@
                 </div>
                 <div style="font-size:11px;font-weight:600;margin-top:8px">Upload profile photo</div>
             </div>
-            <form action="client-dashboard.html" method="get">
+            <form id="registerForm">
                 <div style="display:grid;grid-template-columns:1fr 1fr;gap:0;margin-bottom:16px">
-                    <div class="field" style="margin:0"><label>First Name</label><input class="input" name="first_name"
-                            placeholder="Enter first name" style="border-radius:3px 0 0 3px"></div>
-                    <div class="field" style="margin:0"><label>Last Name</label><input class="input" name="last_name"
-                            placeholder="Enter last name" style="border-radius:0 3px 3px 0;border-left:0"></div>
+                    <div class="field" style="margin:0"><label>First Name</label><input class="input" id="firstName"
+                            placeholder="Enter first name" style="border-radius:3px 0 0 3px" required></div>
+                    <div class="field" style="margin:0"><label>Last Name</label><input class="input" id="lastName"
+                            placeholder="Enter last name" style="border-radius:0 3px 3px 0;border-left:0" required></div>
                 </div>
-                <div class="field"><label>Company Name</label><input class="input" name="company_name"
-                        placeholder="e.g., Kolpolok"></div>
-                <div class="field"><label>Work Email</label><input class="input" name="work_email"
-                        placeholder="name@company.com"></div>
-                <div class="field"><label>Password</label><input class="input" name="password" type="password"
-                        value="********"></div>
+                <div class="field"><label>Company Name</label><input class="input" id="company"
+                        placeholder="e.g., Apex Corp (optional)"></div>
+                <div class="field"><label>Work Email</label><input class="input" id="email" type="email"
+                        placeholder="name@company.com" required></div>
+                <div class="field"><label>Password</label><input class="input" id="password" type="password"
+                        placeholder="Create a password (min. 6 chars)" required></div>
                 <div class="field"><label>Describe your primary hiring needs</label><textarea class="textarea"
-                        name="hiring_needs"
-                        placeholder="e.g., web development, manual labor, digital services"></textarea></div>
-                <a class="btn btn-primary" style="width:100%" href="client-dashboard.html">Continue</a>
+                        id="hiringNeeds"
+                        placeholder="e.g., web development, mobile apps, UI/UX design"></textarea></div>
+                <input type="hidden" id="role" value="CLIENT">
+                <button type="submit" id="submitBtn" class="btn btn-primary" style="width:100%;border:none;cursor:pointer;">Continue &rarr;</button>
                 <p style="color:#94a3b8;font-size:12.5px;text-align:center;margin:14px 0 0">By clicking continue, you
                     agree to our Terms of Service and Privacy Policy.</p>
             </form>
+            <div id="toastContainer" class="toast-container"></div>
         </div>
     </main>
 
-  <script src="../../assets/js/api.js"></script>
-  <script src="../../assets/js/auth.js"></script>
+  <script src="../assets/js/api.js"></script>
+  <script src="../assets/js/auth.js"></script>
+  <script src="../assets/js/client-workflow.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const form = document.getElementById('registerForm');
+      if (!form) return;
+      form.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const firstName = document.getElementById('firstName')?.value?.trim() || '';
+        const lastName  = document.getElementById('lastName')?.value?.trim() || '';
+        const name      = (firstName + ' ' + lastName).trim();
+        const email     = document.getElementById('email')?.value?.trim();
+        const password  = document.getElementById('password')?.value;
+        const company   = document.getElementById('company')?.value?.trim() || '';
+        const btn       = document.getElementById('submitBtn');
+        if (!name || name.length < 2) { SkillMatch.showToast('Please enter your full name', 'error'); return; }
+        if (!email || !password) { SkillMatch.showToast('Email and password are required', 'error'); return; }
+        if (password.length < 6) { SkillMatch.showToast('Password must be at least 6 characters', 'error'); return; }
+        btn.disabled = true; btn.textContent = 'Creating Account...';
+        try {
+          const res = await SkillMatch.api.post('/auth/register', { name, email, password, role: 'CLIENT', company });
+          SkillMatch.auth.setUser(res.user, res.token);
+          SkillMatch.showToast('Account created! Redirecting...', 'success');
+          setTimeout(() => { window.location.href = 'client-dashboard.html'; }, 800);
+        } catch(err) {
+          SkillMatch.showToast(err.message || 'Registration failed', 'error');
+          btn.disabled = false; btn.textContent = 'Continue →';
+        }
+      });
+    });
+  </script>
 </body>
 
 </html>

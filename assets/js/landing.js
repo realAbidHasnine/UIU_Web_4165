@@ -92,7 +92,7 @@ document.addEventListener('DOMContentLoaded', () => {
       const input = heroSearchForm.querySelector('input[name="skill_query"]');
       const query = input ? input.value.trim() : '';
       if (query) {
-        window.location.href = `${browseBaseUrl}?query=${encodeURIComponent(query)}`;
+        window.location.href = `${browseBaseUrl}?search=${encodeURIComponent(query)}`;
       } else {
         window.location.href = browseBaseUrl;
       }

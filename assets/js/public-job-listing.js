@@ -1,6 +1,6 @@
 /**
  * SkillMatch — Public Guest Job Listings
- * Fetches verified job postings dynamically from Spring Boot REST API (GET /api/jobs)
+ * Fetches verified job postings dynamically from PHP REST API (GET /api/jobs)
  * with real-time category and budget filtering.
  */
 
@@ -26,6 +26,37 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   }
 
+  // Pre-fill filters from URL params if present
+  const urlParams = new URLSearchParams(window.location.search);
+  const urlCategories = (urlParams.get('categories') || urlParams.get('category') || '').split(',').map(s => s.trim().toLowerCase());
+  const urlBudget = urlParams.get('budget') || '';
+  const urlSearch = urlParams.get('search') || '';
+
+  if (urlCategories.length > 0 && urlCategories[0] !== '') {
+    document.querySelectorAll('input[name="job_categories[]"]').forEach(cb => {
+      const val = cb.value.toLowerCase();
+      cb.checked = urlCategories.includes(val) ||
+                   (val === 'web_development' && urlCategories.includes('web')) ||
+                   (val === 'ui_ux_design' && urlCategories.includes('uiux')) ||
+                   (val === 'mobile_app_dev' && urlCategories.includes('mobile')) ||
+                   (val === 'cloud_devops' && urlCategories.includes('cloud')) ||
+                   (val === 'data_science' && urlCategories.includes('data'));
+    });
+  }
+
+  const budgetSelect = document.querySelector('select[name="budget_range"]');
+  if (budgetSelect && urlBudget) {
+    for (let opt of budgetSelect.options) {
+      if (opt.value === urlBudget ||
+          (urlBudget === '1000-3000' && opt.value === '1k-3k') ||
+          (urlBudget === '3000-5000' && opt.value === '3k-5k') ||
+          (urlBudget === '5000-plus' && opt.value === '5k+')) {
+        budgetSelect.value = opt.value;
+        break;
+      }
+    }
+  }
+
   async function loadPublicJobs() {
     if (!cardsContainer) return;
 
@@ -41,10 +72,12 @@ document.addEventListener('DOMContentLoaded', () => {
       .map(cb => {
         if (cb.value === 'web_development') return 'web';
         if (cb.value === 'ui_ux_design') return 'uiux';
+        if (cb.value === 'mobile_app_dev') return 'mobile';
+        if (cb.value === 'cloud_devops') return 'cloud';
+        if (cb.value === 'data_science') return 'data';
         return cb.value;
       });
 
-    const budgetSelect = document.querySelector('select[name="budget_range"]');
     const budgetVal = budgetSelect ? budgetSelect.value : '';
 
     const params = {};
@@ -53,6 +86,10 @@ document.addEventListener('DOMContentLoaded', () => {
       if (budgetVal === '1k-3k') params.budget = '1000-3000';
       else if (budgetVal === '3k-5k') params.budget = '3000-5000';
       else if (budgetVal === '5k+') params.budget = '5000-plus';
+      else params.budget = budgetVal;
+    }
+    if (urlSearch) {
+      params.search = urlSearch;
     }
 
     try {
@@ -95,7 +132,7 @@ document.addEventListener('DOMContentLoaded', () => {
     cardsContainer.innerHTML = jobs.map(job => {
       const skills = job.skills || ['React', 'TypeScript'];
       const budgetDisplay = job.budgetDisplay || '$' + (job.budget || '3,000');
-      const proposals = job.proposalsCount || Math.floor(Math.random() * 15 + 4);
+      const proposals = typeof job.proposalsCount === 'number' ? job.proposalsCount : 0;
 
       return `
         <article class="job-card" style="margin-bottom: 20px;">
@@ -122,7 +159,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 ${proposals} proposals received
               </span>
             </div>
-            <a href="login.html" class="btn btn--outline-blue">View Details & Apply</a>
+            <a href="sign_in.html" class="btn btn--outline-blue">View Details & Apply</a>
           </div>
         </article>
       `;
