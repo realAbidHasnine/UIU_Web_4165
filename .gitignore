@@ -2,3 +2,5 @@
 .figma-ref/
 # Temp scripts
 *.tmp
+# User-uploaded project files and avatars
+uploads/
