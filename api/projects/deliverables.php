@@ -24,7 +24,12 @@ if (!in_array($method, ['GET', 'POST'], true)) {
 // Extract project/job ID from URL: /api/projects/{id}/deliverables
 $uri = $_SERVER['REQUEST_URI'];
 preg_match('#/projects/([a-zA-Z0-9_-]+)/deliverables#', $uri, $matches);
-$jobId = $matches[1] ?? '';
+$jobId = routeParam('id') ?: ($matches[1] ?? ($_GET['id'] ?? ($_GET['jobId'] ?? '')));
+
+if ($jobId === '' && $_SERVER['REQUEST_METHOD'] === 'POST') {
+    $tempBody = getRequestBody();
+    $jobId = $tempBody['projectId'] ?? '';
+}
 
 if ($jobId === '') {
     sendResponse(['message' => 'Project ID is required'], 400);
@@ -229,7 +234,7 @@ try {
     ")->execute([
         $job['client_id'],
         $freelancer['name'] . ' submitted deliverables for ' . $job['title'] . '.',
-        '../client/work-approval.html?job=' . rawurlencode($jobId)
+        '../client/work-approval.php?job=' . rawurlencode($jobId)
     ]);
 
     sendResponse([

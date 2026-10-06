@@ -50,7 +50,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         setTimeout(() => {
           if (chosenRole === 'CLIENT') {
-            window.location.href = window.location.pathname.includes('/guest/') ? '../client/index.html' : 'client/index.html';
+            window.location.href = window.location.pathname.includes('/guest/') ? '../client/index.php' : 'client/index.php';
           } else {
             window.location.href = window.location.pathname.includes('/guest/') ? '../freelancer/index.html' : 'freelancer/index.html';
           }
@@ -118,7 +118,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         setTimeout(() => {
           if (role.toUpperCase() === 'CLIENT') {
-            window.location.href = '../client/index.html';
+            window.location.href = '../client/index.php';
           } else {
             window.location.href = '../freelancer/index.html';
           }

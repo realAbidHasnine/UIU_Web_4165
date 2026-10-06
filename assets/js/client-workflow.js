@@ -21,19 +21,19 @@ document.addEventListener('DOMContentLoaded', () => {
   initNotifications();
 
   // Page-specific routing
-  if (path.includes('billing-payments.html')) {
+  if (path.includes('billing-payments')) {
     initBilling();
-  } else if (path.includes('work-approval.html')) {
+  } else if (path.includes('work-approval')) {
     initWorkApproval();
-  } else if (path.includes('payment-released.html')) {
+  } else if (path.includes('payment-released')) {
     initPaymentReleased();
-  } else if (path.includes('rate-freelancer.html')) {
+  } else if (path.includes('rate-freelancer')) {
     initRateFreelancer();
-  } else if (path.includes('raise-dispute.html')) {
+  } else if (path.includes('raise-dispute')) {
     initRaiseDispute();
-  } else if (path.includes('dispute-status.html')) {
+  } else if (path.includes('dispute-status')) {
     initDisputeStatus();
-  } else if (path.includes('create-client-account.html') || path.includes('post-project-details.html')) {
+  } else if (path.includes('create-client-account') || path.includes('post-project-details')) {
     initUploads();
   }
 
