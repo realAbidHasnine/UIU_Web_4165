@@ -37,6 +37,7 @@ try {
             'verifiedScore' => (int)($r['score'] ?? 90),
             'earnings'      => (float)($r['earnings'] ?? 0),
             'completedJobs' => (int)($r['completed_jobs'] ?? 0),
+            'githubUrl'     => $r['github_url'] ?? null,
             'skills'        => $skills,
             'verified'      => true
         ]);
@@ -67,6 +68,10 @@ try {
         if (isset($body['location'])) {
             $fields[] = 'location = ?';
             $params[] = trim($body['location']);
+        }
+        if (isset($body['githubUrl'])) {
+            $fields[] = 'github_url = ?';
+            $params[] = trim($body['githubUrl']);
         }
 
         if (empty($fields)) {

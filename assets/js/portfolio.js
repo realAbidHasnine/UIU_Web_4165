@@ -120,14 +120,74 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  // GitHub Sync
-  githubSyncBtn?.addEventListener('click', () => {
-    SkillMatch.showToast('Syncing repositories from GitHub...', 'info');
-    setTimeout(() => {
-      SkillMatch.showToast('GitHub repositories successfully synchronized!', 'success');
-      loadPortfolio();
-    }, 900);
+  // Live GitHub Sync & Profile Integration
+  const syncStatus = document.getElementById('syncStatus');
+  const syncBtnText = document.getElementById('syncBtnText');
+  let currentGitHubUrl = '';
+
+  async function checkGitHubProfile() {
+    try {
+      const me = await SkillMatch.api.get('/freelancers/me');
+      if (me && me.githubUrl) {
+        currentGitHubUrl = me.githubUrl;
+        const handle = me.githubUrl.replace(/^https?:\/\/github\.com\//i, '').replace(/\/$/, '');
+        if (syncStatus) {
+          syncStatus.innerHTML = `Connected as <strong>@${escapeHtml(handle)}</strong> &bull; Synced with Database`;
+        }
+      } else if (syncStatus) {
+        syncStatus.textContent = 'Link your GitHub account to sync verified repositories.';
+      }
+    } catch (_) {}
+  }
+
+  githubSyncBtn?.addEventListener('click', async () => {
+    let defaultHandle = '';
+    if (currentGitHubUrl) {
+      defaultHandle = currentGitHubUrl.replace(/^https?:\/\/github\.com\//i, '').replace(/\/$/, '');
+    } else {
+      const user = SkillMatch.auth.getUser();
+      defaultHandle = user?.name ? user.name.toLowerCase().replace(/[^a-z0-9_-]/g, '') : 'developer';
+    }
+
+    const inputHandle = prompt('Enter your GitHub username or repository profile URL:', defaultHandle);
+    if (!inputHandle || !inputHandle.trim()) {
+      return;
+    }
+
+    const origBtnHtml = githubSyncBtn.innerHTML;
+    githubSyncBtn.disabled = true;
+    if (syncBtnText) syncBtnText.textContent = 'Syncing Repositories...';
+
+    try {
+      SkillMatch.showToast('Connecting to GitHub & importing repositories...', 'info');
+      const res = await SkillMatch.api.post('/freelancers/me/portfolio?sync=github', {
+        action: 'sync_github',
+        githubUsername: inputHandle.trim()
+      });
+
+      if (res && res.githubUrl) {
+        currentGitHubUrl = res.githubUrl;
+        const cleanHandle = res.githubHandle || inputHandle.trim();
+        if (syncStatus) {
+          syncStatus.innerHTML = `Connected as <strong>@${escapeHtml(cleanHandle)}</strong> &bull; Synced with Database`;
+        }
+      }
+
+      SkillMatch.showToast(res.message || 'GitHub repositories successfully synchronized and saved!', 'success');
+      if (res.items && Array.isArray(res.items)) {
+        renderPortfolio(res.items);
+      } else {
+        loadPortfolio();
+      }
+    } catch (err) {
+      SkillMatch.showToast('GitHub sync error: ' + err.message, 'error');
+    } finally {
+      githubSyncBtn.disabled = false;
+      githubSyncBtn.innerHTML = origBtnHtml;
+    }
   });
+
+  checkGitHubProfile();
 
   function escapeHtml(str) {
     if (!str) return '';

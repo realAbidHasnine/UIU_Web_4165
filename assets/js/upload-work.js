@@ -100,12 +100,78 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
+  // Dynamic Project & Milestone Resolution
+  const urlParams = new URLSearchParams(window.location.search);
+  let activeJobId = urlParams.get('jobId') || urlParams.get('job') || urlParams.get('id') || '';
+
+  const contractTitleEl = document.getElementById('contractTitle');
+  const contractMetaEl = document.getElementById('contractMeta');
+  const contractPicker = document.getElementById('contractPicker');
+  const projectSelect = document.getElementById('projectSelect');
+
+  async function loadProjectDetails() {
+    try {
+      if (!activeJobId) {
+        // Find active jobs for this freelancer
+        const proposals = await SkillMatch.api.get('/freelancers/me/proposals');
+        const list = Array.isArray(proposals) ? proposals : [];
+        const activeList = list.filter(p => p.status === 'Accepted' || p.jobStatus === 'In Progress');
+
+        if (activeList.length > 0) {
+          activeJobId = activeList[0].jobId;
+          if (contractPicker && projectSelect) {
+            contractPicker.style.display = 'block';
+            projectSelect.innerHTML = activeList.map(p => `
+              <option value="${escapeHtml(p.jobId)}">${escapeHtml(p.jobTitle)} &bull; ${escapeHtml(p.clientName)}</option>
+            `).join('');
+            projectSelect.value = activeJobId;
+            projectSelect.addEventListener('change', () => {
+              activeJobId = projectSelect.value;
+              fetchJobInfo(activeJobId);
+            });
+          }
+        } else if (list.length > 0) {
+          activeJobId = list[0].jobId;
+        } else {
+          activeJobId = 'job-1';
+        }
+      }
+
+      await fetchJobInfo(activeJobId);
+    } catch (_) {
+      if (!activeJobId) activeJobId = 'job-1';
+      await fetchJobInfo(activeJobId);
+    }
+  }
+
+  async function fetchJobInfo(jobId) {
+    if (!jobId) return;
+    try {
+      const res = await SkillMatch.api.get('/jobs/' + encodeURIComponent(jobId));
+      if (res && res.title) {
+        if (contractTitleEl) contractTitleEl.textContent = res.title;
+        if (contractMetaEl) {
+          contractMetaEl.innerHTML = `Client: <strong>${escapeHtml(res.company || res.clientName || 'Client')}</strong> &bull; Milestone Deliverable Review`;
+        }
+      }
+    } catch (_) {
+      if (contractTitleEl) contractTitleEl.textContent = 'Project ' + jobId;
+    }
+  }
+
+  loadProjectDetails();
+
   // Form submission
   if (form) {
     form.addEventListener('submit', async (e) => {
       e.preventDefault();
       if (selectedFiles.length === 0) {
         SkillMatch.showToast('Please attach at least one deliverable file or archive.', 'warning');
+        return;
+      }
+
+      if (!activeJobId) {
+        SkillMatch.showToast('Please specify a project or contract to submit deliverables for.', 'warning');
         return;
       }
 
@@ -118,7 +184,7 @@ document.addEventListener('DOMContentLoaded', () => {
       const repoUrl = document.getElementById('repoUrl')?.value || '';
 
       const payload = {
-        projectId: 'proj-101',
+        projectId: activeJobId,
         files: selectedFiles.map(f => ({ name: f.name, size: f.size, type: f.type })),
         notes,
         repoUrl,
@@ -126,11 +192,11 @@ document.addEventListener('DOMContentLoaded', () => {
       };
 
       try {
-        await SkillMatch.api.post('/projects/proj-101/deliverables', payload);
+        await SkillMatch.api.post(`/projects/${encodeURIComponent(activeJobId)}/deliverables`, payload);
         SkillMatch.showToast('Milestone deliverable submitted successfully!', 'success');
         setTimeout(() => {
-          window.location.href = 'index.html';
-        }, 1000);
+          window.location.href = 'my_proposals.html';
+        }, 1200);
       } catch (err) {
         SkillMatch.showToast('Error uploading work: ' + err.message, 'error');
         submitBtn.disabled = false;
