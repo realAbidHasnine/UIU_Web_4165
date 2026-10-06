@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Browse Freelancers - SkillMatch</title><link rel="stylesheet" href="styles.css"><link rel="stylesheet" href="../assets/css/global.css"></head>
+<body>
+<!-- header: partials/header.php --><?php require __DIR__ . '/partials/header.php'; ?><!-- end header -->
+<main class="container" style="max-width:1280px">
+<div class="browse">
+<aside class="filters">
+<h3>Filters</h3>
+<p style="font-size:13px;font-weight:600">Skill Category</p>
+<label class="check"><input type="checkbox" name="skill_filter[]" value="web-development"> Web Development</label>
+<label class="check"><input type="checkbox" name="skill_filter[]" value="mobile-design" checked> Mobile Design</label>
+<label class="check"><input type="checkbox" name="skill_filter[]" value="data-science"> Data Science</label>
+<label class="check"><input type="checkbox" name="skill_filter[]" value="writing"> Writing</label>
+<label class="check"><input type="checkbox" name="skill_filter[]" value="marketing"> Marketing</label>
+<hr class="hr">
+<p style="font-size:13px;font-weight:600">Minimum Skill Score</p>
+<select class="select"><option>Any Score</option></select>
+<hr class="hr">
+<p style="font-size:13px;font-weight:600">Hourly Rate</p>
+<select class="select"><option>Any Rate</option></select>
+<hr class="hr">
+<p style="font-size:13px;font-weight:600">Availability</p>
+<label class="check"><input type="checkbox" checked> Available Now</label>
+</aside>
+<div>
+<div style="display:flex;gap:12px;justify-content:space-between;margin-bottom:18px;flex-wrap:wrap">
+<input class="search" name="freelancer_search" style="flex:1;max-width:360px" placeholder="Search freelancers..."><select class="select" name="sort_by" style="width:auto"><option>Sort by: Highest Skill Score</option></select>
+</div>
+<div class="freel-grid">
+<div class="card freel-card">
+<div style="display:flex;gap:12px;align-items:center">
+<span class="avatar-lg" style="color:var(--primary-ink)">JD</span>
+<div style="flex:1">
+<strong>Jomshed Das</strong>
+<div style="color:var(--muted);font-size:13px">Senior React Developer</div>
+</div>
+<span class="badge badge-match-dark">98% Match</span>
+</div>
+<div style="margin:12px 0">
+<span class="skill">React</span><span class="skill">TypeScript</span><span class="skill">Node.js</span>
+</div>
+<div style="display:flex;justify-content:space-between;font-size:14px">
+<span>&#9733; 4.9 (120 jobs)</span><span>$65/hr</span>
+</div>
+<hr class="hr">
+<div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
+<a class="btn btn-outline" href="freelancer-profile.php">View Profile</a>
+<a class="btn btn-primary" href="client-chat.php">Invite to Project</a>
+</div>
+</div>
+<div class="card freel-card">
+<div style="display:flex;gap:12px;align-items:center">
+<span class="avatar-lg" style="color:var(--primary-ink)">MS</span>
+<div style="flex:1">
+<strong>Moriam Sami</strong>
+<div style="color:var(--muted);font-size:13px">UX/UI Product Designer</div>
+</div>
+<span class="badge badge-match-dark">95% Match</span>
+</div>
+<div style="margin:12px 0">
+<span class="skill">Figma</span><span class="skill">Prototyping</span><span class="skill">User Research</span>
+</div>
+<div style="display:flex;justify-content:space-between;font-size:14px">
+<span>&#9733; 5.0 (84 jobs)</span><span>$85/hr</span>
+</div>
+<hr class="hr">
+<div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
+<a class="btn btn-outline" href="freelancer-profile.php">View Profile</a>
+<a class="btn btn-primary" href="client-chat.php">Invite to Project</a>
+</div>
+</div>
+<div class="card freel-card">
+<div style="display:flex;gap:12px;align-items:center">
+<span class="avatar-lg" style="color:var(--primary-ink)">AK</span>
+<div style="flex:1">
+<strong>Aniket Khan</strong>
+<div style="color:var(--muted);font-size:13px">Full Stack Engineer</div>
+</div>
+<span class="badge badge-match-dark">92% Match</span>
+</div>
+<div style="margin:12px 0">
+<span class="skill">Python</span><span class="skill">Django</span><span class="skill">Vue.js</span>
+</div>
+<div style="display:flex;justify-content:space-between;font-size:14px">
+<span>&#9733; 4.8 (210 jobs)</span><span>$75/hr</span>
+</div>
+<hr class="hr">
+<div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
+<a class="btn btn-outline" href="freelancer-profile.php">View Profile</a>
+<a class="btn btn-primary" href="client-chat.php">Invite to Project</a>
+</div>
+</div>
+<div class="card freel-card">
+<div style="display:flex;gap:12px;align-items:center">
+<span class="avatar-lg" style="color:var(--primary-ink)">RJ</span>
+<div style="flex:1">
+<strong>Robert Jenkins</strong>
+<div style="color:var(--muted);font-size:13px">Technical Writer</div>
+</div>
+<span class="badge badge-match-dark">88% Match</span>
+</div>
+<div style="margin:12px 0">
+<span class="skill">API Docs</span><span class="skill">Markdown</span><span class="skill">Copywriting</span>
+</div>
+<div style="display:flex;justify-content:space-between;font-size:14px">
+<span>&#9733; 4.7 (56 jobs)</span><span>$45/hr</span>
+</div>
+<hr class="hr">
+<div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
+<a class="btn btn-outline" href="freelancer-profile.php">View Profile</a>
+<a class="btn btn-primary" href="client-chat.php">Invite to Project</a>
+</div>
+</div>
+</div>
+</div>
+</main>
+<script src="../assets/js/api.js"></script>
+<script src="../assets/js/client-browse.js"></script>
+</body></html>
