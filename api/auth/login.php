@@ -13,7 +13,7 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
 $body     = getRequestBody();
 $email    = trim($body['email'] ?? '');
 $password = trim($body['password'] ?? '');
-$roleHint = strtoupper(trim($body['role'] ?? 'FREELANCER'));
+$roleHint = isset($body['role']) && trim($body['role']) !== '' ? strtoupper(trim($body['role'])) : null;
 
 if (empty($email) || empty($password)) {
     sendResponse(['message' => 'Email and password are required'], 400);
@@ -38,7 +38,7 @@ if (!password_verify($password, $user['password'])) {
 }
 
 // Optional: validate that the role matches if the frontend specified one
-if ($roleHint !== 'GUEST' && $user['role'] !== $roleHint) {
+if ($roleHint !== null && $roleHint !== 'GUEST' && $user['role'] !== $roleHint) {
     sendResponse([
         'message' => 'No account found with that role. Please select the correct role.'
     ], 401);
