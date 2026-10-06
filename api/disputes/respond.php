@@ -81,7 +81,7 @@ try {
             'dispute',
             'Freelancer responded to dispute ' . $disputeId,
             "{$freelancer['name']} submitted a response. An administrator will now review the case.",
-            '../client/raise-dispute.html',
+            '../client/raise-dispute.php',
         ]);
 
         $admins = $pdo->query("SELECT id FROM users WHERE role = 'ADMIN'")->fetchAll();

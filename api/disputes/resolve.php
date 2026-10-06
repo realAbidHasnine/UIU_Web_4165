@@ -23,12 +23,14 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
 try {
     $admin = requireRole($pdo, ['ADMIN']);
 
+    $body      = getRequestBody();
     $disputeId = routeParam('id');
+    if ($disputeId === '') {
+        $disputeId = (string)($_GET['id'] ?? ($body['id'] ?? ($body['disputeId'] ?? pathSegment('disputes', 1))));
+    }
     if ($disputeId === '') {
         sendResponse(['message' => 'Dispute ID is required'], 400);
     }
-
-    $body      = getRequestBody();
     $outcome   = requireField($body, 'outcome', 60, 'outcome');
     $resolution = requireField($body, 'resolution', 2000, 'resolution');
 
@@ -142,7 +144,7 @@ try {
             'dispute',
             'Dispute ' . $disputeId . ' resolved',
             $summary . ' ' . $resolution,
-            '../client/raise-dispute.html',
+            '../client/raise-dispute.php',
         ]);
         if (!empty($dispute['freelancer_id'])) {
             $notif->execute([

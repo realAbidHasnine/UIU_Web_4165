@@ -56,11 +56,16 @@
           <option value="client">Client</option>
         </select>
       </div>
+      <div class="um-tabs" style="display:flex;gap:8px;margin-left:24px;">
+        <button type="button" id="tabUsersBtn" style="padding:6px 14px;font-size:13px;border-radius:6px;cursor:pointer;background:#2563eb;color:#fff;border:none;font-weight:600;">User Directory</button>
+        <button type="button" id="tabDisputesBtn" style="padding:6px 14px;font-size:13px;border-radius:6px;cursor:pointer;background:#fff;border:1px solid #cbd5e1;color:#475569;">Disputes &amp; Arbitration (<span id="disputesBadgeCount">0</span>)</button>
+      </div>
       <a href="admin-dashboard.html" class="back-btn" aria-label="Go back">&#8592;</a>
     </div>
 
     <div class="um-body">
-      <div class="table-card">
+      <!-- Users Table Card -->
+      <div class="table-card" id="usersTableCard">
         <table class="um-table">
           <thead>
             <tr>
@@ -140,8 +145,115 @@
           </tbody>
         </table>
       </div>
+      <!-- End Users Table Card -->
+
+      <!-- Disputes & Arbitration Table Card -->
+      <div class="table-card" id="disputesTableCard" style="display:none;margin-top:0;">
+        <div style="display:flex;justify-content:space-between;align-items:center;padding:16px 20px;border-bottom:1px solid #e2e8f0;background:#f8fafc;flex-wrap:wrap;gap:12px;">
+          <div style="display:flex;align-items:center;gap:12px;">
+            <span style="font-weight:600;font-size:14px;color:#1e293b;">Filter Disputes:</span>
+            <select id="disputeStatusFilter" style="padding:6px 12px;border:1px solid #cbd5e1;border-radius:6px;font-size:13px;background:#fff;">
+              <option value="all">All Statuses</option>
+              <option value="Under review" selected>Under Review / Open</option>
+              <option value="Resolved">Resolved</option>
+              <option value="Escalated">Escalated</option>
+              <option value="Withdrawn">Withdrawn</option>
+            </select>
+          </div>
+          <div>
+            <button type="button" id="refreshDisputesBtn" style="padding:6px 12px;font-size:13px;border-radius:6px;border:1px solid #cbd5e1;background:#fff;cursor:pointer;color:#334155;">&#8635; Refresh Disputes</button>
+          </div>
+        </div>
+
+        <table class="um-table" id="disputesTable">
+          <thead>
+            <tr>
+              <th>Dispute ID</th>
+              <th>Milestone &amp; Job</th>
+              <th>Parties Involved</th>
+              <th>Escrow Amount</th>
+              <th>Dispute Reason</th>
+              <th>Status</th>
+              <th class="col-actions">Arbitration</th>
+            </tr>
+          </thead>
+          <tbody id="disputesTableBody">
+            <!-- Populated dynamically via admin.js -->
+          </tbody>
+        </table>
+      </div>
+      <!-- End Disputes Table Card -->
     </div>
   </main>
+
+  <!-- Dispute Resolution Modal -->
+  <div id="resolveDisputeModal" style="display:none;position:fixed;inset:0;background:rgba(15,23,42,0.6);z-index:9999;align-items:center;justify-content:center;padding:16px;">
+    <div style="background:#fff;border-radius:12px;max-width:600px;width:100%;box-shadow:0 20px 25px -5px rgba(0,0,0,0.1),0 10px 10px -5px rgba(0,0,0,0.04);overflow:hidden;border:1px solid #e2e8f0;">
+      <div style="padding:18px 24px;border-bottom:1px solid #e2e8f0;display:flex;justify-content:space-between;align-items:center;background:#f8fafc;">
+        <div>
+          <h3 style="margin:0;font-size:17px;font-weight:700;color:#0f172a;">Arbitrate &amp; Resolve Dispute</h3>
+          <p style="margin:2px 0 0;font-size:12px;color:#64748b;">Escrow funds will be moved according to your ruling.</p>
+        </div>
+        <button type="button" id="closeResolveModalBtn" style="border:none;background:transparent;font-size:22px;cursor:pointer;color:#94a3b8;line-height:1;">&times;</button>
+      </div>
+
+      <form id="resolveDisputeForm" style="padding:20px 24px;">
+        <input type="hidden" id="resolveDisputeId" name="disputeId">
+
+        <div style="background:#f1f5f9;border-radius:8px;padding:14px;margin-bottom:18px;font-size:13px;line-height:1.6;color:#334155;">
+          <div style="display:flex;justify-content:space-between;margin-bottom:4px;">
+            <span><strong>Dispute:</strong> <span id="modalDisputeLabel"></span></span>
+            <span><strong>Escrow:</strong> <span id="modalEscrowAmount" style="color:#16a34a;font-weight:700;"></span></span>
+          </div>
+          <div><strong>Parties:</strong> Client <span id="modalClientName"></span> vs Freelancer <span id="modalFreelancerName"></span></div>
+          <div style="margin-top:6px;"><strong>Client Claim:</strong> <span id="modalClaimReason"></span></div>
+          <div style="color:#64748b;font-style:italic;margin-top:2px;" id="modalClaimDesc"></div>
+        </div>
+
+        <div style="margin-bottom:16px;">
+          <label style="display:block;font-size:13px;font-weight:600;margin-bottom:6px;color:#1e293b;">Arbitration Outcome</label>
+          <div style="display:flex;flex-direction:column;gap:8px;font-size:13px;">
+            <label style="display:flex;align-items:center;gap:8px;cursor:pointer;padding:8px 12px;border:1px solid #cbd5e1;border-radius:6px;background:#f8fafc;">
+              <input type="radio" name="outcome" value="Release to freelancer" checked>
+              <div>
+                <strong>Release to Freelancer</strong>
+                <div style="font-size:11px;color:#64748b;">Pay out full escrow amount to freelancer and mark milestone as Paid.</div>
+              </div>
+            </label>
+            <label style="display:flex;align-items:center;gap:8px;cursor:pointer;padding:8px 12px;border:1px solid #cbd5e1;border-radius:6px;background:#f8fafc;">
+              <input type="radio" name="outcome" value="Refund client">
+              <div>
+                <strong>Refund Client</strong>
+                <div style="font-size:11px;color:#64748b;">Return full escrow amount to client and reopen milestone for renegotiation.</div>
+              </div>
+            </label>
+            <label style="display:flex;align-items:center;gap:8px;cursor:pointer;padding:8px 12px;border:1px solid #cbd5e1;border-radius:6px;background:#f8fafc;">
+              <input type="radio" name="outcome" value="Partial refund">
+              <div>
+                <strong>Partial Refund Split</strong>
+                <div style="font-size:11px;color:#64748b;">Split escrow amount between client and freelancer.</div>
+              </div>
+            </label>
+          </div>
+        </div>
+
+        <div id="partialRefundGroup" style="display:none;margin-bottom:16px;">
+          <label for="partialRefundInput" style="display:block;font-size:13px;font-weight:600;margin-bottom:4px;color:#1e293b;">Amount to Refund to Client ($)</label>
+          <input type="number" step="0.01" min="0.01" id="partialRefundInput" name="partialRefundAmount" placeholder="e.g. 150.00" style="width:100%;padding:8px 12px;border:1px solid #cbd5e1;border-radius:6px;font-size:13px;box-sizing:border-box;">
+        </div>
+
+        <div style="margin-bottom:20px;">
+          <label for="resolutionReasoning" style="display:block;font-size:13px;font-weight:600;margin-bottom:4px;color:#1e293b;">Official Administrative Reasoning (required)</label>
+          <textarea id="resolutionReasoning" name="resolution" rows="3" required placeholder="State findings, escrow movement justification, and guidance for both parties (minimum 10 characters)..." style="width:100%;padding:8px 12px;border:1px solid #cbd5e1;border-radius:6px;font-size:13px;box-sizing:border-box;font-family:inherit;"></textarea>
+        </div>
+
+        <div style="display:flex;justify-content:flex-end;gap:10px;">
+          <button type="button" id="cancelResolveBtn" style="padding:8px 16px;border:1px solid #cbd5e1;border-radius:6px;background:#fff;font-size:13px;cursor:pointer;color:#475569;">Cancel</button>
+          <button type="submit" id="submitResolveBtn" style="padding:8px 18px;border:none;border-radius:6px;background:#2563eb;color:#fff;font-size:13px;font-weight:600;cursor:pointer;">Execute Settlement</button>
+        </div>
+      </form>
+    </div>
+  </div>
 
   <!-- JavaScript API & Admin Controller -->
   <script src="../../assets/js/api.js"></script>

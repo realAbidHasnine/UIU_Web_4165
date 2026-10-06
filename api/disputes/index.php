@@ -16,7 +16,7 @@ if ($_SERVER['REQUEST_METHOD'] !== 'GET') {
 }
 
 try {
-    $user = requireRole($pdo, ['CLIENT', 'FREELANCER']);
+    $user = requireRole($pdo, ['CLIENT', 'FREELANCER', 'ADMIN']);
 
     $statusFilter = (string)($_GET['status'] ?? 'all');
     if ($statusFilter !== 'all') {
@@ -28,14 +28,28 @@ try {
         );
     }
 
-    // Party to the dispute = the client who filed it, or the hired freelancer.
-    $sql = "SELECT d.*, m.label AS milestone_label, m.amount AS milestone_amount,
-                   m.status AS milestone_status, j.title AS job_title
-            FROM disputes d
-            INNER JOIN project_milestones m ON m.id = d.milestone_id
-            INNER JOIN jobs j ON j.id = d.job_id
-            WHERE (d.client_id = ? OR d.freelancer_id = ?)";
-    $params = [$user['id'], $user['id']];
+    if (strtoupper($user['role']) === 'ADMIN') {
+        $sql = "SELECT d.*, m.label AS milestone_label, m.amount AS milestone_amount,
+                       m.status AS milestone_status, j.title AS job_title,
+                       uc.name AS client_name, uf.name AS freelancer_name
+                FROM disputes d
+                INNER JOIN project_milestones m ON m.id = d.milestone_id
+                INNER JOIN jobs j ON j.id = d.job_id
+                LEFT JOIN users uc ON uc.id = d.client_id
+                LEFT JOIN users uf ON uf.id = d.freelancer_id
+                WHERE 1=1";
+        $params = [];
+    } else {
+        // Party to the dispute = the client who filed it, or the hired freelancer.
+        $sql = "SELECT d.*, m.label AS milestone_label, m.amount AS milestone_amount,
+                       m.status AS milestone_status, j.title AS job_title,
+                       NULL AS client_name, NULL AS freelancer_name
+                FROM disputes d
+                INNER JOIN project_milestones m ON m.id = d.milestone_id
+                INNER JOIN jobs j ON j.id = d.job_id
+                WHERE (d.client_id = ? OR d.freelancer_id = ?)";
+        $params = [$user['id'], $user['id']];
+    }
 
     if ($statusFilter !== 'all') {
         $sql .= " AND d.status = ?";
@@ -59,6 +73,8 @@ try {
             'jobTitle'          => $r['job_title'],
             'role'              => $isClient ? 'CLIENT' : 'FREELANCER',
             'counterpartyId'    => $isClient ? $r['freelancer_id'] : $r['client_id'],
+            'clientName'        => $r['client_name'] ?? 'Client',
+            'freelancerName'    => $r['freelancer_name'] ?? 'Freelancer',
             'reason'            => $r['reason'],
             'description'       => $r['description'],
             'desiredOutcome'    => $r['desired_outcome'],

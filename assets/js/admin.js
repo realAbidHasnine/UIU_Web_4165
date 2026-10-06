@@ -178,6 +178,247 @@ document.addEventListener('DOMContentLoaded', () => {
     if (userSearch) userSearch.addEventListener('input', renderUserTable);
     if (roleSelect) roleSelect.addEventListener('change', renderUserTable);
 
+    // -------------------------------------------------------------------------
+    // Tabs & Dispute Arbitration Integration
+    // -------------------------------------------------------------------------
+    const tabUsersBtn = document.getElementById('tabUsersBtn');
+    const tabDisputesBtn = document.getElementById('tabDisputesBtn');
+    const usersTableCard = document.getElementById('usersTableCard');
+    const disputesTableCard = document.getElementById('disputesTableCard');
+    const disputesBadgeCount = document.getElementById('disputesBadgeCount');
+    const disputesTableBody = document.getElementById('disputesTableBody');
+    const disputeStatusFilter = document.getElementById('disputeStatusFilter');
+    const refreshDisputesBtn = document.getElementById('refreshDisputesBtn');
+
+    // Modal elements
+    const resolveModal = document.getElementById('resolveDisputeModal');
+    const closeResolveModalBtn = document.getElementById('closeResolveModalBtn');
+    const cancelResolveBtn = document.getElementById('cancelResolveBtn');
+    const resolveForm = document.getElementById('resolveDisputeForm');
+    const resolveDisputeIdInput = document.getElementById('resolveDisputeId');
+    const modalDisputeLabel = document.getElementById('modalDisputeLabel');
+    const modalEscrowAmount = document.getElementById('modalEscrowAmount');
+    const modalClientName = document.getElementById('modalClientName');
+    const modalFreelancerName = document.getElementById('modalFreelancerName');
+    const modalClaimReason = document.getElementById('modalClaimReason');
+    const modalClaimDesc = document.getElementById('modalClaimDesc');
+    const partialRefundGroup = document.getElementById('partialRefundGroup');
+    const partialRefundInput = document.getElementById('partialRefundInput');
+    const resolutionReasoning = document.getElementById('resolutionReasoning');
+
+    let disputesList = [];
+
+    if (tabUsersBtn && tabDisputesBtn) {
+      tabUsersBtn.addEventListener('click', () => {
+        tabUsersBtn.style.background = '#2563eb';
+        tabUsersBtn.style.color = '#fff';
+        tabUsersBtn.style.border = 'none';
+        tabUsersBtn.style.fontWeight = '600';
+        tabDisputesBtn.style.background = '#fff';
+        tabDisputesBtn.style.color = '#475569';
+        tabDisputesBtn.style.border = '1px solid #cbd5e1';
+        tabDisputesBtn.style.fontWeight = 'normal';
+        if (usersTableCard) usersTableCard.style.display = 'block';
+        if (disputesTableCard) disputesTableCard.style.display = 'none';
+      });
+
+      tabDisputesBtn.addEventListener('click', () => {
+        tabDisputesBtn.style.background = '#2563eb';
+        tabDisputesBtn.style.color = '#fff';
+        tabDisputesBtn.style.border = 'none';
+        tabDisputesBtn.style.fontWeight = '600';
+        tabUsersBtn.style.background = '#fff';
+        tabUsersBtn.style.color = '#475569';
+        tabUsersBtn.style.border = '1px solid #cbd5e1';
+        tabUsersBtn.style.fontWeight = 'normal';
+        if (usersTableCard) usersTableCard.style.display = 'none';
+        if (disputesTableCard) disputesTableCard.style.display = 'block';
+        loadDisputes();
+      });
+    }
+
+    async function loadDisputes() {
+      if (!disputesTableBody) return;
+      disputesTableBody.innerHTML = `
+        <tr><td colspan="7" style="padding:32px;text-align:center;color:var(--color-text-muted);">
+          <div class="spinner" style="display:inline-block;width:24px;height:24px;border:3px solid rgba(37,99,235,0.2);border-top-color:#2563eb;border-radius:50%;animation:spin 0.8s linear infinite;"></div>
+          <p style="margin-top:10px;font-size:13px;">Loading platform disputes & escrow records...</p>
+        </td></tr>
+      `;
+
+      try {
+        const status = disputeStatusFilter?.value || 'all';
+        const query = status === 'all' ? '' : `?status=${encodeURIComponent(status)}`;
+        const res = await SkillMatch.api.get(`/disputes${query}`);
+        const list = res.disputes || (Array.isArray(res) ? res : []);
+        disputesList = list;
+        if (disputesBadgeCount) {
+          disputesBadgeCount.textContent = res.openCount !== undefined ? res.openCount : list.filter(d => d.status === 'Under review' || d.status === 'Escalated').length;
+        }
+        renderDisputes();
+      } catch (err) {
+        disputesTableBody.innerHTML = `
+          <tr><td colspan="7" style="padding:32px;text-align:center;color:#b91c1c;">
+            Failed to load disputes: ${escapeHtml(err.message)}<br>
+            <button type="button" class="btn-outline" id="retryDisputesBtn" style="margin-top:10px;padding:4px 12px;font-size:12px;cursor:pointer;">Retry</button>
+          </td></tr>
+        `;
+        document.getElementById('retryDisputesBtn')?.addEventListener('click', loadDisputes);
+      }
+    }
+
+    function renderDisputes() {
+      if (!disputesTableBody) return;
+      if (disputesList.length === 0) {
+        disputesTableBody.innerHTML = `
+          <tr><td colspan="7" style="padding:36px;text-align:center;color:var(--color-text-muted);">
+            No disputes found matching current criteria. All contracts and escrow funds are currently peaceful.
+          </td></tr>
+        `;
+        return;
+      }
+
+      disputesTableBody.innerHTML = disputesList.map(d => {
+        const amountStr = '$' + Number(d.milestoneAmount || 0).toLocaleString(undefined, { minimumFractionDigits: 2 });
+        let statusBadge = '';
+        if (d.status === 'Under review') {
+          statusBadge = '<span class="pill" style="background:#fef3c7;color:#b45309;font-weight:600;">Under Review</span>';
+        } else if (d.status === 'Resolved') {
+          statusBadge = '<span class="pill" style="background:#dcfce7;color:#15803d;font-weight:600;">Resolved</span>';
+        } else if (d.status === 'Escalated') {
+          statusBadge = '<span class="pill" style="background:#fee2e2;color:#b91c1c;font-weight:600;">Escalated</span>';
+        } else {
+          statusBadge = `<span class="pill" style="background:#f1f5f9;color:#475569;">${escapeHtml(d.status)}</span>`;
+        }
+
+        const canResolve = d.status === 'Under review' || d.status === 'Escalated';
+
+        return `
+          <tr>
+            <td>
+              <div style="font-weight:600;font-family:monospace;font-size:12.5px;color:#1e293b;">${escapeHtml(d.id)}</div>
+              <div style="font-size:11px;color:#94a3b8;">${d.createdAt ? new Date(d.createdAt).toLocaleDateString() : '—'}</div>
+            </td>
+            <td>
+              <div style="font-weight:600;color:#0f172a;max-width:220px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;" title="${escapeHtml(d.milestoneLabel)}">${escapeHtml(d.milestoneLabel)}</div>
+              <div style="font-size:12px;color:#64748b;max-width:220px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;" title="${escapeHtml(d.jobTitle)}">${escapeHtml(d.jobTitle)}</div>
+            </td>
+            <td>
+              <div style="font-size:12.5px;"><strong>Client:</strong> ${escapeHtml(d.clientName || 'Client')}</div>
+              <div style="font-size:12px;color:#64748b;"><strong>Freelancer:</strong> ${escapeHtml(d.freelancerName || 'Freelancer')}</div>
+            </td>
+            <td>
+              <div style="font-size:14px;font-weight:700;color:#16a34a;">${amountStr}</div>
+              <div style="font-size:11px;color:#64748b;">Escrow Protected</div>
+            </td>
+            <td>
+              <div style="font-weight:500;font-size:13px;color:#334155;">${escapeHtml(d.reason || 'Contract dispute')}</div>
+              <div style="font-size:11.5px;color:#64748b;margin-top:2px;">Outcome requested: ${escapeHtml(d.desiredOutcome || '—')}</div>
+            </td>
+            <td>${statusBadge}</td>
+            <td class="col-actions">
+              ${canResolve ? `
+                <button type="button" class="btn-arbitrate" data-id="${d.id}"
+                  style="padding:6px 14px;font-size:12px;font-weight:600;background:#2563eb;color:#fff;border:none;border-radius:6px;cursor:pointer;">
+                  Arbitrate &rarr;
+                </button>
+              ` : `
+                <div style="font-size:11.5px;color:#64748b;max-width:140px;line-height:1.3;" title="${escapeHtml(d.resolution || '')}">
+                  ${d.resolution ? escapeHtml(d.resolution).substring(0, 45) + '...' : 'Settled'}
+                </div>
+              `}
+            </td>
+          </tr>
+        `;
+      }).join('');
+
+      disputesTableBody.querySelectorAll('.btn-arbitrate').forEach(btn => {
+        btn.addEventListener('click', () => {
+          const id = btn.getAttribute('data-id');
+          const d = disputesList.find(item => item.id === id);
+          if (!d) return;
+
+          if (resolveDisputeIdInput) resolveDisputeIdInput.value = d.id;
+          if (modalDisputeLabel) modalDisputeLabel.textContent = `${d.id} — ${d.milestoneLabel}`;
+          if (modalEscrowAmount) modalEscrowAmount.textContent = `$${Number(d.milestoneAmount || 0).toFixed(2)}`;
+          if (modalClientName) modalClientName.textContent = d.clientName || 'Client';
+          if (modalFreelancerName) modalFreelancerName.textContent = d.freelancerName || 'Freelancer';
+          if (modalClaimReason) modalClaimReason.textContent = `${d.reason} (Desired: ${d.desiredOutcome || '—'})`;
+          if (modalClaimDesc) modalClaimDesc.textContent = d.description || 'No additional claimant details provided.';
+
+          if (resolutionReasoning) resolutionReasoning.value = '';
+          if (partialRefundInput) partialRefundInput.value = '';
+          if (partialRefundGroup) partialRefundGroup.style.display = 'none';
+
+          const defaultRadio = resolveForm?.querySelector('input[name="outcome"][value="Release to freelancer"]');
+          if (defaultRadio) defaultRadio.checked = true;
+
+          if (resolveModal) resolveModal.style.display = 'flex';
+        });
+      });
+    }
+
+    if (disputeStatusFilter) disputeStatusFilter.addEventListener('change', loadDisputes);
+    if (refreshDisputesBtn) refreshDisputesBtn.addEventListener('click', loadDisputes);
+
+    // Modal controls
+    const closeResolveModal = () => { if (resolveModal) resolveModal.style.display = 'none'; };
+    if (closeResolveModalBtn) closeResolveModalBtn.addEventListener('click', closeResolveModal);
+    if (cancelResolveBtn) cancelResolveBtn.addEventListener('click', closeResolveModal);
+
+    resolveForm?.querySelectorAll('input[name="outcome"]').forEach(r => {
+      r.addEventListener('change', (e) => {
+        if (partialRefundGroup) {
+          partialRefundGroup.style.display = e.target.value === 'Partial refund' ? 'block' : 'none';
+        }
+      });
+    });
+
+    if (resolveForm) {
+      resolveForm.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const disputeId = resolveDisputeIdInput?.value;
+        const outcome = resolveForm.querySelector('input[name="outcome"]:checked')?.value;
+        const resolution = resolutionReasoning?.value?.trim() || '';
+        const partialRefundAmount = partialRefundInput?.value ? parseFloat(partialRefundInput.value) : undefined;
+
+        if (!disputeId) return;
+        if (resolution.length < 10) {
+          SkillMatch.showToast('Please provide at least 10 characters explaining your ruling.', 'warning');
+          return;
+        }
+
+        const submitBtn = document.getElementById('submitResolveBtn');
+        const origText = submitBtn.innerHTML;
+        submitBtn.disabled = true;
+        submitBtn.innerHTML = 'Executing Settlement...';
+
+        try {
+          await SkillMatch.api.post(`/disputes/${encodeURIComponent(disputeId)}/resolve`, {
+            outcome,
+            resolution,
+            partialRefundAmount
+          });
+
+          SkillMatch.showToast(`Dispute ${disputeId} has been successfully resolved!`, 'success');
+          closeResolveModal();
+          loadDisputes();
+        } catch (err) {
+          SkillMatch.showToast('Resolution error: ' + err.message, 'error');
+        } finally {
+          submitBtn.disabled = false;
+          submitBtn.innerHTML = origText;
+        }
+      });
+    }
+
+    // Pre-fetch dispute badge count initially
+    SkillMatch.api.get('/disputes?status=all').then(res => {
+      if (disputesBadgeCount && res) {
+        disputesBadgeCount.textContent = res.openCount !== undefined ? res.openCount : (res.disputes || []).filter(d => d.status === 'Under review' || d.status === 'Escalated').length;
+      }
+    }).catch(() => {});
+
     loadUsers();
   }
 
